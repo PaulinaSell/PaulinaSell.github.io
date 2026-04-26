@@ -1,0 +1,26 @@
+---
+# title: "Paulina Sell"
+about:
+  template: jolla
+  image: images/profile.jpg
+  image-width: 20em
+  links:
+      - icon: github
+        text: GitHub
+        href: https://github.com/PaulinaSell
+      - icon: orchid
+        text: ORCiD
+        href: https://orcid.org/0009-0007-7419-2956
+      - icon: researchgate
+        text: ResearchGate
+        href: https://www.researchgate.net/profile/Paulina-Sell
+      - icon: linkedin
+        text: LinkedIn
+        href: https://www.linkedin.com/in/paulina-sell-92a465313/
+---
+
+# Welcome! 
+
+Hi, my name is Paulina, welcome to my website!\
+I'm interested in epidemiology, statistics and statistical progamming in R. 
+Recently, I've learned a lot about probabilistic and Bayesian methods.
