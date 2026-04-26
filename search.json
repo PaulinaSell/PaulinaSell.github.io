@@ -1,0 +1,191 @@
+[
+  {
+    "objectID": "personal.html",
+    "href": "personal.html",
+    "title": "Personal projects & hobbies",
+    "section": "",
+    "text": "In my free time, you can find me making sourdough bread, taking pictures with my analogue camera, going on walks in the forest or the nearby botanical garden, touching moss (yes, that’s one of my hobbies) or making creating little videos of vacations or me playing the piano. I also regularly go running to stay fit clear my mind.\nSince 2017, I’m doing social media work for the non-profit Help for a Smile e.V. and working with the board to further develop the organization! It’s a small organization that makes a real difference for 20 children and young adults in Uganda.\nHere are some pictures that I took:"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome!",
+    "section": "",
+    "text": "Welcome!\nHi, my name is Paulina, welcome to my website!\nI’m interested in epidemiology, statistics and statistical progamming in R. Recently, I’ve learned a lot about probabilistic and Bayesian methods."
+  },
+  {
+    "objectID": "work.html",
+    "href": "work.html",
+    "title": "Work",
+    "section": "",
+    "text": "Sell, P., Plass, D., Kienzler, S. & Zeeb, H. Environmental burden of disease resulting from long-term nitrogen dioxide exposure in Germany. BMC Public Health 25, 79 (2025). doi: 10.1186/s12889-024-21200-6 \n\n\nSell, P., Murawski, A., Kolossa-Gehring, M. & Plass, D. Beyond point estimates: Probabilistic burden of disease modelling of lead-related IQ loss in Germany. European Journal of Public Health 35(Supplement 4) (2025). doi: 10.1093/eurpub/ckaf161.1317 \n\n\n\n\n\n\n\n2024–present\nResearcher — German Environment Agency (UBA)\nWorking on probabilistic Environmental Burden of Disease (EBD) methods within the\nPARC project.\nLed a working group with the aim of harmonizing EBD methods within PARC. \nLed a case study on uncertainty quantification in EBD studies (to be published in 2026).\nConducted a methodological comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and IQ in children — submitted.\n\n\n\n2021–2023\nStudent-led research project — University of Bremen\nResearch question: How is accessibility to neighborhood greenspace associated with mental wellbeing in residents of the city Bremen?\n\n\n\n2020 - 2021\nInternship — Charité Berlin\nFive months at the NAKO study center,\nInstitute of Social Medicine, Epidemiology and Health Economics.\n\n\n\n\n  R (see posts)\n  Data analyses, incl. Bayesian methods\n  Systematic reviews and meta-analyses\n  Writing and publishing scientific papers\n  Leading and organizing a working group (PARC)\n  Burden of Disease methods\n  Health risk assessment of chemicals\n  Working in interdisciplinary teams\n  Presenting results at conferences (e.g. EPH conference)\n\n\n\n\n\n\n\n2021 - 2024\nM.Sc. Epidemiology — University of Bremen\nThesis: Environmental Burden of Disease assessment of long-term nitrogen dioxide exposure in Germany, published in BMC Public Health (doi: 10.1186/s12889-024-21200-6).\n\n\n\n2018–2021\nB.A. Public Health — University of Bremen\nThesis: Vulnerability of persons with low socioeconomic status to COVID-19 due to air pollution - A systematic literature review.\n\n\n\n\n\n\n\n\n\n    \n        \n    \n    GitHub\n\n\n\n    \n        \n    \n    ORCID\n\n\n\n    \n        \n    \n    ResearchGate"
+  },
+  {
+    "objectID": "work.html#publications",
+    "href": "work.html#publications",
+    "title": "Work",
+    "section": "",
+    "text": "Sell, P., Plass, D., Kienzler, S. & Zeeb, H. Environmental burden of disease resulting from long-term nitrogen dioxide exposure in Germany. BMC Public Health 25, 79 (2025). doi: 10.1186/s12889-024-21200-6 \n\n\nSell, P., Murawski, A., Kolossa-Gehring, M. & Plass, D. Beyond point estimates: Probabilistic burden of disease modelling of lead-related IQ loss in Germany. European Journal of Public Health 35(Supplement 4) (2025). doi: 10.1093/eurpub/ckaf161.1317"
+  },
+  {
+    "objectID": "work.html#experience",
+    "href": "work.html#experience",
+    "title": "Work",
+    "section": "",
+    "text": "2024–present\nResearcher — German Environment Agency (UBA)\nWorking on probabilistic Environmental Burden of Disease (EBD) methods within the\nPARC project.\nLed a working group with the aim of harmonizing EBD methods within PARC. \nLed a case study on uncertainty quantification in EBD studies (to be published in 2026).\nConducted a methodological comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and IQ in children — submitted.\n\n\n\n2021–2023\nStudent-led research project — University of Bremen\nResearch question: How is accessibility to neighborhood greenspace associated with mental wellbeing in residents of the city Bremen?\n\n\n\n2020 - 2021\nInternship — Charité Berlin\nFive months at the NAKO study center,\nInstitute of Social Medicine, Epidemiology and Health Economics.\n\n\n\n\n  R (see posts)\n  Data analyses, incl. Bayesian methods\n  Systematic reviews and meta-analyses\n  Writing and publishing scientific papers\n  Leading and organizing a working group (PARC)\n  Burden of Disease methods\n  Health risk assessment of chemicals\n  Working in interdisciplinary teams\n  Presenting results at conferences (e.g. EPH conference)"
+  },
+  {
+    "objectID": "work.html#education",
+    "href": "work.html#education",
+    "title": "Work",
+    "section": "",
+    "text": "2021 - 2024\nM.Sc. Epidemiology — University of Bremen\nThesis: Environmental Burden of Disease assessment of long-term nitrogen dioxide exposure in Germany, published in BMC Public Health (doi: 10.1186/s12889-024-21200-6).\n\n\n\n2018–2021\nB.A. Public Health — University of Bremen\nThesis: Vulnerability of persons with low socioeconomic status to COVID-19 due to air pollution - A systematic literature review."
+  },
+  {
+    "objectID": "posts/statistical-rethinking/mcelreath_A08/index.html",
+    "href": "posts/statistical-rethinking/mcelreath_A08/index.html",
+    "title": "Statistical Rethinking 2026, A08",
+    "section": "",
+    "text": "Link to full course on GitHub\nLink to online lecture\nFirst, we load the package and data.\nlibrary(rethinking)\ndata(Wines2012)\ndata &lt;- Wines2012\nLet’s have a look:\n'data.frame':   180 obs. of  6 variables:\n $ judge     : Factor w/ 9 levels \"Daniele Meulder\",..: 4 4 4 4 4 4 4 4 4 4 ...\n $ flight    : Factor w/ 2 levels \"red\",\"white\": 2 2 2 2 2 2 2 2 2 2 ...\n $ wine      : Factor w/ 20 levels \"A1\",\"A2\",\"B1\",..: 1 3 5 7 9 11 13 15 17 19 ...\n $ score     : num  10 13 14 15 8 13 15 11 9 12 ...\n $ wine.amer : int  1 1 0 0 1 1 1 0 1 0 ...\n $ judge.amer: int  0 0 0 0 0 0 0 0 0 0 ...\nThe data is from a wine-tasting event, where 20 wines (10 from France, 10 from New Jersey) have been tasted by 9 French and American judges.\nNow, we want to find out whether there are any differences in harshness or discrimination between French and American judges. Let’s use a DAG to think about this.\nQ = Wine quality\nS = Score\nX = Wine origin\nJ = Judge preferences\nZ = Judge origin"
+  },
+  {
+    "objectID": "posts/statistical-rethinking/mcelreath_A08/index.html#statistical-model",
+    "href": "posts/statistical-rethinking/mcelreath_A08/index.html#statistical-model",
+    "title": "Statistical Rethinking 2026, A08",
+    "section": "Statistical Model",
+    "text": "Statistical Model\nThe score \\(S\\) assigned to a wine is modeled as normally distributed around a mean \\(\\mu\\):\n\\[\n\\text{S} \\sim \\mathcal{N}(\\mu, \\sigma)\n\\] \\[\n\\mu = (\\text{Q}_W + \\text{O}_X - \\text{H}_Z) * \\text{D}_Z\n\\]\nInside the brackets, three additive components determine the underlying score before judge effects are applied: \\(\\text{Q}_W\\) is the intrinsic quality of wine \\(\\text{W}\\); \\(\\text{O}_X\\)​ is a bonus or penalty depending on whether the wine’s origin \\(\\text{X}\\) matches the judge’s prior expectations; and \\(\\text{H}_Z\\) is the harshness of judge \\(\\text{Z}\\), which shifts scores downward. This sum is then multiplied by \\(\\text{D}_Z\\)​, the discrimination of judge \\(\\text{Z}\\)."
+  },
+  {
+    "objectID": "posts/statistical-rethinking/mcelreath_A08/index.html#priors",
+    "href": "posts/statistical-rethinking/mcelreath_A08/index.html#priors",
+    "title": "Statistical Rethinking 2026, A08",
+    "section": "Priors",
+    "text": "Priors\nI don’t know what to expect from the model yet, so I’ll first set some default priors but I know that discrimination (\\(\\text{D}\\)) and \\(\\sigma\\) must be positive.\n\\[\n\\text{Q} \\sim \\mathcal{N}(0, 1)\n\\] \\[\n\\text{O} \\sim \\mathcal{N}(0,1)\n\\] \\[\n\\text{H} \\sim \\mathcal{N}(0,1)\n\\] \\[\n\\text{D} \\sim \\text{exponential}(1)\n\\] \\[\n\\sigma \\sim \\text{exponential}(1)\n\\]"
+  },
+  {
+    "objectID": "posts/statistical-rethinking/mcelreath_A08/index.html#prepare-data",
+    "href": "posts/statistical-rethinking/mcelreath_A08/index.html#prepare-data",
+    "title": "Statistical Rethinking 2026, A08",
+    "section": "Prepare data",
+    "text": "Prepare data\nNow we need to prepare the data. This includes standardizing the outcome variable, \\(\\text{S}\\).\n\ndata &lt;- list(\n  S = standardize(data$score),\n  W = data$wine,\n  X = ifelse(data$wine.amer == 1, 1, 2), # 1 = american wine, 2 = french wine\n  Z = ifelse(data$judge.amer == 1, 1, 2) # 1 = american judge, 2 = french judge\n)"
+  },
+  {
+    "objectID": "posts/statistical-rethinking/mcelreath_A08/index.html#fit-model",
+    "href": "posts/statistical-rethinking/mcelreath_A08/index.html#fit-model",
+    "title": "Statistical Rethinking 2026, A08",
+    "section": "Fit model",
+    "text": "Fit model\nLet’s try and fit the model:\n\nm.wines &lt;- ulam(\n  alist(\n    S ~ dnorm(mu, sigma),\n    mu &lt;- (Q[W] + O[X] - H[Z]) * D[Z],\n    Q[W] ~ dnorm(0, 1),\n    O[X] ~ dnorm(0, 1),\n    H[Z] ~ dnorm(0, 1),\n    D[Z] ~ dexp(1),\n    sigma ~ dexp(1)\n  ),\n  data = data, chains = 4\n)\n\n\nshow(m.wines)\n\nHamiltonian Monte Carlo approximation\n2000 samples from 4 chains\n\nSampling durations (seconds):\n  chain_id warmup sampling total\n1        1   0.16     0.09  0.24\n2        2   0.14     0.10  0.24\n3        3   0.13     0.10  0.23\n4        4   0.16     0.09  0.26\n\nFormula:\nS ~ dnorm(mu, sigma)\nmu &lt;- (Q[W] + O[X] - H[Z]) * D[Z]\nQ[W] ~ dnorm(0, 1)\nO[X] ~ dnorm(0, 1)\nH[Z] ~ dnorm(0, 1)\nD[Z] ~ dexp(1)\nsigma ~ dexp(1)\n\nprecis(m.wines, depth = 2)\n\n              mean         sd         5.5%     94.5%      rhat  ess_bulk\nQ[1]   0.137275500 0.94211600 -1.373947394 1.6514307 1.0006649 2371.9657\nQ[2]   0.040307716 0.92527818 -1.399657469 1.5050568 1.0007105 2772.4141\nQ[3]   0.314704682 0.95764188 -1.164886115 1.7904272 1.0006849 2392.7808\nQ[4]   0.511858830 0.91715873 -0.966019613 1.9513762 1.0037454 2224.6677\nQ[5]  -0.199128043 0.88754937 -1.595459813 1.2385016 1.0010578 3138.1356\nQ[6]  -0.339176687 0.94382648 -1.755711205 1.1469690 1.0017458 2824.5044\nQ[7]   0.187146187 0.92687347 -1.272224414 1.6670968 1.0044346 2448.1176\nQ[8]   0.296872481 0.92982686 -1.225207075 1.7435034 1.0011411 2845.8027\nQ[9]   0.146094242 0.92009496 -1.327702850 1.6302118 0.9993591 3147.0903\nQ[10]  0.166455117 0.96385361 -1.367333766 1.7197128 1.0010019 2753.7063\nQ[11]  0.103331201 0.89589452 -1.317251601 1.5823041 1.0029066 2796.8129\nQ[12] -0.011794344 0.94390138 -1.584759437 1.4712903 1.0019899 3335.4454\nQ[13]  0.006692338 0.89111709 -1.372644504 1.3885481 1.0014553 2924.1424\nQ[14] -0.061558457 0.92638235 -1.533543599 1.4334403 1.0002684 3385.2768\nQ[15] -0.235409996 0.92075273 -1.718944842 1.1831944 1.0018714 2236.4361\nQ[16] -0.182430505 0.94676652 -1.689510254 1.3070275 1.0013717 2671.7163\nQ[17] -0.061824171 0.91277614 -1.588964010 1.3599443 1.0065169 3110.9926\nQ[18] -0.792900757 0.95014334 -2.369871056 0.7369779 1.0034090 2149.9028\nQ[19] -0.218099514 0.91217806 -1.658988281 1.2613897 1.0008809 3356.6746\nQ[20]  0.333098095 0.93266583 -1.149968871 1.8342047 1.0029762 2823.1263\nO[1]  -0.329212750 0.76988307 -1.527718285 0.8930313 0.9995815 2429.1178\nO[2]   0.307662337 0.78272005 -0.935255323 1.5499289 1.0017608 2245.2982\nH[1]  -0.429453484 0.82961426 -1.753240242 0.8598258 1.0004616 1993.6729\nH[2]   0.439927808 0.78933888 -0.812601604 1.6653708 1.0014262 2016.9130\nD[1]   0.114000621 0.08501388  0.009724246 0.2679114 1.0005912  906.8175\nD[2]   0.137981503 0.10347466  0.013083926 0.3287344 1.0024265  856.3410\nsigma  0.992952795 0.05443368  0.909587420 1.0817584 0.9994670 2751.4543\n\ntrankplot(m.wines)\n\n\n\n\n\n\n\n\nWaiting to draw page 2 of 2"
+  },
+  {
+    "objectID": "posts/statistical-rethinking/mcelreath_A08/index.html#causal-contrast",
+    "href": "posts/statistical-rethinking/mcelreath_A08/index.html#causal-contrast",
+    "title": "Statistical Rethinking 2026, A08",
+    "section": "Causal contrast",
+    "text": "Causal contrast\n\nTotal causal contrast in mean: wine discrimination\n\n\nCode\npost &lt;- extract.samples(m.wines)\n\nmu_contrast &lt;- post$D[, 2] - post$D[, 1] # french - american discrimination\n\ndens(\n  mu_contrast,\n  lwd = 2,\n  xlab = \"posterior mean discrimination contrast\"\n)\n\n\n\n\n\n\n\n\n\n\n\nTotal causal contrast in predicted score: wine discrimination\n\n\nCode\n# sample from posterior\nD_A &lt;- rnorm(1000, post$D[, 1], post$sigma)\nD_F &lt;- rnorm(1000, post$D[, 2], post$sigma)\n\n# calculate contrast\nS_contrast &lt;- D_F - D_A\n\ndens(\n  S_contrast,\n  lwd = 2,\n  xlab = \"posterior contrast in discrimination (French - American)\"\n)\n\n\n\n\n\n\n\n\n\nHere we can see that 50% of the times we randomly sample a new judge, the French judge is more discriminating than the American judge. And 50% of the time, the American judge is more discriminating than the French judge. So it seems like there is no difference between American and French wine judges in terms of wine discrimination.\nLet’s now look at harshness.\n\n\nTotal causal contrast in mean: harshness\n\n\nCode\nmu_contrast_H &lt;- post$H[, 2] - post$H[, 1] # french - american discrimination\n\ndens(\n  mu_contrast_H,\n  lwd = 2,\n  xlab = \"posterior mean harshness contrast\"\n)\n\n\n\n\n\n\n\n\n\n\n\nTotal causal contrast in predicted score: harshness\n\n\nCode\n# sample from posterior\nH_A &lt;- rnorm(1000, post$H[, 1], post$sigma)\nH_F &lt;- rnorm(1000, post$H[, 2], post$sigma)\n\n# calculate contrast\nS_contrast_H &lt;- H_F - H_A\n\ndens(\n  S_contrast_H,\n  lwd = 2,\n  xlab = \"posterior contrast in harshness (French - American)\"\n)\n\n\n\n\n\n\n\n\n\nHere we can see that 71.1% of the times we randomly sample a new judge, the French judge is more harsh in their judgement than the American judge. And 28.9% of the time, the American judge is more harsh in their judgement than the French judge."
+  },
+  {
+    "objectID": "posts/statistical-rethinking/mcelreath_A08/index.html#lineplot",
+    "href": "posts/statistical-rethinking/mcelreath_A08/index.html#lineplot",
+    "title": "Statistical Rethinking 2026, A08",
+    "section": "Lineplot",
+    "text": "Lineplot\nNow I want to try to recreate the lineplot that McElreath showed in his slides.\nFirst, we need to create a sequence of wine quality (Q).\n\nlibrary(tidyverse)\n\n# Simulation settings\nn_lines &lt;- 40\nQ_seq &lt;- seq(-2, 2, len = 60)\n# 1 = American, 2 = French\nZ_american &lt;- 1\nZ_french &lt;- 2\n\nNow, we need a function that gets the right values out of the posteriors. We first sample indices from the posterior, so that we “decide” a priori what row from the posterior we’ll use. In the for loop, we then fill the empty list we initiated with values from the full posterior in order to get the trajectories for a given Z.\n\nmake_lines &lt;- function(Z_val, n_lines, Q_seq, post) {\n  idx &lt;- sample(nrow(post$sigma), n_lines, replace = FALSE)\n\n  results &lt;- vector(\"list\", length(idx))\n\n  for (i in seq_along(idx)) {\n    s &lt;- idx[i] # Full posterior draw: O, H & D come from the same sample row\n    X_draw &lt;- sample(1:2, 1) # random wine origin\n    O &lt;- post$O[s, X_draw]\n    H &lt;- post$H[s, Z_val]\n    D &lt;- post$D[s, Z_val]\n\n    results[[i]] &lt;- data.frame(\n      Q = Q_seq,\n      mu = (Q_seq + O - H) * D,\n      line = i\n    )\n  }\n\n  # Combine all the individual data frames into one\n  do.call(rbind, results)\n}\n\nNow, we just call the function twice (for French and American judges) and then combine both data frames the data by row-binding it.\n\ndf_plot &lt;- bind_rows(\n  make_lines(Z_american, n_lines, Q_seq, post) |&gt;\n    mutate(judge_origin = \"American\"),\n  make_lines(Z_french, n_lines, Q_seq, post) |&gt; \n    mutate(judge_origin = \"French\")\n) |&gt;\n  mutate(judge_origin = factor(judge_origin, levels = c(\"American\", \"French\")))\n\nAnd now we’re ready to plot!\n\nggplot(df_plot, aes(x = Q, y = mu, group = line)) +\n  geom_vline(xintercept = 0, col = \"lightcoral\") +\n  geom_hline(yintercept = 0, col = \"lightcoral\") +\n  geom_line(alpha = 0.35, linewidth = 0.5, colour = \"#2c7bb6\") +\n  facet_wrap(~judge_origin, ncol = 2) +\n  labs(\n    x = \"Wine quality (Q)\",\n    y = \"Predicted score (μ)\",\n    title = \"Predicted scores by judge origin\",\n    subtitle = paste0(n_lines, \" posterior draws per panel\")\n  ) +\n  theme_classic()\n\n\n\n\n\n\n\n\nSo: do the French and American judges actually differ in either their harshness or discrimination? Yes, they do differ in harshness. French judges tend to give lower scores in general compared to American judges. But their discrimination between wines does not differ."
+  },
+  {
+    "objectID": "posts/meta-analysis/forestplot/index.html",
+    "href": "posts/meta-analysis/forestplot/index.html",
+    "title": "Recreating metafor forest plots in ggplot2",
+    "section": "",
+    "text": "Recently, I worked on a project comparing frequentist and Bayesian meta-analytic frameworks. In the paper I wrote about this (submitted) I wanted to have a figure with both forest plots side-by side with the only visual difference being that the Bayesian forest plot contains posterior distributions. While metafor’s forest() function does allow for some customization, adding posterior distributions is not possible. This post shows how to recreate the look of the metafor forest plot entirely in ggplot2, using posterior draws from a brms random-effects meta-analysis."
+  },
+  {
+    "objectID": "posts/meta-analysis/forestplot/index.html#lets-begin",
+    "href": "posts/meta-analysis/forestplot/index.html#lets-begin",
+    "title": "Recreating metafor forest plots in ggplot2",
+    "section": "Let’s begin!",
+    "text": "Let’s begin!\nFirst, we load packages and read in the two fitted models — a Bayesian model fitted with brms and a frequentist model fitted with metafor. The frequentist model is used here only to extract the original study ordering, so the two plots are directly comparable.\n\nlibrary(brms)\nlibrary(metafor)\nlibrary(tidyverse)\nlibrary(tidybayes)\nlibrary(ggridges)\nlibrary(glue)\nlibrary(here)\nlibrary(magick)\n\nm.brm &lt;- readRDS(here(\"posts\", \"meta-analysis\", \"forestplot\", \"data\", \"m.brm_full.rds\"))\nfreq_model &lt;- readRDS(here(\"posts\", \"meta-analysis\", \"forestplot\", \"data\", \"freq_full.rds\"))"
+  },
+  {
+    "objectID": "posts/meta-analysis/forestplot/index.html#prepare-data",
+    "href": "posts/meta-analysis/forestplot/index.html#prepare-data",
+    "title": "Recreating metafor forest plots in ggplot2",
+    "section": "Prepare data",
+    "text": "Prepare data\nNow we extract the posterior draws for each study-level effect using spread_draws() from tidybayes. r_author_year contains the study-level deviations from the overall pooled effect (b_Intercept), so we add b_Intercept to get each study’s absolute estimate on the outcome scale. We then do the same for the pooled estimate alone and bind both together into a single long data frame. The study labels are reordered to match the ordering in the frequentist model, with the pooled estimate placed at the bottom.\n\nstudy.draws &lt;- spread_draws(\n  m.brm,\n  r_author_year[author_year, ],\n  b_Intercept\n) %&gt;%\n  mutate(b_Intercept = r_author_year + b_Intercept)\n\npooled.effect.draws &lt;- spread_draws(m.brm, b_Intercept) %&gt;%\n  mutate(author_year = \"Pooled Estimate\")\n\nforest.data &lt;- bind_rows(study.draws, pooled.effect.draws) %&gt;%\n  ungroup() %&gt;%\n  mutate(author_year = str_replace_all(author_year, \"[.]\", \" \")) %&gt;%\n  mutate(\n    author_year = factor(\n      author_year,\n      levels = c(rev(freq_model$data$author_year), \"Pooled Estimate\")\n    )\n  )\n\nforest.data.summary &lt;- group_by(forest.data, author_year) %&gt;%\n  mean_qi(b_Intercept)\n\nTo separate the pooled estimate visually from the individual studies, as metafor’s forest() does, we insert two blank spacer rows into the factor level ordering: one above and one below the individual studies. These levels appear on the y-axis but carry no data, so nothing is drawn at those positions. We also compute n_levels_total, which we need later to position the column headers and separator lines at the right y-coordinates.\n\nn_studies &lt;- nlevels(forest.data$author_year) # includes pooled estimate\n\nstudy_levels &lt;- setdiff(levels(forest.data$author_year), \"Pooled Estimate\")\n\nnew_levels &lt;- c(\n  \"Pooled Estimate\",\n  \"spacer_bottom\",\n  study_levels,\n  \"spacer_top\"\n)\n\nforest.data &lt;- forest.data %&gt;%\n  mutate(author_year = factor(author_year, levels = new_levels))\n\nforest.data.summary &lt;- forest.data.summary %&gt;%\n  mutate(author_year = factor(as.character(author_year), levels = new_levels))\n\n# Append NA rows for the two spacer positions\nspacer_rows &lt;- tibble(\n  author_year = factor(c(\"spacer_bottom\", \"spacer_top\"), levels = new_levels),\n  b_Intercept = NA_real_,\n  .lower = NA_real_,\n  .upper = NA_real_\n)\nforest.data.summary &lt;- bind_rows(forest.data.summary, spacer_rows)\n\nn_levels_total &lt;- n_studies + 2"
+  },
+  {
+    "objectID": "posts/meta-analysis/forestplot/index.html#set-linewidth-font-size",
+    "href": "posts/meta-analysis/forestplot/index.html#set-linewidth-font-size",
+    "title": "Recreating metafor forest plots in ggplot2",
+    "section": "Set linewidth & font size",
+    "text": "Set linewidth & font size\nWe set a few shared size constants before building the plot. base_size_theme controls text in theme() elements (in pts), while base_size_geom converts that to the different unit scale used by geom_text() and annotate().\n\nlinewidth &lt;- 0.35\nbase_size_theme &lt;- 12\nbase_size_geom &lt;- base_size_theme * 0.352\ntitle_size &lt;- 14"
+  },
+  {
+    "objectID": "posts/meta-analysis/forestplot/index.html#building-the-ggplot",
+    "href": "posts/meta-analysis/forestplot/index.html#building-the-ggplot",
+    "title": "Recreating metafor forest plots in ggplot2",
+    "section": "Building the ggplot",
+    "text": "Building the ggplot\nNow we build the plot layer by layer. The dashed vertical line at x = 0 is drawn with annotate(\"segment\") rather than geom_vline() because we need it to stop exactly at the top and bottom of the panel — geom_vline() would extend into the expanded margins. geom_density_ridges() draws the posterior distribution for each study and for the pooled estimate, using forest.data which contains all draws. geom_pointinterval() then overlays the mean and 95% credible interval on top, filtered to skip the spacer rows. geom_text() places the numeric summary to the right of the panel at a fixed x position; glue() formats each label as estimate [lower, upper].\nThe column headers (“Study” and “Estimate [95% CrI]”) and the two horizontal separator lines are all placed with annotate(), using n_levels_total as the y reference so they sit just above the top study row. clip = \"off\" in coord_cartesian() allows these annotations to extend beyond the panel boundary into the margin. In scale_y_discrete(), the spacer labels are suppressed by replacing them with empty strings in the labels function, and drop = FALSE keeps them in the ordering even though they carry no plotted data.\n\nBayes_forest_plot &lt;- ggplot(\n  aes(b_Intercept, author_year),\n  data = forest.data\n) +\n  annotate(\n    \"segment\",\n    x = 0,\n    xend = 0,\n    y = 0,\n    yend = n_levels_total,\n    linewidth = linewidth,\n    linetype = \"dashed\"\n  ) +\n  geom_density_ridges(\n    fill = \"grey\",\n    rel_min_height = 0.01,\n    col = NA,\n    scale = 1\n  ) +\n  geom_pointinterval(\n    data = forest.data.summary %&gt;% filter(!is.na(b_Intercept)),\n    aes(xmin = .lower, xmax = .upper),\n    shape = 22,\n    point_fill = \"black\",\n    fatten_point = 1.5,\n    linewidth = 0.15\n  ) +\n  geom_text(\n    data = mutate_if(\n      forest.data.summary %&gt;% filter(!is.na(b_Intercept)),\n      is.numeric,\n      round,\n      2\n    ),\n    aes(\n      label = glue(\n        \"{format(b_Intercept, nsmall = 2)} [{format(.lower, nsmall = 2)}, {format(.upper, nsmall = 2)}]\"\n      ),\n      x = 3.5\n    ),\n    hjust = 0.2,\n    size = base_size_geom\n  ) +\n  annotate(\n    \"text\",\n    x = -17.4,\n    y = n_levels_total + 1,\n    label = \"Study\",\n    hjust = 1.05,\n    fontface = \"bold\",\n    size = base_size_geom\n  ) +\n  annotate(\n    \"text\",\n    x = 3.5,\n    y = n_levels_total + 1,\n    label = \"Estimate [95% CrI]\",\n    hjust = 0.27,\n    fontface = \"bold\",\n    size = base_size_geom\n  ) +\n  annotate(\n    \"segment\",\n    x = -19.5,\n    xend = 8,\n    y = n_levels_total,\n    yend = n_levels_total,\n    linewidth = linewidth\n  ) +\n  annotate(\n    \"segment\",\n    x = -19.5,\n    xend = 8,\n    y = 2,\n    yend = 2,\n    linewidth = linewidth\n  ) +\n  labs(\n    title = \"Bayesian meta-analysis (ggplot2)\",\n    x = \"Effect\",\n    y = NULL\n  ) +\n  scale_y_discrete(\n    expand = expansion(add = c(0.5, 2.4)),\n    labels = function(x) ifelse(x %in% c(\"spacer_bottom\", \"spacer_top\"), \"\", x),\n    drop = FALSE\n  ) +\n  scale_x_continuous(\n    breaks = seq(-15, 5, by = 5),\n    expand = expansion(add = c(2, 4))\n  ) +\n  coord_cartesian(\n    xlim = c(-9.7, 5),\n    clip = \"off\"\n  ) +\n  guides(x = guide_axis(cap = \"both\")) +\n  theme_minimal() +\n  theme(\n    panel.border = element_blank(),\n    panel.grid.major = element_blank(),\n    panel.grid.minor = element_blank(),\n    panel.background = element_blank(),\n    plot.margin = margin(t = 18.5, r = 10, b = 35, l = 20),\n    plot.title = element_text(hjust = 0, face = \"bold\", size = title_size),\n    plot.background = element_rect(fill = \"transparent\", colour = NA),\n    axis.text.y = element_text(\n      hjust = 0,\n      margin = margin(r = -10),\n      size = base_size_theme,\n      colour = \"black\"\n    ),\n    axis.text.x = element_text(vjust = -1, size = base_size_theme),\n    axis.title.x = element_text(vjust = -2.7, size = base_size_theme),\n    axis.line.x = element_line(linewidth = linewidth),\n    axis.ticks.x = element_line(linewidth = linewidth),\n    axis.ticks.length.x = unit(0.3, \"cm\"),\n  )"
+  },
+  {
+    "objectID": "posts/statistical-rethinking/mcelreath_A06/index.html",
+    "href": "posts/statistical-rethinking/mcelreath_A06/index.html",
+    "title": "Statistical Rethinking 2026, A06",
+    "section": "",
+    "text": "Link to full course on GitHub\nLink to online lecture"
+  },
+  {
+    "objectID": "posts/statistical-rethinking/mcelreath_A06/index.html#simulate-data-from-dag",
+    "href": "posts/statistical-rethinking/mcelreath_A06/index.html#simulate-data-from-dag",
+    "title": "Statistical Rethinking 2026, A06",
+    "section": "Simulate data from DAG",
+    "text": "Simulate data from DAG\nFirst, let’s simulate some data according to the DAG. I found page 138 in the book helpful for this.\n\nN &lt;- 1000\nb_XY &lt;- 0.5\nb_ZX &lt;- 1\nb_ZY &lt;- -1\nb_AZ &lt;- 1\nb_AY &lt;- -1\n\nset.seed(20)\nA &lt;- rnorm(N, 0, 1) # sim A\nZ &lt;- rnorm(N, b_AZ * A, 1) # sim A -&gt; Z\nX &lt;- rnorm(N, b_ZX * Z, 1) # sim Z -&gt; X\nY &lt;- rnorm(N, b_XY * X + b_ZY * Z + b_AY * A, 1) # sim X -&gt; Y; Z -&gt; Y; A -&gt; Y\n\ndf &lt;- data.frame(A, Z, X, Y)\ndf[1:5, ]\n\n           A          Z         X           Y\n1  1.1626853  1.2149975  1.489279 -0.47883124\n2 -0.5859245  0.2401471 -1.376258 -0.90312035\n3  1.7854650  2.1427144  1.607665 -3.17830495\n4 -1.3325937  1.0800883  2.506844  0.06281887\n5 -0.4465668 -0.6453783 -1.488599  0.71642163\n\n\nThis is a simple plot of the four variables we just generated:\n\n\nCode\nlibrary(rethinking)\n\ndens(df$A, col = \"#E77D72\", lwd = 2, lty = 2, xlim = c (-8, 5))\ndens(df$Z, col = \"#7291e7ff\", lwd = 2, lty = 3, add = T)\ndens(df$X, col = \"#72e7b0ff\", lwd = 2, lty = 4, add = T)\ndens(df$Y, col = \"black\", lwd = 2, lty = 1, add = T)\nlegend(x = \"topright\",\n       legend = c(\"A\", \"Z\", \"X\", \"Y\"),\n       lty = c(2,3,4,1),\n       lwd = 2,\n       col = c(\"#E77D72\", \"#7291e7ff\", \"#72e7b0ff\", \"black\")\n)"
+  },
+  {
+    "objectID": "posts/statistical-rethinking/mcelreath_A06/index.html#total-effect-of-x-on-y",
+    "href": "posts/statistical-rethinking/mcelreath_A06/index.html#total-effect-of-x-on-y",
+    "title": "Statistical Rethinking 2026, A06",
+    "section": "Total effect of X on Y",
+    "text": "Total effect of X on Y\nWe have two stacked forks here:\n\n\n\n\n\n\n\n\n\nThe first one is A, influencing Z and Y. The second one is Z, influencing X and Y.\nBy controlling for Z, we close the path between Z and X and the path between A and X! We will rely on a simple linear regression model: \\[\n\\text{Y}_i \\sim \\mathcal{N}(\\mu_i, \\sigma)\n\\] \\[\n\\mu_i = \\alpha + \\beta_X \\text{X}_i + \\beta_Z \\text{Z}_i\n\\]\nLet’s now set the priors. I’ll just start out with normally distributed priors centered at 0 and with a standard deviation of 1. \\[\n\\alpha \\sim \\mathcal{N}(0, 1)\n\\] \\[\n\\beta_X \\sim \\mathcal{N}(0, 1)\n\\] \\[\n\\beta_Z \\sim \\mathcal{N}(0, 1)\n\\] \\[\n\\sigma \\sim \\text{Exponential}(1)\n\\]\nTo check if these are sensible, we sample from the prior for X and run a prior predictive simulation. We could do this for all priors, but I think we’re okay here if we just do a spot check.\n\nn &lt;- 20\na &lt;- rnorm(n, 0, 1)\nbX &lt;- rnorm(n, 0, 1)\n\nplot(NULL, xlim = c(-10, 10), ylim = c(-10, 10),\nxlab = \"X\",\nylab = \"Y\")\nXseq &lt;- seq(from = -10, to = 10, len = 20)\nfor (i in 1:n) {\n    mu &lt;- a[i] + bX[i] * Xseq\n    lines(Xseq, mu, lwd = 2, col = 2)\n}\n\n\n\n\n\n\n\n\nOkay, since we expect a slightly positive association (we set 0.5 for b_XY), and this prior does not rule out such association, it’s looking good!\nNow let’s fit the model using quadratic approximation, quap.\n\nm_YXZ &lt;- quap(\n    alist(\n        Y ~ dnorm(mu, sigma),\n        mu &lt;- a + bX * X + bZ * Z,\n        a ~ dnorm(0, 1),\n        bX ~ dnorm(0, 1),\n        bZ ~ dnorm(0, 1),\n        sigma ~ dexp(1)\n    ),\n    data = df\n)\n\nprecis(m_YXZ)\n\n             mean         sd        5.5%       94.5%\na     -0.01513964 0.03777605 -0.07551307  0.04523378\nbX     0.50218582 0.03823272  0.44108256  0.56328909\nbZ    -1.56098543 0.04646715 -1.63524890 -1.48672196\nsigma  1.19448484 0.02668575  1.15183587  1.23713382\n\nplot(precis(m_YXZ))"
+  },
+  {
+    "objectID": "posts/statistical-rethinking/mcelreath_A06/index.html#causal-effect-of-x-on-y-intervention",
+    "href": "posts/statistical-rethinking/mcelreath_A06/index.html#causal-effect-of-x-on-y-intervention",
+    "title": "Statistical Rethinking 2026, A06",
+    "section": "Causal effect of X on Y: Intervention",
+    "text": "Causal effect of X on Y: Intervention\nLet’s look at the DAG again.\n\n\n\n\n\n\n\n\n\nTo estimate the causal effect of X on Y, we want to simulate an intervention on X and see what that does to Y. We call this “doing” X: \\[\np(Y|\\text{do}(X))\n\\]\nWe’ll use the posterior distributions from before to do this intervention. First, we extract the samples from the model we fitted above. In the next step, we sample 1000 values for Z from our data. Next, we simulate Y for X = 0 and X = 1 seprately. with makes R look into the postobject that contains the extracted samples so that we don’t have to use the $ operator as often.\nThen, we just compute the contrast between the results by subtracting Y with X = 0 from Y with X = 1.\nHere is the Link to the part of McElreath’s lecture where he explains this.\n\npost &lt;- extract.samples(m_YXZ)\n\n# sample Z and A from data\nn &lt;- 1000\nZs &lt;- sample(df$Z, size = n, replace = T)\n\n# simulate Y for X = 0\nYX_0 &lt;- with(post, rnorm(n, a + bX * 0 + bZ * Zs, sigma))\n\n# simulate Y for X = 1\nYX_1 &lt;- with(post, rnorm(n, a + bX * 1 + bZ * Zs, sigma))\n\n# contrast\nX_1_0 &lt;- YX_1 - YX_0\n\ndens(\n  X_1_0,\n  lwd = 2,\n  col = \"lightcoral\",\n  xlab = \"effect of increase in X by 1 on Y\"\n)\n\n\n\n\n\n\n\n\nThe causal effect of X on Y is 0.49 in mean (95% HDI: -2.74; 3.75). That’s close enough to 0.5, which is the value we assigned this relationship when we simulated the data at the beginning of the exercise.\nComing back to the question about the other estimated coefficient, which in this case is just Z: This is not a causal estimate for the association of Z and Y, because this relationship is itself confounded by A. If we were to interpret this estimate in any causal way here, we’d be in table 2 fallacy land as described in Westreich & Greenland 2013!"
+  },
+  {
+    "objectID": "posts/index.html",
+    "href": "posts/index.html",
+    "title": "Posts",
+    "section": "",
+    "text": "In 2026, I followed along the first 10 lectures of Richard McElreath’s fantastic Statistical Rethinking course. Here you can see some of my attempts to solving the exercises.\n\n\n\n\n\n\n\n\n\nR\n\ncausal inference\n\nMCMC\n\nBayes\n\n\n\nMy solution to exercise A08 from Richard McElreath’s Statistical Rethinking course.\n\n\n\nMar 2026\n\n\n\n\n\n\n\n\n\n\n\n\nR\n\ncausal inference\n\nconfounding\n\nBayes\n\n\n\nMy solution to exercise A06 from Richard McElreath’s Statistical Rethinking course.\n\n\n\nFeb 2026\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/index.html#statistical-rethinking",
+    "href": "posts/index.html#statistical-rethinking",
+    "title": "Posts",
+    "section": "",
+    "text": "In 2026, I followed along the first 10 lectures of Richard McElreath’s fantastic Statistical Rethinking course. Here you can see some of my attempts to solving the exercises.\n\n\n\n\n\n\n\n\n\nR\n\ncausal inference\n\nMCMC\n\nBayes\n\n\n\nMy solution to exercise A08 from Richard McElreath’s Statistical Rethinking course.\n\n\n\nMar 2026\n\n\n\n\n\n\n\n\n\n\n\n\nR\n\ncausal inference\n\nconfounding\n\nBayes\n\n\n\nMy solution to exercise A06 from Richard McElreath’s Statistical Rethinking course.\n\n\n\nFeb 2026\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/index.html#meta-analysis-visualization",
+    "href": "posts/index.html#meta-analysis-visualization",
+    "title": "Posts",
+    "section": "Meta-analysis & Visualization",
+    "text": "Meta-analysis & Visualization\nIn my last project I worked on comparing frequentist and Bayesian meta-analytic frameworks and I ran into an issue: The very pretty and convenient forest() function from the metaforpackage is not very open to adding things like posterior distributions…\n\n\n\n\n\n\n\nRecreating metafor forest plots in ggplot2\n\n\n\nR\n\nmeta-analysis\n\nggplot2\n\nvisualization\n\n\n\nA step-by-step guide to reproducing the exact look of metafor’s forest() output using ggplot2.\n\n\n\nMar 2026\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "main.html",
+    "href": "main.html",
+    "title": "Website",
+    "section": "",
+    "text": "Welcome!\nThis is my website where I collect all kinds of different things I am interested in and that I’ve worked on."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  }
+]
