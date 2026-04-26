@@ -1,0 +1,47 @@
+/*-- scss:defaults --*/
+
+// Define your color palette
+$primary: #3D557C;
+$secondary: #8EADC8;
+$success: #39516D;
+$info: #77835C;
+$warning: #B5765A;
+
+// Optional: customize other elements
+$body-bg: #FBFAF9;
+$body-color: #33282B;
+$link-color: $primary;
+
+/*-- scss:rules --*/
+
+/* Apply the font to the body */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+body {
+  font-family: "Open Sans", sans-serif;
+  font-size: 1em;
+}
+
+main, .page-columns, #quarto-content {
+  max-width: 100%;
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
+}
+
+.photo-collage {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+
+  p {
+    display: contents;
+    margin: 0;
+  }
+
+  img {
+    width: 100%;
+    aspect-ratio: 1 / 1;  // forces square regardless of original dimensions
+    object-fit: cover;
+    display: block;
+  }
+}

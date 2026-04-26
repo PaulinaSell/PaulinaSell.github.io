@@ -1,0 +1,16 @@
+# Quarto build artifacts
+/.quarto/
+/_site/
+
+**/*.quarto_ipynb
+colour_palette.key
+/images/
+posts/meta-analysis/forestplot/data/
+
+# R session artifacts
+.Rhistory
+.RData
+.Rproj.user/
+
+# OS junk
+.DS_Store
