@@ -4,7 +4,7 @@ title: "Work"
 
 :::: {.columns}
 
-::: {.column width="83%"}
+::: {.column width="85%"}
 
 ## Publications
 
@@ -20,6 +20,12 @@ title: "Work"
   Probabilistic burden of disease modelling of lead-related IQ loss in Germany.
   <em>European Journal of Public Health</em> 35(Supplement 4) (2025). doi: 10.1093/eurpub/ckaf161.1317<br>
   <a class="stretched-link" href="https://doi.org/10.1093/eurpub/ckaf161.1317"></a>
+</div>
+
+<div class="pub-card">
+  <strong>Sell, P.</strong>, Sanchez, M., Palmont, P., Steiger, S. & Plass, D. Quantifying uncertainty: A comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and children’s IQ.
+  <em>Environment International</em> <i>(submitted)</i>
+  <a class="stretched-link" href=""></a>
 </div>
 
 ## Experience
@@ -90,10 +96,10 @@ Thesis: Vulnerability of persons with low socioeconomic status to COVID-19 due t
 
 :::
 
-::: {.column width="2%"}
+::: {.column width="5%"}
 :::
 
-::: {.column width="15%"}
+::: {.column width="10%"}
 
 <br><br><br>
 

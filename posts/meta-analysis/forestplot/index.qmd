@@ -8,7 +8,7 @@ image: false
 toc: true
 toc-depth: 4
 execute:
-  freeze: true
+  freeze: auto
 ---
 
 Recently, I worked on a project comparing frequentist and Bayesian meta-analytic frameworks. 

@@ -8,7 +8,7 @@ toc: true
 toc-depth: 4
 image: false
 execute:
-  freeze: true
+  freeze: auto
 ---
 
 [Link to full course on GitHub](https://github.com/rmcelreath/stat_rethinking_2026/tree/main) \
