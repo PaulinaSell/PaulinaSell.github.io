@@ -46,6 +46,14 @@ main, .page-columns, #quarto-content {
   }
 }
 
+/* Navbar */
+
+footer.footer .nav-footer,
+#quarto-header > nav {
+  padding-left: max(1em, calc((100% - 1100px) / 2 + 1em));
+  padding-right: max(1em, calc((100% - 1100px) / 2 + 1em));
+}
+
 /* ── Cards ──────────────────────────────── */
 
 .quarto-grid-item {

@@ -22,5 +22,5 @@ about:
 # Welcome! 
 
 Hi, my name is Paulina, welcome to my website!\
-I'm interested in epidemiology, statistics and statistical progamming in R. 
+I'm interested in epidemiology, statistics and statistical progamming in R.\
 Recently, I've learned a lot about probabilistic and Bayesian methods.

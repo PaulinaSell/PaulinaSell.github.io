@@ -7,13 +7,16 @@ website:
     search: false
     right:
       - text: Home
-        href: index.qmd
+        href: home.qmd
       - text: Work
         href: work.qmd
       - text: Posts
         href: posts/index.qmd
       - text: Personal
         href: personal.qmd
+    tools: 
+      - icon: github
+        href: https://github.com/PaulinaSell
 
 format:
   html:

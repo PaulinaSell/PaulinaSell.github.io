@@ -17,7 +17,7 @@ listing:
 
 ## Statistical Rethinking
 
-In 2026, I followed along the first 10 lectures of Richard McElreath's fantastic [*Statistical Rethinking*](https://github.com/rmcelreath/stat_rethinking_2026/tree/main) course.
+In early 2026, I worked through the first 10 lectures of Richard McElreath's fantastic [*Statistical Rethinking*](https://github.com/rmcelreath/stat_rethinking_2026/tree/main) course.
 Here you can see some of my attempts to solving the exercises.
 
 :::{#bayes}
@@ -25,7 +25,7 @@ Here you can see some of my attempts to solving the exercises.
 
 ## Meta-analysis & Visualization
 
-In my last project I worked on comparing frequentist and Bayesian meta-analytic frameworks and I ran into an issue: The very pretty and convenient `forest()` function from the `metafor`package is not very open to adding things like posterior distributions...
+In my most recent project I worked on comparing frequentist and Bayesian meta-analytic frameworks and I ran into an issue: The very pretty and convenient `forest()` function from the `metafor`package is not very open to adding things like posterior distributions...
 
 :::{#metaanalysis}
 :::
