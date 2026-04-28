@@ -7,32 +7,11 @@
     "text": "In my free time, you can find me making sourdough bread, taking pictures with my analogue camera, going on walks in the forest, touching moss (yes, that’s one of my hobbies) or creating little videos about my life. I also love to go running to clear my mind.\nSince 2017, I’m doing social media work for the non-profit Help for a Smile e.V. and I work with the board to further develop the organization. Help for a Smile makes a real difference for about 20 children and young adults in Uganda by sustainably providing safety and education."
   },
   {
-    "objectID": "work.html",
-    "href": "work.html",
-    "title": "Work",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome!",
     "section": "",
-    "text": "Sell, P., Plass, D., Kienzler, S. & Zeeb, H. Environmental burden of disease resulting from long-term nitrogen dioxide exposure in Germany. BMC Public Health 25, 79 (2025). doi: 10.1186/s12889-024-21200-6 \n\n\nSell, P., Murawski, A., Kolossa-Gehring, M. & Plass, D. Beyond point estimates: Probabilistic burden of disease modelling of lead-related IQ loss in Germany. European Journal of Public Health 35(Supplement 4) (2025). doi: 10.1093/eurpub/ckaf161.1317 \n\n\nSell, P., Sanchez, M., Palmont, P., Steiger, S. & Plass, D. Quantifying uncertainty: A comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and children’s IQ. Environment International (submitted) \n\n\n\n\n\n\n\n2024–present\nResearcher — German Environment Agency (UBA)\nWorking on probabilistic Environmental Burden of Disease (EBD) methods within the\nPARC project.\nLed a working group with the aim of harmonizing EBD methods within PARC. \nLed a case study on uncertainty quantification in EBD studies (to be published in 2026).\nConducted a methodological comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and IQ in children — submitted.\n\n\n\n2021–2023\nStudent-led research project — University of Bremen\nResearch question: How is accessibility to neighborhood greenspace associated with mental wellbeing in residents of the city Bremen?\n\n\n\n2020 - 2021\nInternship — Charité Berlin\nFive months at the NAKO study center,\nInstitute of Social Medicine, Epidemiology and Health Economics.\n\n\n\n\n  R (see posts)\n  Data analyses, incl. Bayesian methods\n  Systematic reviews and meta-analyses\n  Writing and publishing scientific papers\n  Leading and organizing a working group (PARC)\n  Burden of Disease methods\n  Health risk assessment of chemicals\n  Working in interdisciplinary teams\n  Presenting results at conferences (e.g. EPH conference)\n\n\n\n\n\n\n\n2021 - 2024\nM.Sc. Epidemiology — University of Bremen\nThesis: Environmental Burden of Disease assessment of long-term nitrogen dioxide exposure in Germany, published in BMC Public Health (doi: 10.1186/s12889-024-21200-6).\n\n\n\n2018–2021\nB.A. Public Health — University of Bremen\nThesis: Vulnerability of persons with low socioeconomic status to COVID-19 due to air pollution - A systematic literature review.\n\n\n\n\n\n\n\n\n\n    \n        \n    \n    GitHub\n\n\n\n    \n        \n    \n    ORCID\n\n\n\n    \n        \n    \n    ResearchGate"
-  },
-  {
-    "objectID": "work.html#publications",
-    "href": "work.html#publications",
-    "title": "Work",
-    "section": "",
-    "text": "Sell, P., Plass, D., Kienzler, S. & Zeeb, H. Environmental burden of disease resulting from long-term nitrogen dioxide exposure in Germany. BMC Public Health 25, 79 (2025). doi: 10.1186/s12889-024-21200-6 \n\n\nSell, P., Murawski, A., Kolossa-Gehring, M. & Plass, D. Beyond point estimates: Probabilistic burden of disease modelling of lead-related IQ loss in Germany. European Journal of Public Health 35(Supplement 4) (2025). doi: 10.1093/eurpub/ckaf161.1317 \n\n\nSell, P., Sanchez, M., Palmont, P., Steiger, S. & Plass, D. Quantifying uncertainty: A comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and children’s IQ. Environment International (submitted)"
-  },
-  {
-    "objectID": "work.html#experience",
-    "href": "work.html#experience",
-    "title": "Work",
-    "section": "",
-    "text": "2024–present\nResearcher — German Environment Agency (UBA)\nWorking on probabilistic Environmental Burden of Disease (EBD) methods within the\nPARC project.\nLed a working group with the aim of harmonizing EBD methods within PARC. \nLed a case study on uncertainty quantification in EBD studies (to be published in 2026).\nConducted a methodological comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and IQ in children — submitted.\n\n\n\n2021–2023\nStudent-led research project — University of Bremen\nResearch question: How is accessibility to neighborhood greenspace associated with mental wellbeing in residents of the city Bremen?\n\n\n\n2020 - 2021\nInternship — Charité Berlin\nFive months at the NAKO study center,\nInstitute of Social Medicine, Epidemiology and Health Economics.\n\n\n\n\n  R (see posts)\n  Data analyses, incl. Bayesian methods\n  Systematic reviews and meta-analyses\n  Writing and publishing scientific papers\n  Leading and organizing a working group (PARC)\n  Burden of Disease methods\n  Health risk assessment of chemicals\n  Working in interdisciplinary teams\n  Presenting results at conferences (e.g. EPH conference)"
-  },
-  {
-    "objectID": "work.html#education",
-    "href": "work.html#education",
-    "title": "Work",
-    "section": "",
-    "text": "2021 - 2024\nM.Sc. Epidemiology — University of Bremen\nThesis: Environmental Burden of Disease assessment of long-term nitrogen dioxide exposure in Germany, published in BMC Public Health (doi: 10.1186/s12889-024-21200-6).\n\n\n\n2018–2021\nB.A. Public Health — University of Bremen\nThesis: Vulnerability of persons with low socioeconomic status to COVID-19 due to air pollution - A systematic literature review."
+    "text": "Welcome!\nHi, my name is Paulina, welcome to my website!\nI’m interested in epidemiology, statistics and statistical progamming in R.\nRecently, I’ve learned a lot about probabilistic and Bayesian methods."
   },
   {
     "objectID": "posts/index.html",
@@ -168,11 +147,32 @@
     "text": "Lineplot\nNow I want to try to recreate the lineplot that McElreath showed in his slides.\nFirst, we need to create a sequence of wine quality (Q).\n\nlibrary(tidyverse)\n\n# Simulation settings\nn_lines &lt;- 40\nQ_seq &lt;- seq(-2, 2, len = 60)\n# 1 = American, 2 = French\nZ_american &lt;- 1\nZ_french &lt;- 2\n\nNow, we need a function that gets the right values out of the posteriors. We first sample indices from the posterior, so that we “decide” a priori what row from the posterior we’ll use. In the for loop, we then fill the empty list we initiated with values from the full posterior in order to get the trajectories for a given Z.\n\nmake_lines &lt;- function(Z_val, n_lines, Q_seq, post) {\n  idx &lt;- sample(nrow(post$sigma), n_lines, replace = FALSE)\n\n  results &lt;- vector(\"list\", length(idx))\n\n  for (i in seq_along(idx)) {\n    s &lt;- idx[i] # Full posterior draw: O, H & D come from the same sample row\n    X_draw &lt;- sample(1:2, 1) # random wine origin\n    O &lt;- post$O[s, X_draw]\n    H &lt;- post$H[s, Z_val]\n    D &lt;- post$D[s, Z_val]\n\n    results[[i]] &lt;- data.frame(\n      Q = Q_seq,\n      mu = (Q_seq + O - H) * D,\n      line = i\n    )\n  }\n\n  # Combine all the individual data frames into one\n  do.call(rbind, results)\n}\n\nNow, we just call the function twice (for French and American judges) and then combine both data frames the data by row-binding it.\n\ndf_plot &lt;- bind_rows(\n  make_lines(Z_american, n_lines, Q_seq, post) |&gt;\n    mutate(judge_origin = \"American\"),\n  make_lines(Z_french, n_lines, Q_seq, post) |&gt; \n    mutate(judge_origin = \"French\")\n) |&gt;\n  mutate(judge_origin = factor(judge_origin, levels = c(\"American\", \"French\")))\n\nAnd now we’re ready to plot!\n\nggplot(df_plot, aes(x = Q, y = mu, group = line)) +\n  geom_vline(xintercept = 0, col = \"lightcoral\") +\n  geom_hline(yintercept = 0, col = \"lightcoral\") +\n  geom_line(alpha = 0.35, linewidth = 0.5, colour = \"#2c7bb6\") +\n  facet_wrap(~judge_origin, ncol = 2) +\n  labs(\n    x = \"Wine quality (Q)\",\n    y = \"Predicted score (μ)\",\n    title = \"Predicted scores by judge origin\",\n    subtitle = paste0(n_lines, \" posterior draws per panel\")\n  ) +\n  theme_classic()\n\n\n\n\n\n\n\n\nSo: do the French and American judges actually differ in either their harshness or discrimination? Yes, they do differ in harshness. French judges tend to give lower scores in general compared to American judges. But their discrimination between wines does not differ."
   },
   {
-    "objectID": "home.html",
-    "href": "home.html",
-    "title": "Welcome!",
+    "objectID": "work.html",
+    "href": "work.html",
+    "title": "Work",
     "section": "",
-    "text": "Welcome!\nHi, my name is Paulina, welcome to my website!\nI’m interested in epidemiology, statistics and statistical progamming in R.\nRecently, I’ve learned a lot about probabilistic and Bayesian methods."
+    "text": "Sell, P., Plass, D., Kienzler, S. & Zeeb, H. Environmental burden of disease resulting from long-term nitrogen dioxide exposure in Germany. BMC Public Health 25, 79 (2025). doi: 10.1186/s12889-024-21200-6 \n\n\nSell, P., Murawski, A., Kolossa-Gehring, M. & Plass, D. Beyond point estimates: Probabilistic burden of disease modelling of lead-related IQ loss in Germany. European Journal of Public Health 35(Supplement 4) (2025). doi: 10.1093/eurpub/ckaf161.1317 \n\n\nSell, P., Sanchez, M., Palmont, P., Steiger, S. & Plass, D. Quantifying uncertainty: A comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and children’s IQ. Environment International (submitted) \n\n\n\n\n\n\n\n2024–present\nResearcher — German Environment Agency (UBA)\nWorking on probabilistic Environmental Burden of Disease (EBD) methods within the\nPARC project.\nLed a working group with the aim of harmonizing EBD methods within PARC. \nLed a case study on uncertainty quantification in EBD studies (to be published in 2026).\nConducted a methodological comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and IQ in children — submitted.\n\n\n\n2021–2023\nStudent-led research project — University of Bremen\nResearch question: How is accessibility to neighborhood greenspace associated with mental wellbeing in residents of the city Bremen?\n\n\n\n2020 - 2021\nInternship — Charité Berlin\nFive months at the NAKO study center,\nInstitute of Social Medicine, Epidemiology and Health Economics.\n\n\n\n\n  R (see posts)\n  Data analyses, incl. Bayesian methods\n  Systematic reviews and meta-analyses\n  Writing and publishing scientific papers\n  Leading and organizing a working group (PARC)\n  Burden of Disease methods\n  Health risk assessment of chemicals\n  Working in interdisciplinary teams\n  Presenting results at conferences (e.g. EPH conference)\n\n\n\n\n\n\n\n2021 - 2024\nM.Sc. Epidemiology — University of Bremen\nThesis: Environmental Burden of Disease assessment of long-term nitrogen dioxide exposure in Germany, published in BMC Public Health (doi: 10.1186/s12889-024-21200-6).\n\n\n\n2018–2021\nB.A. Public Health — University of Bremen\nThesis: Vulnerability of persons with low socioeconomic status to COVID-19 due to air pollution - A systematic literature review.\n\n\n\n\n\n\n\n\n\n    \n        \n    \n    GitHub\n\n\n\n    \n        \n    \n    ORCID\n\n\n\n    \n        \n    \n    ResearchGate"
+  },
+  {
+    "objectID": "work.html#publications",
+    "href": "work.html#publications",
+    "title": "Work",
+    "section": "",
+    "text": "Sell, P., Plass, D., Kienzler, S. & Zeeb, H. Environmental burden of disease resulting from long-term nitrogen dioxide exposure in Germany. BMC Public Health 25, 79 (2025). doi: 10.1186/s12889-024-21200-6 \n\n\nSell, P., Murawski, A., Kolossa-Gehring, M. & Plass, D. Beyond point estimates: Probabilistic burden of disease modelling of lead-related IQ loss in Germany. European Journal of Public Health 35(Supplement 4) (2025). doi: 10.1093/eurpub/ckaf161.1317 \n\n\nSell, P., Sanchez, M., Palmont, P., Steiger, S. & Plass, D. Quantifying uncertainty: A comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and children’s IQ. Environment International (submitted)"
+  },
+  {
+    "objectID": "work.html#experience",
+    "href": "work.html#experience",
+    "title": "Work",
+    "section": "",
+    "text": "2024–present\nResearcher — German Environment Agency (UBA)\nWorking on probabilistic Environmental Burden of Disease (EBD) methods within the\nPARC project.\nLed a working group with the aim of harmonizing EBD methods within PARC. \nLed a case study on uncertainty quantification in EBD studies (to be published in 2026).\nConducted a methodological comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and IQ in children — submitted.\n\n\n\n2021–2023\nStudent-led research project — University of Bremen\nResearch question: How is accessibility to neighborhood greenspace associated with mental wellbeing in residents of the city Bremen?\n\n\n\n2020 - 2021\nInternship — Charité Berlin\nFive months at the NAKO study center,\nInstitute of Social Medicine, Epidemiology and Health Economics.\n\n\n\n\n  R (see posts)\n  Data analyses, incl. Bayesian methods\n  Systematic reviews and meta-analyses\n  Writing and publishing scientific papers\n  Leading and organizing a working group (PARC)\n  Burden of Disease methods\n  Health risk assessment of chemicals\n  Working in interdisciplinary teams\n  Presenting results at conferences (e.g. EPH conference)"
+  },
+  {
+    "objectID": "work.html#education",
+    "href": "work.html#education",
+    "title": "Work",
+    "section": "",
+    "text": "2021 - 2024\nM.Sc. Epidemiology — University of Bremen\nThesis: Environmental Burden of Disease assessment of long-term nitrogen dioxide exposure in Germany, published in BMC Public Health (doi: 10.1186/s12889-024-21200-6).\n\n\n\n2018–2021\nB.A. Public Health — University of Bremen\nThesis: Vulnerability of persons with low socioeconomic status to COVID-19 due to air pollution - A systematic literature review."
   },
   {
     "objectID": "about.html",
