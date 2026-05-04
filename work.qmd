@@ -7,7 +7,6 @@ title: "Work"
 ::: {.column width="85%"}
 
 ## Publications
-
 <div class="pub-card">
   <strong>Sell, P.</strong>, Plass, D., Kienzler, S. & Zeeb, H. Environmental burden of disease
   resulting from long-term nitrogen dioxide exposure in Germany.
@@ -29,7 +28,6 @@ title: "Work"
 </div>
 
 ## Experience
-
 ```{=html}
 <div class="timeline">
 
@@ -41,6 +39,12 @@ Working on probabilistic Environmental Burden of Disease (EBD) methods within th
 Led a working group with the aim of harmonizing EBD methods within PARC. 
 Led a case study on uncertainty quantification in EBD studies (<i>to be published in 2026</i>).
 Conducted a methodological comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and IQ in children — <i>submitted</i>.
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">2023</div>
+<strong>Research Assistant — Leibniz Institute for Prevention Research and Epidemiology (BIPS)</strong><br>
+Worked on a <a href="https://wealth-stamify.com">health survey project</a> at the Department of <a href="https://www.bips-institut.de/en/the-institute/departments/epidemiological-methods-and-etiological-research.html">Epidemiological Methods and Etiological Research</a>.
 </div>
 
 <div class="timeline-item">
@@ -59,6 +63,7 @@ Five months at the <a href="https://nako.de/en/">NAKO</a> study center,
 </div>
 ```
 
+## Skills
 ```{=html}
 <ul class="skill-list">
   <li>R (see <a href="posts/">posts</a>)</li>
@@ -73,9 +78,7 @@ Five months at the <a href="https://nako.de/en/">NAKO</a> study center,
 </ul>
 ```
 
-
 ## Education
-
 ```{=html}
 <div class="timeline">
 
@@ -89,6 +92,51 @@ Thesis: Environmental Burden of Disease assessment of long-term nitrogen dioxide
 <div class="timeline-year">2018–2021</div>
 <strong>B.A. Public Health — University of Bremen</strong><br>
 Thesis: Vulnerability of persons with low socioeconomic status to COVID-19 due to air pollution - A systematic literature review.
+</div>
+
+</div>
+```
+
+## Awards
+<div class="pub-card">
+  <strong>Master's Thesis Award (1st Prize) </strong> – 
+  Awarded 2024 by the <em>German Society for Social Medicine and Prevention.</em><br>
+  <a class="stretched-link" href="https://www.dgsmp.de/die-gesellschaft/preise-und-ausschreibungen/#1732612894834-d68ecbd1-c615"></a>
+</div>
+
+## Conferences
+
+```{=html}
+<div class="timeline">
+
+<div class="timeline-item">
+<div class="timeline-year">2026 | Oral</div>
+<strong>Quantifying uncertainty: A methodological comparison of Bayesian and frequentist meta-analytic frameworks</strong><br>
+Annual Conference of the International Society for Environmental Epidemiology (<a href="https://www.isee26.org">ISEE</a>), Munich, 2026.
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">2025 | Oral</div>
+<strong>EBD of IQ loss attributable to lead exposure in Germany: a probabilistic approach</strong><br>
+International One Health Symposium (<a href="https://onehealthplatform.net/event/international-one-health-symposium">OHS</a>), Berlin.
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">2025 | Oral</div>
+<strong>EBD of IQ loss attributable to lead exposure in Germany: a probabilistic approach</strong><br>
+Annual Conference of the German Society for Epidemiology (<a href="https://2025.dgepi.de/home/">DGEpi</a>), Münster.
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">2025 | Poster</div>
+<strong>Beyond Point Estimates: Probabilistic Burden of Disease Modelling of Lead-Related IQ Loss in Germany</strong><br>
+European Public Health Conference (<a href="https://ephconference.eu/helsinki-2025/">EPH</a>), Helsinki. Published abstract: doi: <a href="https://doi.org/10.1093/eurpub/ckaf161.1317">10.1093/eurpub/ckaf161.1317</a>.
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">2024 | Poster</div>
+<strong>EBD resulting from Long-Term Nitrogen Dioxide Exposure in Germany</strong><br>
+Annual Conference of the German Society for Epidemiology (<a href="https://gesundheit-gemeinsam.de/en/">DGEpi</a>), Dresden. Published abstract: doi: <a href="https://dx.doi.org/10.3205/24gmds827">10.3205/24gmds827</a>.
 </div>
 
 </div>
