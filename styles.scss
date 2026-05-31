@@ -12,6 +12,8 @@ $body-bg: #FBFAF9;
 $body-color: #33282B;
 $link-color: $primary;
 
+$font-mobile : 0.9em;
+
 /*-- scss:rules --*/
 
 /* Apply the font to the body */
@@ -26,6 +28,34 @@ main, .page-columns, #quarto-content {
   max-width: 100%;
   padding-left: 3rem !important;
   padding-right: 3rem !important;
+}
+
+/* Mobile (768px and down) */
+@media (max-width: 768px) {
+  main, .page-columns, #quarto-content {
+    padding-left: 0rem !important;
+    padding-right: 0rem !important;
+  }
+
+  body { 
+    font-size: $font-mobile !important;
+  }
+
+  .pub-card {
+    font-size: $font-mobile !important;
+  }
+
+  .timeline-item {
+    font-size: $font-mobile !important;
+  }
+
+  .skill-list {
+    font-size: $font-mobile !important;
+  }
+
+  .sidebar-link {
+    display: none !important;
+  }
 }
 
 .photo-collage {
