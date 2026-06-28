@@ -2,10 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.37">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Paulina Sell">
 <meta name="description" content="My solution to exercise A08 from Richard McElreath’s Statistical Rethinking course.">
 
 <title>Statistical Rethinking 2026, A08</title>
@@ -75,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-77012cce92ab9c19b0006dbd742591d3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -221,6 +222,12 @@ window.Quarto = {
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Paulina Sell </p>
+          </div>
+  </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
@@ -238,7 +245,7 @@ window.Quarto = {
 
 
 <p><a href="https://github.com/rmcelreath/stat_rethinking_2026/tree/main">Link to full course on GitHub</a><br>
-<a href="https://www.youtube.com/watch?v=N_LRQUrdHag">Link to online lecture</a></p>
+<a href="https://youtu.be/N_LRQUrdHag?si=dN_uS8JvjWGmWHnY">Link to online lecture</a></p>
 <div class="callout callout-style-default callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -348,10 +355,10 @@ Z = Judge origin</p>
 
 Sampling durations (seconds):
   chain_id warmup sampling total
-1        1   0.15     0.11  0.26
-2        2   0.14     0.09  0.23
-3        3   0.16     0.07  0.23
-4        4   0.19     0.08  0.27
+1        1   0.18     0.08  0.25
+2        2   0.16     0.09  0.25
+3        3   0.18     0.10  0.28
+4        4   0.13     0.06  0.20
 
 Formula:
 S ~ dnorm(mu, sigma)
@@ -364,34 +371,34 @@ sigma ~ dexp(1)</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(m.wines, <span class="at">depth =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>             mean         sd         5.5%     94.5%      rhat  ess_bulk
-Q[1]   0.11629104 0.96340339 -1.456084593 1.6453600 1.0047851 2658.9225
-Q[2]   0.04400908 0.92561682 -1.428641022 1.4661939 1.0049838 2578.9857
-Q[3]   0.32062690 0.95065520 -1.217650727 1.8151464 1.0030439 2747.4948
-Q[4]   0.51396119 0.96553402 -1.080761591 2.0220748 1.0028736 3072.2918
-Q[5]  -0.16122683 0.94072329 -1.724187120 1.3414904 1.0012999 2945.7863
-Q[6]  -0.34571549 0.92862388 -1.822907229 1.1667583 1.0026189 2515.9298
-Q[7]   0.21406542 0.88514430 -1.220987389 1.6114017 1.0034499 2462.0700
-Q[8]   0.30400983 0.92030968 -1.241985026 1.7573345 1.0011044 2774.3423
-Q[9]   0.14038308 0.94714682 -1.366309164 1.6545830 1.0040941 2727.5975
-Q[10]  0.18706907 0.99347001 -1.412868594 1.7538059 1.0020850 2396.3671
-Q[11]  0.05370522 0.95755444 -1.585083125 1.5630776 1.0018454 2711.5164
-Q[12]  0.01249112 0.88881838 -1.364113705 1.4395859 1.0010687 3010.2400
-Q[13] -0.05719177 0.93532389 -1.514308232 1.4348471 1.0067436 2690.6781
-Q[14] -0.05019780 0.96698162 -1.626758025 1.5303843 1.0050678 3085.6086
-Q[15] -0.25168587 0.92229678 -1.692969630 1.2287367 1.0000599 2855.0401
-Q[16] -0.18146878 0.93791347 -1.662019525 1.3613569 1.0014903 2893.1256
-Q[17] -0.12390135 0.89872725 -1.570444222 1.2995498 0.9995688 3044.0910
-Q[18] -0.77322908 0.99345076 -2.294581970 0.8626230 1.0008133 2036.0815
-Q[19] -0.22113654 0.92650173 -1.672660945 1.2415881 1.0002732 2433.4569
-Q[20]  0.35269928 0.96060440 -1.236770064 1.8657717 1.0021554 2495.6940
-O[1]  -0.30576398 0.77699573 -1.533874065 0.8969694 1.0035839 1987.8604
-O[2]   0.28673543 0.85756908 -1.064942633 1.6061968 1.0020224 1894.9640
-H[1]  -0.44474036 0.87195865 -1.798909622 0.9316340 1.0042067 1754.7594
-H[2]   0.43076045 0.82147298 -0.936103797 1.7178882 1.0009398 1583.3067
-D[1]   0.11314595 0.08797777  0.009440683 0.2729922 1.0076297  540.1184
-D[2]   0.13653650 0.10511174  0.012451043 0.3430607 1.0057878  649.7074
-sigma  0.99245916 0.05365076  0.912290775 1.0853086 1.0022758 2235.8117</code></pre>
+<pre><code>             mean         sd        5.5%     94.5%      rhat  ess_bulk
+Q[1]   0.13559570 0.93888300 -1.35125256 1.6419739 1.0009629 2009.8869
+Q[2]   0.01867078 0.94678079 -1.54342693 1.5187833 1.0083003 2855.4548
+Q[3]   0.34367282 0.96537667 -1.21610325 1.8940964 1.0001422 2256.7705
+Q[4]   0.49733543 0.93885568 -1.06363094 2.0104269 1.0060939 2252.1103
+Q[5]  -0.17979534 0.92851056 -1.65905544 1.3713637 1.0055488 2904.2639
+Q[6]  -0.36224924 0.99730740 -1.91525897 1.2833955 1.0002517 2207.2524
+Q[7]   0.21237697 0.97404776 -1.31275083 1.7522713 1.0004508 2629.4221
+Q[8]   0.29917321 0.90959552 -1.19122371 1.7464888 1.0018827 2373.1528
+Q[9]   0.14555516 0.95543256 -1.38348379 1.6600579 1.0001165 2632.7559
+Q[10]  0.17920368 0.94067490 -1.35130426 1.6553667 1.0022898 2442.7814
+Q[11]  0.07066637 0.95068652 -1.49327725 1.6001192 0.9994850 2786.5986
+Q[12]  0.01625736 0.90992252 -1.46824693 1.4614231 0.9988434 2423.3988
+Q[13] -0.03728497 0.93154903 -1.48550576 1.4896953 1.0026051 2832.4312
+Q[14] -0.03974043 0.94025540 -1.56322643 1.4362593 1.0014899 2062.7566
+Q[15] -0.27265512 0.94261041 -1.73246426 1.2338671 1.0036722 2677.6838
+Q[16] -0.18521429 0.90245262 -1.67986752 1.2752935 1.0004518 2577.1809
+Q[17] -0.09864779 0.88335222 -1.48745870 1.2768953 1.0006630 2575.9553
+Q[18] -0.81530515 0.97631620 -2.38248969 0.7495954 1.0024145 1889.0655
+Q[19] -0.23185954 0.94204601 -1.74092862 1.3081589 1.0009727 2287.8694
+Q[20]  0.34860136 0.94873325 -1.11158791 1.9073004 1.0015154 2582.4386
+O[1]  -0.33743823 0.74625401 -1.52887071 0.8473413 1.0011206 1944.4718
+O[2]   0.31159646 0.80163693 -0.94419858 1.5539487 1.0019150 1945.4227
+H[1]  -0.44783861 0.79322874 -1.67554550 0.9117545 1.0005733 2008.5483
+H[2]   0.44666150 0.76369039 -0.80960472 1.6034392 1.0007738 1648.3193
+D[1]   0.11812776 0.08765786  0.01260986 0.2819525 1.0017327  754.9004
+D[2]   0.14045572 0.10579615  0.01533648 0.3394352 1.0014736  829.4246
+sigma  0.99300335 0.05581457  0.90583481 1.0864611 1.0055698 2954.9623</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trankplot</span>(m.wines)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -465,7 +472,7 @@ sigma  0.99245916 0.05365076  0.912290775 1.0853086 1.0022758 2235.8117</code></
 </div>
 </div>
 </div>
-<p>Here we can see that 51.3% of the times we randomly sample a new judge, the French judge is more discriminating than the American judge. And 48.7% of the time, the American judge is more discriminating than the French judge. So it seems like there is no difference between American and French wine judges in terms of wine discrimination.<br>
+<p>Here we can see that 49.9% of the times we randomly sample a new judge, the French judge is more discriminating than the American judge. And 50.1% of the time, the American judge is more discriminating than the French judge. So it seems like there is no difference between American and French wine judges in terms of wine discrimination.<br>
 Let’s now look at harshness.</p>
 </section>
 <section id="total-causal-contrast-in-mean-harshness" class="level3">
@@ -516,7 +523,7 @@ Let’s now look at harshness.</p>
 </div>
 </div>
 </div>
-<p>Here we can see that 69.5% of the times we randomly sample a new judge, the French judge is more harsh in their judgement than the American judge. And 30.5% of the time, the American judge is more harsh in their judgement than the French judge.</p>
+<p>Here we can see that 70.7% of the times we randomly sample a new judge, the French judge is more harsh in their judgement than the American judge. And 29.3% of the time, the American judge is more harsh in their judgement than the French judge.</p>
 </section>
 </section>
 <section id="lineplot" class="level2">
