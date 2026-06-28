@@ -1,9 +1,10 @@
 ---
 title: "Statistical Rethinking 2026, A08"
 description: "My solution to exercise A08 from Richard McElreath's Statistical Rethinking course."
+author: Paulina Sell
 date: March 2026
 date-format: MMM YYYY
-categories: [R, causal inference, MCMC, Bayes]
+categories: [R, Bayes, causal inference, MCMC]
 toc: true
 toc-depth: 4
 image: false
@@ -12,7 +13,7 @@ execute:
 ---
 
 [Link to full course on GitHub](https://github.com/rmcelreath/stat_rethinking_2026/tree/main) \
-[Link to online lecture](https://www.youtube.com/watch?v=N_LRQUrdHag)
+[Link to online lecture](https://youtu.be/N_LRQUrdHag?si=dN_uS8JvjWGmWHnY)
 
 ```{r}
 #| label: setup

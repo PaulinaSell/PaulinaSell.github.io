@@ -1,0 +1,414 @@
+---
+title: "Statistical Rethinking 2026, B01"
+description: "My solution to exercise A08 from Richard McElreath's Statistical Rethinking course."
+author: Paulina Sell
+date: June 2026
+date-format: MMM YYYY
+categories: [R, Bayes, causal inference, shrinkage, pooling]
+toc: true
+toc-depth: 4
+image: false
+execute:
+  freeze: auto
+---
+
+[Link to full course on GitHub](https://github.com/rmcelreath/stat_rethinking_2026/tree/main) \
+[Link to online lecture](https://youtu.be/jh3RltVrQ-Q?si=uuMUOVXbSiSblFVo)
+
+```{r}
+#| label: setup
+#| include: false
+
+knitr::opts_chunk$set(dev.args = list(bg = "transparent"))
+```
+
+::: {.callout-tip  icon=false}
+## Exercise
+These problems use data from a 2019 publication that reports date and time of submission of papers to the medical journal *The BMJ* (doi:10.1136/bmj.l6460). 
+There are 6 columns and 49,464 rows. 
+Each row is an article submission.
+The columns are:
+
+**T**: The local time of the submission\
+**Y**: The year of the submission\
+**country_name**: Country of corresponding author\
+**L**: ID value for country (an index variable from 1 to 38)\
+**W**: 0-1 indicator variable for weekend submission\
+**H**: 0-1 indicator variable for holiday submission\
+
+1. For each country in the sample, estimate the probability that a corresponding author submits on a weekend.
+In this problem, use a **no-pooling (no shrinkage) model**.
+This means the model does not have hierarchical priors.
+Which countries have the highest probability of submitting on the weekend?
+Can you visualize these estimates in a way that also shows their uncertainties?
+
+2. Now use a **partial-pooling model**.
+This means that the model has a hierarchical prior for each country’s estimate.
+Hint: Think of each country like a tadpole tank.
+How are the partial-pooling estimates different from the no-pooling estimates?
+Can you figure out why they differ?
+:::
+
+First, we need to load some packages and the BMJ data.
+
+```{r}
+#| label: load_pck_dat
+#| message: false
+
+library(rethinking)
+library(tidyplots)
+library(tibble)
+library(dplyr)
+library(forcats)
+
+data_orig <- read.csv("https://raw.githubusercontent.com/rmcelreath/stat_rethinking_2026/refs/heads/main/homework/BMJSubmissions.csv")
+str(data_orig)
+```
+
+## Prepare data
+Below, we create a new variable `N` that contains the total number of submissions in each country `L`. 
+We also add `W_count` as a variable, containing the number of weekend submissions per country.
+We then calculate the observed proportions of weekend submissions per country by dividing `W_count` by `N`.
+Finally, we create a list that is required in `rethinking`.
+
+Notice that we've created a summary dataframe that no longer has 49,464 rows (one row for each submission) but only 38 rows, each containing data for a unique country.
+
+```{r}
+#| label: prepare_data
+#| message: false
+
+data <- data_orig |>
+  group_by(L) |>
+  summarise(
+    N = n(),
+    W_count = sum(W),
+    country_name = unique(country_name)
+  ) |>
+  mutate(
+    propweekend = W_count / N
+  ) |>
+  ungroup()
+
+data <- list(
+    country_name = data$country_name,
+    propweekend = data$propweekend,
+    L = data$L, # country index ( 1 to 38)
+    N = data$N, # number of submissions per country (rows per country index)
+    W_count = data$W_count # weekend submission count per country
+)
+
+str(data)
+```
+
+# Part 1 -- No-pooling model
+## Statistical Model
+
+First, we want to estimate the probability **for each country** that an author submits an article to *BMJ* on the weekend.
+We use a non-hierarchical model.
+Since we want to estimate the *probability* of a submission on the weekend, we use a Binomial distribution.
+I've tried using a Bernoulli distribution and it also works, but just takes super long to run.
+
+$$
+\text{W}_i \sim \text{Binomial}(N_\text{submissions[L]}, p_\text{L})
+$$
+$$
+\text{logit}(p_\text{L}) = a_\text{L[i]}
+$$
+$$
+a_\text{L} \sim \text{Normal}(0, 1)
+$$
+
+$a_\text{L[i]}$ is the probability to submit on the weekend for author $i$ in country $\text{L}$.
+
+## Fit model
+Let's try and fit the model from above using `ulam`. 
+
+```{r}
+#| label: ulam
+#| message: false
+#| output: false
+
+mWE_noml <- ulam(
+  alist(
+    W_count ~ dbinom(N, p),
+    logit(p) <- a[L],
+    a[L] ~ dnorm(0, 1)
+  ),
+  data = data,
+  chains = 4,
+  iter = 2000,
+  log_lik = TRUE
+)
+```
+
+```{r}
+#| label: show
+
+show(mWE_noml)
+```
+
+## Diagnostics 
+
+Let's see some quick diagnostics: 
+
+```{r}
+#| label: diagnostics_1a
+
+dashboard(mWE_noml)
+```
+
+I've used the undocumented `dashboard()` function that McElreath mentioned in his lecture.\
+Top left: The Rhat values are all near or at 1.00, meaning that all four chains converged to the same distribution and they explored the same landscape.
+The effective sample sizes are high, ranging from 8,000 to 12,000, so we have lots of good-quality draws to work with.\
+Top right: The HMC energy plot shows that the two distributions overlap well, meaning the sampler moved through the posterior efficiently without getting stuck in any region.\
+Bottom left: There are 0 divergent transitions.
+Divergences would signal posterior geometry problems like funnel shapes or strong correlations, that HMC can't handle well.\
+Bottom right: The log-probability trankplot (a natural scalar summary of where in the posterior the sampler currently is) shows all four chains moving freely over the same range, which means good mixing.
+
+::: {.callout-note icon="false" collapse="true"}
+## Parameter estimate information & trankplots
+Here you can see the `precis()` output and all the trankplots.
+```{r}
+#| label: diagnostics_1b
+
+precis(mWE_noml, depth = 2)
+trankplot(mWE_noml)
+```
+:::
+
+Looks good! 
+
+## Visualize estimates
+
+To actually understand the results, let's visualize them.
+First, we extract and transform the estimates to probability scale so that we can understand them more intuitively.
+
+```{r}
+#| label: extract_estimates
+
+post <- extract.samples(mWE_noml)
+data$propweekend_est <- logistic(apply(post$a, 2, mean))
+```
+
+Now we'll display the raw proportions of weekend submissions in each country (blue dots) and then add the posterior mean (black circles) and 95% intervals.
+
+```{r}
+#| label: plot_1
+#| fig-width: 10
+#| fig-height: 5
+#| code-fold: true
+
+plot(
+  data$propweekend,
+  ylim = c(0, 0.4),
+  pch = 16,
+  xaxt = "n",
+  xlab = "",
+  ylab = "proportion weekend submissions",
+  col = "cornflowerblue"
+)
+points(data$propweekend_est)
+axis(1, at = c(1:38), labels = data$country_name, las = 2, cex.axis = 0.7)
+
+# 95% interval per country from posterior samples
+ci_mat <- apply(post$a, 2, quantile, probs = c(0.025, 0.975))
+ci_prob <- logistic(ci_mat)  # transform to probability scale
+
+segments(
+  x0 = 1:38,
+  y0 = ci_prob[1, ],
+  x1 = 1:38,
+  y1 = ci_prob[2, ],
+  col = rgb(0, 0, 0, 0.3),
+  lwd = 1.5
+)
+
+# Global mean posterior estimate
+abline(
+  h = mean(data$propweekend_est),
+  col = rgb(0, 0, 0, 0.3),
+  lty = 2
+)
+
+country_max <- data$L[data$propweekend_est == max(data$propweekend_est)]
+country_name_max <- unique(data_orig$country_name[data_orig$L == country_max])
+```
+
+It looks like the posterior mean estimates are similar for each country compared to the raw average.
+**`r country_name_max`** has the hightest posterior mean proportion of weekend submissions with `r round(max(data$propweekend_est) * 100, 1)` %.
+
+
+# Part 2 -- Partial-pooling model
+## Statistical Model
+
+Now it's time for the second part.
+We'll use a partial-pooling model to estimate the probability for weekend submissions.
+This means that the model has a hierarchichal prior for each countries estimate which makes it learn from the other countries and lowers the risk for overfitting the model to our specific dataset (which might contain weird data).
+
+$$
+\text{W}_i \sim \text{Binomial}(N_\text{submissions[L]}, p_\text{L})
+$$
+$$
+\text{logit}(p_\text{L}) = a_\text{L[i]}
+$$
+$$
+a_\text{L} \sim \text{Normal}(\bar{a}, \sigma)
+$$
+$$
+\bar{a} \sim \text{Normal}(0, 1.5)
+$$
+$$
+\sigma \sim \text{Exponential}(1)
+$$
+
+We use the same model as above and just add a prior for $\sigma$, the heterogeneity of the countries, so that the model figures this out itself instead of just giving this a fixed value.
+We use $\text{Exponential}(1)$ as a prior for sigma, because it needs to be positive and just often works like this.
+Let's see how our model does now!
+
+## Fit Model
+
+```{r}
+#| label: ulam_2
+#| output: false
+
+mWE_ml <- ulam(
+  alist(
+    W_count ~ dbinom(N, p),
+    logit(p) <- a[L],
+    a[L] ~ dnorm(a_bar, sigma),
+    a_bar ~ dnorm(0, 1.5),
+    sigma ~ dexp(1)
+  ),
+  data = data,
+  chains = 4,
+  iter = 2000,
+  log_lik = TRUE
+)
+```
+
+```{r}
+#| label: show_2
+
+show(mWE_ml)
+```
+
+## Diagnostics
+
+Some quick diagnostics.
+You can find a short explanation of what this dashboard shows in the previous diagnostics part.
+
+```{r}
+#| label: diagnostics_2a
+#| warning: false
+
+dashboard(mWE_noml)
+```
+
+::: {.callout-note icon="false" collapse="true"}
+## Parameter estimate information & trankplots
+Here you can see the `precis()` output and all the trankplots.
+```{r}
+#| label: diagnostics_2b
+
+precis(mWE_ml, depth = 2)
+trankplot(mWE_ml)
+```
+:::
+
+## Visualize estimates 
+Now we'll extract and transform the estimates to probability again so we can understand them more intuitively.
+
+```{r}
+#| label: extract_estimates_2
+
+post_mWE_ml <- extract.samples(mWE_ml)
+data$propweekend_est_mWE_ml <- logistic(apply(post_mWE_ml$a, 2, mean)) # convert to probability & average over all samples
+```
+
+Now we'll display the raw proportions of weekend submissions and posterior the posterior means for each country again, this time from out partial pooling model.
+
+```{r}
+#| label: plot_2
+#| code-fold: true
+#| fig-width: 10
+#| fig-height: 5
+
+plot(
+  data$propweekend,
+  ylim = c(0, 0.4),
+  pch = 16,
+  xaxt = "n",
+  xlab = "",
+  ylab = "proportion weekend submissions",
+  col = "cornflowerblue"
+)
+
+points(data$propweekend_est_mWE_ml)
+axis(1, at = c(1:38), labels = data$country_name, las = 2, cex.axis = 0.7)
+
+# 95% interval per country from posterior samples
+ci_mat <- apply(post_mWE_ml$a, 2, quantile, probs = c(0.025, 0.975))
+ci_prob <- logistic(ci_mat)  # transform to probability scale
+
+segments(
+  x0 = 1:38,
+  y0 = ci_prob[1, ],
+  x1 = 1:38,
+  y1 = ci_prob[2, ],
+  col = rgb(0, 0, 0, 0.3),
+  lwd = 1.5
+)
+
+# Global posterior mean estimate
+abline(
+  h = mean(data$propweekend_est_mWE_ml),
+  col = rgb(0, 0, 0, 0.3),
+  lty = 2
+)
+
+country_max_mWE_ml <- data$L[data$propweekend_est_mWE_ml == max(data$propweekend_est_mWE_ml)]
+country_name_max_mWE_ml <- unique(data_orig$country_name[data_orig$L == country_max_mWE_ml])
+```
+
+Now, **`r country_name_max_mWE_ml`** has the hightest posterior mean proportion of weekend submissions with `r round(max(data$propweekend_est_mWE_ml) * 100, 1)` %.
+
+Why not Cameroon? 
+It seems that some of the posterior mean estimates shrunk towards a global mean, while some others kind of stay where they were before.
+Why is that?\
+The width of the 95% intervals gives us a hint: While for Bangladesh, Cameroon, Thailand and some other countries they are quite wide; they are very narrow for Australia, China, the UK and the US.
+Let's look at the sample size (number of total submissions) we have for each country.
+
+```{r}
+#| label: table
+#| warning: false
+#| code-fold: true
+#| fig-width: 10
+#| fig-height: 5
+
+data <- as_tibble(data)
+data$country_name <- fct_reorder(data$country_name, data$N)
+
+data |>
+  tidyplot(x = country_name, y = N) |>
+  add_sum_bar() |>
+  add_sum_value(accuracy = 1) |>
+  adjust_colors(new_colors = "cornflowerblue") |>
+  adjust_x_axis(rotate_labels = 90) |>
+  adjust_y_axis_title("number of total submissions", fontsize = 13) |>
+  remove_x_axis_title() |>
+  adjust_size(220, 90) |>
+  adjust_font(9) |>
+  adjust_theme_details(
+    panel.border = ggplot2::element_rect(colour = "black", fill = NA, linewidth = 0.5),
+    panel.background = ggplot2::element_rect(fill = NA),
+    plot.background = ggplot2::element_rect(fill = NA, colour = NA)
+  ) |>
+  adjust_padding(top = 0.05, bottom = 0.01)
+```
+
+Okay, that makes sense! 
+The range of total submissions is huge: from `r min(data$N)` in Cameroon to `r format(max(data$N), big.mark = ",")` in the UK.
+
+Our model is a lot more confident about estimates for countries with many submissions and shrinks estimates toward the global mean if there are relatively little submissions from that country.
+This is cool, because data with a small N could totally be biased by outliers, like a couple of researchers who for whatever reason submit their papers exclusively on weekends.
+Pooling is great!

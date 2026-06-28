@@ -1,9 +1,10 @@
 ---
 title: "Statistical Rethinking 2026, A06"
 description: "My solution to exercise A06 from Richard McElreath's Statistical Rethinking course."
+author: Paulina Sell
 date: February 2026
 date-format: MMM YYYY
-categories: [R, causal inference, confounding, Bayes]
+categories: [R, Bayes, causal inference, confounding]
 toc: true
 toc-depth: 4
 image: false

@@ -17,7 +17,7 @@ listing:
 
 ## Statistical Rethinking
 
-In early 2026, I worked through the first 10 lectures of Richard McElreath's fantastic [*Statistical Rethinking*](https://github.com/rmcelreath/stat_rethinking_2026/tree/main) course.
+I'm currently working my way through Richard McElreath's fantastic [*Statistical Rethinking*](https://github.com/rmcelreath/stat_rethinking_2026/tree/main) course.
 Here you can see some of my attempts to solving the exercises.
 
 :::{#bayes}
