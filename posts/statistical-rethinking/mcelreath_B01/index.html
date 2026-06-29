@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Paulina Sell">
-<meta name="description" content="My solution to exercise A08 from Richard McElreath’s Statistical Rethinking course.">
+<meta name="description" content="My solution to exercise B01 from Richard McElreath’s Statistical Rethinking course.">
 
 <title>Statistical Rethinking 2026, B01</title>
 <style>
@@ -107,6 +107,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script defer="" src="https://cloud.umami.is/script.js" data-website-id="00265c7c-7dd4-4c20-b5bb-69393c654960"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -219,7 +220,7 @@ window.Quarto = {
 
 <div>
   <div class="description">
-    My solution to exercise A08 from Richard McElreath’s Statistical Rethinking course.
+    My solution to exercise B01 from Richard McElreath’s Statistical Rethinking course.
   </div>
 </div>
 
@@ -277,16 +278,13 @@ window.Quarto = {
 <p>First, we need to load some packages and the BMJ data.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rethinking)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyplots)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'tidyplots' was built under R version 4.4.3</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>data_orig <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://raw.githubusercontent.com/rmcelreath/stat_rethinking_2026/refs/heads/main/homework/BMJSubmissions.csv"</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data_orig)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyplots)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>data_orig <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://raw.githubusercontent.com/rmcelreath/stat_rethinking_2026/refs/heads/main/homework/BMJSubmissions.csv"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data_orig)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   49464 obs. of  6 variables:
  $ T           : num  11.8 10.5 13.5 19.5 14.4 ...
@@ -302,27 +300,27 @@ window.Quarto = {
 <p>Below, we create a new variable <code>N</code> that contains the total number of submissions in each country <code>L</code>. We also add <code>W_count</code> as a variable, containing the number of weekend submissions per country. We then calculate the observed proportions of weekend submissions per country by dividing <code>W_count</code> by <code>N</code>. Finally, we create a list that is required in <code>rethinking</code>.</p>
 <p>Notice that we’ve created a summary dataframe that no longer has 49,464 rows (one row for each submission) but only 38 rows, each containing data for a unique country.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data_orig <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(L) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">N =</span> <span class="fu">n</span>(),</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">W_count =</span> <span class="fu">sum</span>(W),</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">country_name =</span> <span class="fu">unique</span>(country_name)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">propweekend =</span> W_count <span class="sc">/</span> N</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">country_name =</span> data<span class="sc">$</span>country_name,</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">propweekend =</span> data<span class="sc">$</span>propweekend,</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">L =</span> data<span class="sc">$</span>L, <span class="co"># country index ( 1 to 38)</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">N =</span> data<span class="sc">$</span>N, <span class="co"># number of submissions per country (rows per country index)</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">W_count =</span> data<span class="sc">$</span>W_count <span class="co"># weekend submission count per country</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data_orig <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(L) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">N =</span> <span class="fu">n</span>(),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">W_count =</span> <span class="fu">sum</span>(W),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">country_name =</span> <span class="fu">unique</span>(country_name)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">propweekend =</span> W_count <span class="sc">/</span> N</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">country_name =</span> data<span class="sc">$</span>country_name,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">propweekend =</span> data<span class="sc">$</span>propweekend,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">L =</span> data<span class="sc">$</span>L, <span class="co"># country index ( 1 to 38)</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">N =</span> data<span class="sc">$</span>N, <span class="co"># number of submissions per country (rows per country index)</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">W_count =</span> data<span class="sc">$</span>W_count <span class="co"># weekend submission count per country</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>List of 5
  $ country_name: chr [1:38] "Australia" "Austria" "Bangladesh" "Belgium" ...
@@ -351,30 +349,30 @@ a_\text{L} \sim \text{Normal}(0, 1)
 <h2 class="anchored" data-anchor-id="fit-model">Fit model</h2>
 <p>Let’s try and fit the model from above using <code>ulam</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mWE_noml <span class="ot">&lt;-</span> <span class="fu">ulam</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alist</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    W_count <span class="sc">~</span> <span class="fu">dbinom</span>(N, p),</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p) <span class="ot">&lt;-</span> a[L],</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    a[L] <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">2000</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">log_lik =</span> <span class="cn">TRUE</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mWE_noml <span class="ot">&lt;-</span> <span class="fu">ulam</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alist</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    W_count <span class="sc">~</span> <span class="fu">dbinom</span>(N, p),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p) <span class="ot">&lt;-</span> a[L],</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    a[L] <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">2000</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">log_lik =</span> <span class="cn">TRUE</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(mWE_noml)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(mWE_noml)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Hamiltonian Monte Carlo approximation
 4000 samples from 4 chains
 
 Sampling durations (seconds):
   chain_id warmup sampling total
-1        1   0.07     0.06  0.13
-2        2   0.07     0.07  0.14
-3        3   0.07     0.06  0.14
-4        4   0.07     0.06  0.13
+1        1   0.11     0.11  0.22
+2        2   0.11     0.08  0.19
+3        3   0.11     0.10  0.21
+4        4   0.11     0.09  0.20
 
 Formula:
 W_count ~ dbinom(N, p)
@@ -387,7 +385,7 @@ a[L] ~ dnorm(0, 1)</code></pre>
 <h2 class="anchored" data-anchor-id="diagnostics">Diagnostics</h2>
 <p>Let’s see some quick diagnostics:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dashboard</span>(mWE_noml)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dashboard</span>(mWE_noml)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -415,49 +413,49 @@ Bottom right: The log-probability trankplot (a natural scalar summary of where i
 <div class="callout-body-container callout-body">
 <p>Here you can see the <code>precis()</code> output and all the trankplots.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(mWE_noml, <span class="at">depth =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(mWE_noml, <span class="at">depth =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            mean         sd      5.5%      94.5%      rhat ess_bulk
-a[1]  -2.0391134 0.05431574 -2.127576 -1.9517082 1.0007091 7702.603
-a[2]  -1.6261222 0.19498045 -1.938954 -1.3206110 1.0021484 7095.979
-a[3]  -1.0318057 0.21816340 -1.392266 -0.6918548 1.0003110 7650.021
-a[4]  -2.0728132 0.17032875 -2.349788 -1.8083453 0.9996912 9966.543
-a[5]  -1.6672304 0.11257260 -1.845775 -1.4913870 1.0004025 8119.020
-a[6]  -0.9696028 0.21321008 -1.313175 -0.6379182 1.0015577 8545.998
-a[7]  -1.9958470 0.05777157 -2.086467 -1.9068522 1.0003953 8132.098
-a[8]  -1.2330128 0.03068114 -1.281859 -1.1837959 1.0005941 7407.470
-a[9]  -2.0932903 0.08588415 -2.228447 -1.9602610 1.0000973 9320.524
-a[10] -1.5094820 0.16887386 -1.779297 -1.2466260 1.0024017 7150.693
-a[11] -1.8598689 0.12667523 -2.066760 -1.6592078 1.0016698 8454.305
-a[12] -1.9833535 0.08162259 -2.113727 -1.8556685 1.0014960 8405.944
-a[13] -1.9855869 0.08425566 -2.121901 -1.8504014 1.0013810 8168.690
-a[14] -2.3215552 0.12515575 -2.521355 -2.1278786 1.0019317 7177.084
-a[15] -1.9257278 0.13862440 -2.154319 -1.7065257 0.9998632 8344.894
-a[16] -1.8444292 0.13450600 -2.063828 -1.6347357 1.0009382 8065.093
-a[17] -1.5191425 0.19165402 -1.829124 -1.2140998 0.9998298 9247.542
-a[18] -1.8208558 0.09014482 -1.968321 -1.6788626 1.0007444 7443.739
-a[19] -1.6117507 0.07114142 -1.727491 -1.4955369 1.0018501 7671.542
-a[20] -1.8890200 0.18095701 -2.188242 -1.6039157 1.0007892 7813.994
-a[21] -2.0048708 0.06300417 -2.107302 -1.9035537 1.0005154 9139.729
-a[22] -2.0688375 0.14922990 -2.312582 -1.8328676 0.9997008 7316.461
-a[23] -2.1265458 0.11213547 -2.310253 -1.9448080 1.0014215 8185.106
-a[24] -1.3632583 0.18520226 -1.662331 -1.0715121 1.0040334 7520.965
-a[25] -1.3934629 0.20458284 -1.729778 -1.0753027 1.0017503 8431.797
-a[26] -1.4463679 0.21601969 -1.799734 -1.1168832 1.0027976 8632.836
-a[27] -1.2279245 0.17801510 -1.515353 -0.9501881 0.9997912 7974.157
-a[28] -1.7760498 0.18646711 -2.077846 -1.4863211 1.0012597 7937.399
-a[29] -1.7299079 0.16544571 -2.005971 -1.4708440 1.0001359 8157.159
-a[30] -1.6744069 0.08546014 -1.810865 -1.5412816 1.0031520 7616.679
-a[31] -1.7819671 0.09609562 -1.934012 -1.6330406 1.0010878 8897.830
-a[32] -1.9396479 0.07997278 -2.071246 -1.8165069 0.9996633 8529.036
-a[33] -1.7633584 0.10580033 -1.933061 -1.5915296 1.0001407 8913.177
-a[34] -1.4236824 0.07885706 -1.551512 -1.2974797 1.0035308 8497.280
-a[35] -1.2272046 0.23264872 -1.608235 -0.8711294 1.0001607 8235.860
-a[36] -1.0616970 0.20210859 -1.390934 -0.7442668 1.0002568 8775.889
-a[37] -2.0648859 0.02933748 -2.112511 -2.0184101 1.0014870 8360.808
-a[38] -1.9140624 0.04224153 -1.981891 -1.8486833 1.0017257 7194.692</code></pre>
+a[1]  -2.0395643 0.05596513 -2.128728 -1.9513467 1.0013036 6242.047
+a[2]  -1.6252669 0.18825972 -1.929843 -1.3282776 0.9999471 6211.321
+a[3]  -1.0342572 0.22131590 -1.386284 -0.6978819 1.0055189 7582.040
+a[4]  -2.0709445 0.17232416 -2.344571 -1.8048372 1.0018769 7737.139
+a[5]  -1.6652852 0.10917209 -1.843045 -1.4929220 1.0008096 8222.782
+a[6]  -0.9665822 0.21280819 -1.321655 -0.6331661 1.0018789 7843.107
+a[7]  -1.9959387 0.05771253 -2.088617 -1.9050973 1.0011837 7728.764
+a[8]  -1.2333670 0.03077213 -1.283215 -1.1843374 1.0018560 7970.212
+a[9]  -2.0940402 0.08441923 -2.229120 -1.9612160 1.0021398 7691.047
+a[10] -1.5119485 0.16788140 -1.784377 -1.2514335 1.0007121 8855.145
+a[11] -1.8576891 0.12918364 -2.070923 -1.6559798 1.0006128 6163.319
+a[12] -1.9845692 0.08399404 -2.116270 -1.8524929 0.9997404 7579.841
+a[13] -1.9869779 0.08449475 -2.122158 -1.8508171 1.0003681 7640.337
+a[14] -2.3194188 0.13072921 -2.535589 -2.1162523 0.9997666 6925.518
+a[15] -1.9274970 0.14012400 -2.158931 -1.7079577 1.0013178 8719.327
+a[16] -1.8455882 0.13355100 -2.062231 -1.6362775 1.0003532 6867.620
+a[17] -1.5237600 0.19096777 -1.837233 -1.2197103 1.0023969 8204.902
+a[18] -1.8202975 0.09301672 -1.969644 -1.6692408 1.0010253 7240.314
+a[19] -1.6129974 0.06745050 -1.721365 -1.5059544 1.0022999 7161.826
+a[20] -1.8891864 0.18379497 -2.187272 -1.6045716 1.0030093 5961.345
+a[21] -2.0048625 0.06114496 -2.102639 -1.9076953 1.0013959 7449.357
+a[22] -2.0686634 0.15290291 -2.323887 -1.8288554 1.0000568 7318.014
+a[23] -2.1247134 0.11527162 -2.312969 -1.9419937 0.9992737 6812.747
+a[24] -1.3610795 0.18727865 -1.668678 -1.0637716 1.0001245 7086.540
+a[25] -1.3896508 0.20734215 -1.727209 -1.0678349 1.0004817 6835.311
+a[26] -1.4441824 0.21694429 -1.803177 -1.1019916 1.0014460 6927.386
+a[27] -1.2300393 0.17172276 -1.503511 -0.9611483 1.0028507 8268.693
+a[28] -1.7786803 0.18301728 -2.079170 -1.4915760 1.0002015 6547.875
+a[29] -1.7326612 0.15648419 -1.988353 -1.4874537 1.0018926 8563.170
+a[30] -1.6751064 0.08619447 -1.810338 -1.5365980 1.0007565 8748.391
+a[31] -1.7814530 0.09230770 -1.932546 -1.6383398 1.0003032 7385.056
+a[32] -1.9404150 0.07669595 -2.061967 -1.8190425 1.0002850 7143.350
+a[33] -1.7621453 0.10887353 -1.940410 -1.5911283 1.0008124 6761.275
+a[34] -1.4221094 0.07653852 -1.542241 -1.2994819 1.0000605 7665.293
+a[35] -1.2215675 0.23107769 -1.598119 -0.8616259 1.0026594 6833.457
+a[36] -1.0627140 0.20192857 -1.388622 -0.7428927 0.9996175 8486.014
+a[37] -2.0648693 0.02910255 -2.111139 -2.0182224 1.0028476 8207.589
+a[38] -1.9141140 0.04220190 -1.982377 -1.8485725 1.0015849 6328.718</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trankplot</span>(mWE_noml)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trankplot</span>(mWE_noml)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -525,44 +523,44 @@ a[38] -1.9140624 0.04224153 -1.981891 -1.8486833 1.0017257 7194.692</code></pre>
 <h2 class="anchored" data-anchor-id="visualize-estimates">Visualize estimates</h2>
 <p>To actually understand the results, let’s visualize them. First, we extract and transform the estimates to probability scale so that we can understand them more intuitively.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>post <span class="ot">&lt;-</span> <span class="fu">extract.samples</span>(mWE_noml)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>propweekend_est <span class="ot">&lt;-</span> <span class="fu">logistic</span>(<span class="fu">apply</span>(post<span class="sc">$</span>a, <span class="dv">2</span>, mean))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>post <span class="ot">&lt;-</span> <span class="fu">extract.samples</span>(mWE_noml)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>propweekend_est <span class="ot">&lt;-</span> <span class="fu">logistic</span>(<span class="fu">apply</span>(post<span class="sc">$</span>a, <span class="dv">2</span>, mean))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now we’ll display the raw proportions of weekend submissions in each country (blue dots) and then add the posterior mean (black circles) and 95% intervals.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  data<span class="sc">$</span>propweekend,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.4</span>),</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">16</span>,</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xaxt =</span> <span class="st">"n"</span>,</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">""</span>,</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"proportion weekend submissions"</span>,</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"cornflowerblue"</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(data<span class="sc">$</span>propweekend_est)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">38</span>), <span class="at">labels =</span> data<span class="sc">$</span>country_name, <span class="at">las =</span> <span class="dv">2</span>, <span class="at">cex.axis =</span> <span class="fl">0.7</span>)</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% interval per country from posterior samples</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>ci_mat <span class="ot">&lt;-</span> <span class="fu">apply</span>(post<span class="sc">$</span>a, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>ci_prob <span class="ot">&lt;-</span> <span class="fu">logistic</span>(ci_mat)  <span class="co"># transform to probability scale</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">x0 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">38</span>,</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">y0 =</span> ci_prob[<span class="dv">1</span>, ],</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">38</span>,</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">y1 =</span> ci_prob[<span class="dv">2</span>, ],</span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>),</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fl">1.5</span></span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Global mean posterior estimate</span></span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(</span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">h =</span> <span class="fu">mean</span>(data<span class="sc">$</span>propweekend_est),</span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>),</span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">lty =</span> <span class="dv">2</span></span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  data<span class="sc">$</span>propweekend,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.4</span>),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">16</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xaxt =</span> <span class="st">"n"</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">""</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"proportion weekend submissions"</span>,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"cornflowerblue"</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(data<span class="sc">$</span>propweekend_est)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">38</span>), <span class="at">labels =</span> data<span class="sc">$</span>country_name, <span class="at">las =</span> <span class="dv">2</span>, <span class="at">cex.axis =</span> <span class="fl">0.7</span>)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% interval per country from posterior samples</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>ci_mat <span class="ot">&lt;-</span> <span class="fu">apply</span>(post<span class="sc">$</span>a, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>ci_prob <span class="ot">&lt;-</span> <span class="fu">logistic</span>(ci_mat)  <span class="co"># transform to probability scale</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">x0 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">38</span>,</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">y0 =</span> ci_prob[<span class="dv">1</span>, ],</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">38</span>,</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">y1 =</span> ci_prob[<span class="dv">2</span>, ],</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>),</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fl">1.5</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Global mean posterior estimate</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">h =</span> <span class="fu">mean</span>(data<span class="sc">$</span>propweekend_est),</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>),</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">lty =</span> <span class="dv">2</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -573,11 +571,11 @@ a[38] -1.9140624 0.04224153 -1.981891 -1.8486833 1.0017257 7194.692</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>country_max <span class="ot">&lt;-</span> data<span class="sc">$</span>L[data<span class="sc">$</span>propweekend_est <span class="sc">==</span> <span class="fu">max</span>(data<span class="sc">$</span>propweekend_est)]</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>country_name_max <span class="ot">&lt;-</span> <span class="fu">unique</span>(data_orig<span class="sc">$</span>country_name[data_orig<span class="sc">$</span>L <span class="sc">==</span> country_max])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>country_max <span class="ot">&lt;-</span> data<span class="sc">$</span>L[data<span class="sc">$</span>propweekend_est <span class="sc">==</span> <span class="fu">max</span>(data<span class="sc">$</span>propweekend_est)]</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>country_name_max <span class="ot">&lt;-</span> <span class="fu">unique</span>(data_orig<span class="sc">$</span>country_name[data_orig<span class="sc">$</span>L <span class="sc">==</span> country_max])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>It looks like the posterior mean estimates are similar for each country compared to the raw average. <strong>Cameroon</strong> has the hightest posterior mean proportion of weekend submissions with 27.5 %.</p>
+<p>It looks like the posterior mean estimates are similar for each country compared to the raw average. <strong>Cameroon</strong> has the hightest posterior mean proportion of weekend submissions with 27.6 %.</p>
 </section>
 </section>
 <section id="part-2-partial-pooling-model" class="level1">
@@ -601,32 +599,32 @@ a_\text{L} \sim \text{Normal}(\bar{a}, \sigma)
 <section id="fit-model-1" class="level2">
 <h2 class="anchored" data-anchor-id="fit-model-1">Fit Model</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mWE_ml <span class="ot">&lt;-</span> <span class="fu">ulam</span>(</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alist</span>(</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    W_count <span class="sc">~</span> <span class="fu">dbinom</span>(N, p),</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p) <span class="ot">&lt;-</span> a[L],</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    a[L] <span class="sc">~</span> <span class="fu">dnorm</span>(a_bar, sigma),</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    a_bar <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="fl">1.5</span>),</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    sigma <span class="sc">~</span> <span class="fu">dexp</span>(<span class="dv">1</span>)</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data,</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">2000</span>,</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">log_lik =</span> <span class="cn">TRUE</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>mWE_ml <span class="ot">&lt;-</span> <span class="fu">ulam</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alist</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    W_count <span class="sc">~</span> <span class="fu">dbinom</span>(N, p),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">logit</span>(p) <span class="ot">&lt;-</span> a[L],</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    a[L] <span class="sc">~</span> <span class="fu">dnorm</span>(a_bar, sigma),</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    a_bar <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="fl">1.5</span>),</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    sigma <span class="sc">~</span> <span class="fu">dexp</span>(<span class="dv">1</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">2000</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">log_lik =</span> <span class="cn">TRUE</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(mWE_ml)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(mWE_ml)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Hamiltonian Monte Carlo approximation
 4000 samples from 4 chains
 
 Sampling durations (seconds):
   chain_id warmup sampling total
-1        1   0.09     0.07  0.16
-2        2   0.08     0.07  0.14
-3        3   0.07     0.07  0.14
-4        4   0.08     0.07  0.15
+1        1   0.14     0.11  0.25
+2        2   0.12     0.11  0.24
+3        3   0.12     0.11  0.23
+4        4   0.12     0.11  0.23
 
 Formula:
 W_count ~ dbinom(N, p)
@@ -641,7 +639,7 @@ sigma ~ dexp(1)</code></pre>
 <h2 class="anchored" data-anchor-id="diagnostics-1">Diagnostics</h2>
 <p>Some quick diagnostics. You can find a short explanation of what this dashboard shows in the previous diagnostics part.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dashboard</span>(mWE_noml)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dashboard</span>(mWE_noml)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -664,51 +662,51 @@ sigma ~ dexp(1)</code></pre>
 <div class="callout-body-container callout-body">
 <p>Here you can see the <code>precis()</code> output and all the trankplots.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(mWE_ml, <span class="at">depth =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(mWE_ml, <span class="at">depth =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>            mean         sd       5.5%      94.5%      rhat  ess_bulk
-a[1]  -2.0356495 0.05394172 -2.1234653 -1.9500430 1.0011713 11516.272
-a[2]  -1.7153761 0.16618839 -1.9820775 -1.4510534 1.0004735  9720.796
-a[3]  -1.3478538 0.19521810 -1.6576918 -1.0350589 1.0011664  9251.535
-a[4]  -2.0363700 0.15169556 -2.2900481 -1.7966180 1.0005423  9125.037
-a[5]  -1.6986582 0.10329281 -1.8640935 -1.5357928 1.0005998 10351.932
-a[6]  -1.3148348 0.19789769 -1.6329048 -0.9948125 1.0025663  8749.700
-a[7]  -1.9925846 0.05575832 -2.0833398 -1.9057461 1.0042535  9080.134
-a[8]  -1.2410649 0.03110761 -1.2906310 -1.1924733 1.0029896 10957.209
-a[9]  -2.0818842 0.07994076 -2.2137520 -1.9552557 1.0034351  9164.944
-a[10] -1.6157556 0.15680781 -1.8666623 -1.3643225 1.0000190  9745.095
-a[11] -1.8675959 0.11900704 -2.0586754 -1.6820071 1.0001386 10213.431
-a[12] -1.9789489 0.08233248 -2.1089971 -1.8499213 1.0005441 10006.043
-a[13] -1.9817649 0.08241540 -2.1163708 -1.8484980 1.0031857 10232.120
-a[14] -2.2597006 0.12143211 -2.4621687 -2.0666085 1.0007022 10703.117
-a[15] -1.9285940 0.12467817 -2.1280432 -1.7357423 1.0018326  9777.095
-a[16] -1.8606179 0.12609121 -2.0660883 -1.6590843 1.0047936 10239.032
-a[17] -1.6365999 0.16510467 -1.9004463 -1.3733102 0.9996061  9668.518
-a[18] -1.8276319 0.08702562 -1.9663891 -1.6874797 1.0001624 11215.435
-a[19] -1.6269350 0.06825346 -1.7348725 -1.5174812 1.0005334  9884.666
-a[20] -1.8984760 0.15547870 -2.1513455 -1.6510063 1.0008567  9343.680
-a[21] -2.0012297 0.05964949 -2.0977124 -1.9065322 1.0027201  8856.868
-a[22] -2.0389022 0.13461471 -2.2589056 -1.8316430 1.0013304 10475.441
-a[23] -2.0997810 0.10442254 -2.2701838 -1.9344921 1.0049069 10034.406
-a[24] -1.5232263 0.17110846 -1.7888464 -1.2521129 1.0013266 12078.974
-a[25] -1.5630338 0.17745736 -1.8424952 -1.2759494 0.9999524  9363.090
-a[26] -1.6149599 0.18961598 -1.9191553 -1.3171338 1.0013668 10823.836
-a[27] -1.4113584 0.16536930 -1.6777357 -1.1503993 1.0015594  8803.557
-a[28] -1.8162267 0.15676862 -2.0779713 -1.5728139 1.0023910  8380.254
-a[29] -1.7782415 0.14491138 -2.0114507 -1.5511382 1.0009775  9670.120
-a[30] -1.6956838 0.08428021 -1.8299734 -1.5597646 1.0014284  9524.462
-a[31] -1.7927056 0.09222236 -1.9406308 -1.6485703 1.0001331  8563.831
-a[32] -1.9369690 0.07852389 -2.0619695 -1.8096893 1.0027933  9225.730
-a[33] -1.7829299 0.10011443 -1.9406969 -1.6241698 1.0031694 11144.647
-a[34] -1.4555849 0.07902787 -1.5824552 -1.3293398 1.0016449  9166.311
-a[35] -1.4944200 0.19712527 -1.8104515 -1.1784110 1.0025904  8051.900
-a[36] -1.3445844 0.17939866 -1.6288982 -1.0584896 1.0023826  9585.314
-a[37] -2.0634806 0.02955733 -2.1111952 -2.0148881 1.0006979 10530.608
-a[38] -1.9146594 0.04093749 -1.9806137 -1.8514162 1.0019402 12355.410
-a_bar -1.7678178 0.05379020 -1.8513958 -1.6818746 0.9999104  6156.264
-sigma  0.2919144 0.04450672  0.2272689  0.3692041 0.9998370  4785.058</code></pre>
+<pre><code>            mean         sd       5.5%     94.5%      rhat  ess_bulk
+a[1]  -2.0353296 0.05471957 -2.1224759 -1.949745 1.0015085 11137.507
+a[2]  -1.7118147 0.16027017 -1.9664317 -1.459049 1.0014914  8002.633
+a[3]  -1.3577500 0.19092452 -1.6592635 -1.047591 1.0016127  6084.969
+a[4]  -2.0323622 0.14709663 -2.2695465 -1.798087 0.9999152  7991.489
+a[5]  -1.6979137 0.10533859 -1.8710055 -1.533505 1.0007879  9608.255
+a[6]  -1.3214515 0.19329729 -1.6252659 -1.014511 1.0014634  8391.813
+a[7]  -1.9925841 0.05657678 -2.0822989 -1.902119 1.0005647  9235.826
+a[8]  -1.2398053 0.02943347 -1.2877293 -1.194058 0.9996066  8115.109
+a[9]  -2.0806473 0.08033530 -2.2117976 -1.952297 1.0008541  9932.700
+a[10] -1.6163271 0.15316364 -1.8604815 -1.374721 1.0004411 10102.911
+a[11] -1.8668296 0.12103833 -2.0650702 -1.677639 1.0027653 10200.880
+a[12] -1.9799755 0.08133122 -2.1112722 -1.851123 1.0012261  9230.825
+a[13] -1.9812202 0.08170183 -2.1113315 -1.850799 1.0038400  8946.729
+a[14] -2.2588588 0.12028086 -2.4520514 -2.072949 1.0005549  8649.628
+a[15] -1.9250353 0.12296404 -2.1270394 -1.729441 1.0004140  8444.949
+a[16] -1.8577332 0.12526192 -2.0591091 -1.659622 1.0021016  9995.498
+a[17] -1.6381032 0.16853926 -1.9095709 -1.377923 1.0006418  9202.441
+a[18] -1.8295078 0.08582838 -1.9671543 -1.695396 1.0014950  9141.960
+a[19] -1.6291567 0.06804433 -1.7373064 -1.522724 1.0022109  9074.743
+a[20] -1.8944015 0.15844760 -2.1486531 -1.646801 1.0005704  9396.503
+a[21] -1.9999146 0.05825094 -2.0933247 -1.907735 1.0010412  8065.423
+a[22] -2.0387415 0.13500406 -2.2569183 -1.827974 1.0000930  8638.716
+a[23] -2.1001161 0.10801250 -2.2779718 -1.925314 1.0009559 11040.477
+a[24] -1.5250683 0.17010885 -1.7957448 -1.255719 1.0012843  9451.993
+a[25] -1.5626880 0.17441684 -1.8436424 -1.285690 1.0006541  7776.681
+a[26] -1.6184898 0.17555075 -1.9060454 -1.342120 1.0015004  8370.716
+a[27] -1.4145232 0.16353910 -1.6805754 -1.149854 1.0003179  8484.259
+a[28] -1.8173224 0.15713905 -2.0700592 -1.569737 1.0005983  7284.220
+a[29] -1.7765321 0.14939574 -2.0221034 -1.540885 1.0009304  9265.367
+a[30] -1.6948025 0.08714031 -1.8333487 -1.555636 1.0036040 10051.612
+a[31] -1.7950218 0.09245141 -1.9468747 -1.651596 1.0014695  9145.634
+a[32] -1.9365178 0.07522182 -2.0590644 -1.816251 1.0026882  9796.077
+a[33] -1.7823195 0.10357517 -1.9465220 -1.616037 0.9999343 10420.150
+a[34] -1.4562259 0.07732643 -1.5808568 -1.331170 1.0021525  9073.230
+a[35] -1.4943146 0.19370081 -1.8127979 -1.184689 1.0024914  7488.467
+a[36] -1.3469589 0.18194873 -1.6411375 -1.055692 0.9997490  7615.766
+a[37] -2.0629382 0.02963912 -2.1111915 -2.015696 0.9995055  9244.818
+a[38] -1.9138169 0.04285013 -1.9823831 -1.845162 1.0001517  8224.930
+a_bar -1.7686479 0.05280701 -1.8515473 -1.681888 1.0029003  6126.377
+sigma  0.2910326 0.04511974  0.2256897  0.369855 1.0008641  3942.927</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trankplot</span>(mWE_ml)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trankplot</span>(mWE_ml)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -775,45 +773,45 @@ sigma  0.2919144 0.04450672  0.2272689  0.3692041 0.9998370  4785.058</code></pr
 <h2 class="anchored" data-anchor-id="visualize-estimates-1">Visualize estimates</h2>
 <p>Now we’ll extract and transform the estimates to probability again so we can understand them more intuitively.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>post_mWE_ml <span class="ot">&lt;-</span> <span class="fu">extract.samples</span>(mWE_ml)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>propweekend_est_mWE_ml <span class="ot">&lt;-</span> <span class="fu">logistic</span>(<span class="fu">apply</span>(post_mWE_ml<span class="sc">$</span>a, <span class="dv">2</span>, mean)) <span class="co"># convert to probability &amp; average over all samples</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>post_mWE_ml <span class="ot">&lt;-</span> <span class="fu">extract.samples</span>(mWE_ml)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>propweekend_est_mWE_ml <span class="ot">&lt;-</span> <span class="fu">logistic</span>(<span class="fu">apply</span>(post_mWE_ml<span class="sc">$</span>a, <span class="dv">2</span>, mean)) <span class="co"># convert to probability &amp; average over all samples</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now we’ll display the raw proportions of weekend submissions and posterior the posterior means for each country again, this time from out partial pooling model.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  data<span class="sc">$</span>propweekend,</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.4</span>),</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">16</span>,</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xaxt =</span> <span class="st">"n"</span>,</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">""</span>,</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"proportion weekend submissions"</span>,</span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"cornflowerblue"</span></span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(data<span class="sc">$</span>propweekend_est_mWE_ml)</span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">38</span>), <span class="at">labels =</span> data<span class="sc">$</span>country_name, <span class="at">las =</span> <span class="dv">2</span>, <span class="at">cex.axis =</span> <span class="fl">0.7</span>)</span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% interval per country from posterior samples</span></span>
-<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>ci_mat <span class="ot">&lt;-</span> <span class="fu">apply</span>(post_mWE_ml<span class="sc">$</span>a, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
-<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>ci_prob <span class="ot">&lt;-</span> <span class="fu">logistic</span>(ci_mat)  <span class="co"># transform to probability scale</span></span>
-<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(</span>
-<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">x0 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">38</span>,</span>
-<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">y0 =</span> ci_prob[<span class="dv">1</span>, ],</span>
-<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">38</span>,</span>
-<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">y1 =</span> ci_prob[<span class="dv">2</span>, ],</span>
-<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>),</span>
-<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fl">1.5</span></span>
-<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Global posterior mean estimate</span></span>
-<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(</span>
-<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">h =</span> <span class="fu">mean</span>(data<span class="sc">$</span>propweekend_est_mWE_ml),</span>
-<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>),</span>
-<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">lty =</span> <span class="dv">2</span></span>
-<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  data<span class="sc">$</span>propweekend,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.4</span>),</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">16</span>,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xaxt =</span> <span class="st">"n"</span>,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">""</span>,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"proportion weekend submissions"</span>,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"cornflowerblue"</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(data<span class="sc">$</span>propweekend_est_mWE_ml)</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">38</span>), <span class="at">labels =</span> data<span class="sc">$</span>country_name, <span class="at">las =</span> <span class="dv">2</span>, <span class="at">cex.axis =</span> <span class="fl">0.7</span>)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% interval per country from posterior samples</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>ci_mat <span class="ot">&lt;-</span> <span class="fu">apply</span>(post_mWE_ml<span class="sc">$</span>a, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>ci_prob <span class="ot">&lt;-</span> <span class="fu">logistic</span>(ci_mat)  <span class="co"># transform to probability scale</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">x0 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">38</span>,</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">y0 =</span> ci_prob[<span class="dv">1</span>, ],</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">38</span>,</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">y1 =</span> ci_prob[<span class="dv">2</span>, ],</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>),</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fl">1.5</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Global posterior mean estimate</span></span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(</span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">h =</span> <span class="fu">mean</span>(data<span class="sc">$</span>propweekend_est_mWE_ml),</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>),</span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">lty =</span> <span class="dv">2</span></span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -824,8 +822,8 @@ sigma  0.2919144 0.04450672  0.2272689  0.3692041 0.9998370  4785.058</code></pr
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>country_max_mWE_ml <span class="ot">&lt;-</span> data<span class="sc">$</span>L[data<span class="sc">$</span>propweekend_est_mWE_ml <span class="sc">==</span> <span class="fu">max</span>(data<span class="sc">$</span>propweekend_est_mWE_ml)]</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>country_name_max_mWE_ml <span class="ot">&lt;-</span> <span class="fu">unique</span>(data_orig<span class="sc">$</span>country_name[data_orig<span class="sc">$</span>L <span class="sc">==</span> country_max_mWE_ml])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>country_max_mWE_ml <span class="ot">&lt;-</span> data<span class="sc">$</span>L[data<span class="sc">$</span>propweekend_est_mWE_ml <span class="sc">==</span> <span class="fu">max</span>(data<span class="sc">$</span>propweekend_est_mWE_ml)]</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>country_name_max_mWE_ml <span class="ot">&lt;-</span> <span class="fu">unique</span>(data_orig<span class="sc">$</span>country_name[data_orig<span class="sc">$</span>L <span class="sc">==</span> country_max_mWE_ml])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Now, <strong>China</strong> has the hightest posterior mean proportion of weekend submissions with 22.4 %.</p>
@@ -834,25 +832,25 @@ The width of the 95% intervals gives us a hint: While for Bangladesh, Cameroon, 
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(data)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>country_name <span class="ot">&lt;-</span> <span class="fu">fct_reorder</span>(data<span class="sc">$</span>country_name, data<span class="sc">$</span>N)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidyplot</span>(<span class="at">x =</span> country_name, <span class="at">y =</span> N) <span class="sc">|&gt;</span></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_sum_bar</span>() <span class="sc">|&gt;</span></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_sum_value</span>(<span class="at">accuracy =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_colors</span>(<span class="at">new_colors =</span> <span class="st">"cornflowerblue"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_x_axis</span>(<span class="at">rotate_labels =</span> <span class="dv">90</span>) <span class="sc">|&gt;</span></span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_y_axis_title</span>(<span class="st">"number of total submissions"</span>, <span class="at">fontsize =</span> <span class="dv">13</span>) <span class="sc">|&gt;</span></span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_x_axis_title</span>() <span class="sc">|&gt;</span></span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_size</span>(<span class="dv">220</span>, <span class="dv">90</span>) <span class="sc">|&gt;</span></span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_font</span>(<span class="dv">9</span>) <span class="sc">|&gt;</span></span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_theme_details</span>(</span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> ggplot2<span class="sc">::</span><span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>),</span>
-<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> ggplot2<span class="sc">::</span><span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="cn">NA</span>),</span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background =</span> ggplot2<span class="sc">::</span><span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="cn">NA</span>)</span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_padding</span>(<span class="at">top =</span> <span class="fl">0.05</span>, <span class="at">bottom =</span> <span class="fl">0.01</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(data)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>country_name <span class="ot">&lt;-</span> <span class="fu">fct_reorder</span>(data<span class="sc">$</span>country_name, data<span class="sc">$</span>N)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidyplot</span>(<span class="at">x =</span> country_name, <span class="at">y =</span> N) <span class="sc">|&gt;</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_sum_bar</span>() <span class="sc">|&gt;</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_sum_value</span>(<span class="at">accuracy =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_colors</span>(<span class="at">new_colors =</span> <span class="st">"cornflowerblue"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_x_axis</span>(<span class="at">rotate_labels =</span> <span class="dv">90</span>) <span class="sc">|&gt;</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_y_axis_title</span>(<span class="st">"number of total submissions"</span>, <span class="at">fontsize =</span> <span class="dv">13</span>) <span class="sc">|&gt;</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_x_axis_title</span>() <span class="sc">|&gt;</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_size</span>(<span class="dv">220</span>, <span class="dv">90</span>) <span class="sc">|&gt;</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_font</span>(<span class="dv">9</span>) <span class="sc">|&gt;</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_theme_details</span>(</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> ggplot2<span class="sc">::</span><span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>),</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> ggplot2<span class="sc">::</span><span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="cn">NA</span>),</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background =</span> ggplot2<span class="sc">::</span><span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="cn">NA</span>)</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adjust_padding</span>(<span class="at">top =</span> <span class="fl">0.05</span>, <span class="at">bottom =</span> <span class="fl">0.01</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
