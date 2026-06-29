@@ -1,6 +1,6 @@
 ---
 title: "Statistical Rethinking 2026, B01"
-description: "My solution to exercise A08 from Richard McElreath's Statistical Rethinking course."
+description: "My solution to exercise B01 from Richard McElreath's Statistical Rethinking course."
 author: Paulina Sell
 date: June 2026
 date-format: MMM YYYY
@@ -54,6 +54,7 @@ First, we need to load some packages and the BMJ data.
 ```{r}
 #| label: load_pck_dat
 #| message: false
+#| warning: false
 
 library(rethinking)
 library(tidyplots)

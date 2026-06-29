@@ -84,6 +84,14 @@ footer.footer .nav-footer,
   padding-right: max(1em, calc((100% - 1100px) / 2 + 1em));
 }
 
+.navbar-logo {
+  background-color: #FBFAF9;
+  border-radius: 5px;       // adjust to taste
+  padding: 1px;             // a little breathing room around the icon
+  height: 35px !important;
+  max-height: 35px !important;
+}
+
 /* ── Cards ──────────────────────────────── */
 
 .quarto-grid-item {

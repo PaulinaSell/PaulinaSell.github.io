@@ -5,6 +5,7 @@ website:
   navbar:
     background: primary
     search: false
+    logo: images/website_logo.png
     right:
       - text: Home
         href: index.qmd
@@ -17,6 +18,7 @@ website:
     tools: 
       - icon: github
         href: https://github.com/PaulinaSell
+  favicon: images/website_logo.png
 
 format:
   html:
@@ -24,6 +26,7 @@ format:
     - jolla
     - styles.scss
     page-layout: full
+    include-in-header: umami.html
 
 execute:
   freeze: auto
