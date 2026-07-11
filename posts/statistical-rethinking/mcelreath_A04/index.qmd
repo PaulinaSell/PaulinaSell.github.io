@@ -173,12 +173,8 @@ We've set `a = 0` in the simulation, but now it's `r round(p$mean[1], 2)`? \
 Fortunately that's not a bug! 
 `sim_age_weight()` defines `a` as weight at `age = 0`, but our fitted model centers on `age_mean`, so the fitted `a` is weight at the mean age instead.
 `b` doesn't care about centering, so it comes back correctly. \
-We can do a quick check: 
 
-```{r}
-0.3 * mean(dat$age_months)
-```
-
+### Visualize
 Let's plot the simulated data (red) & the posterior mean regression line (black): 
 
 ```{r}
@@ -314,5 +310,14 @@ curve(a_map + b_map * (x - mean_age_small), col = "black", lwd = 2, add = T)
 mtext("N = 20")
 ```
 
+```{r}
+#| echo: false
+
+post_full <- extract.samples(mA4)
+b_map <- mean(post_full$b)
+```
+
 So, what's the answer?
-For children under 13, each extra month of age adds about [b] kg of weight on average (89% CI: [lower, upper]). The synthetic data check gave us confidence the model recovers the true slope, and the n = 20 version shows what happens with less data: same trend, way more uncertainty. A straight line is obviously a simplification — growth isn't linear from infancy to age 13! — but it does the job here.
+For children under 13, each extra month of age adds about `r round(b_map, 2)` kg of weight on average.
+The simulation-based validation showed that the model recovers the true slope, and the `n = 20` version shows what happens with less data: same trend, way more uncertainty.
+A straight line is of course a simplification — growth isn't linear from birth to age 13, but it does the job here.
