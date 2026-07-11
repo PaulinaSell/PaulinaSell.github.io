@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Paulina Sell">
+<meta name="description" content="My solution to exercise A01 from Richard McElreath’s Statistical Rethinking course.">
 
-<title>Posts</title>
+<title>Statistical Rethinking 2026, A01</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,29 +25,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../images/website_logo.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6f439b9b8e5c10b8e40ef9b4c37a1e42.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../images/website_logo.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-6f439b9b8e5c10b8e40ef9b4c37a1e42.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -73,63 +108,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-bayes .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-description','listing-date','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-bayes'] = new List('listing-bayes', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-metaanalysis .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-description','listing-date','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-metaanalysis'] = new List('listing-metaanalysis', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <script defer="" src="https://cloud.umami.is/script.js" data-website-id="00265c7c-7dd4-4c20-b5bb-69393c654960"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
@@ -171,9 +149,9 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../images/website_logo.png" alt="" class="navbar-logo light-content">
-    <img src="../images/website_logo.png" alt="" class="navbar-logo dark-content">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../images/website_logo.png" alt="" class="navbar-logo light-content">
+    <img src="../../../images/website_logo.png" alt="" class="navbar-logo dark-content">
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -182,19 +160,19 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../work.html"> 
+    <a class="nav-link" href="../../../work.html"> 
 <span class="menu-text">Work</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../posts/index.html" aria-current="page"> 
+    <a class="nav-link" href="../../../posts/index.html"> 
 <span class="menu-text">Posts</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../personal.html"> 
+    <a class="nav-link" href="../../../personal.html"> 
 <span class="menu-text">Personal</span></a>
   </li>  
 </ul>
@@ -209,20 +187,39 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
 <!-- main -->
 <main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Posts</h1>
+<h1 class="title">Statistical Rethinking 2026, A01</h1>
 </div>
 
+<div>
+  <div class="description">
+    My solution to exercise A01 from Richard McElreath’s Statistical Rethinking course.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta column-page">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Paulina Sell </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">Jan 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -232,176 +229,99 @@ window.Quarto = {
 </header>
 
 
-<section id="statistical-rethinking" class="level2">
-<h2 class="anchored" data-anchor-id="statistical-rethinking">Statistical Rethinking</h2>
-<p>I’m currently working my way through Richard McElreath’s fantastic <a href="https://github.com/rmcelreath/stat_rethinking_2026/tree/main"><em>Statistical Rethinking</em></a> course. Here you can see some of my attempts to solving the exercises.</p>
-<div id="listing-bayes" class="quarto-listing quarto-listing-container-grid">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="UiUyQ0JheWVzJTJDY2F1c2FsJTIwaW5mZXJlbmNlJTJDc2hyaW5rYWdlJTJDcG9vbGluZw==" data-listing-date-sort="1780264800000" data-listing-file-modified-sort="1782716837549" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1649">
-<a href="../posts/statistical-rethinking/mcelreath_B01/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Statistical Rethinking 2026, B01
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QmF5ZXM='); return false;">Bayes</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y2F1c2FsJTIwaW5mZXJlbmNl'); return false;">causal inference</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('c2hyaW5rYWdl'); return false;">shrinkage</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cG9vbGluZw=='); return false;">pooling</div>
-
+<p><a href="https://github.com/rmcelreath/stat_rethinking_2026/tree/main">Link to full course on GitHub</a><br>
+<a href="https://youtu.be/ztbYkBPDOgU?si=Yndk2qF_E6Fz08WB">Link to online lecture</a></p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
 </div>
-<div class="card-text listing-description delink">
-<p>My solution to exercise B01 from Richard McElreath’s Statistical Rethinking course.</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Jun 2026
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Exercise
 </div>
 </div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="UiUyQ0JheWVzJTJDY2F1c2FsJTIwaW5mZXJlbmNlJTJDTUNNQw==" data-listing-date-sort="1772319600000" data-listing-file-modified-sort="1782665765385" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1263">
-<a href="../posts/statistical-rethinking/mcelreath_A08/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Statistical Rethinking 2026, A08
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QmF5ZXM='); return false;">Bayes</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y2F1c2FsJTIwaW5mZXJlbmNl'); return false;">causal inference</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TUNNQw=='); return false;">MCMC</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>My solution to exercise A08 from Richard McElreath’s Statistical Rethinking course.</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Mar 2026
+<div class="callout-body-container callout-body">
+<p>To study honesty, behavioral scientists have used an experiment called the Random Allocation Game (RAG). In a RAG, participants are given a single coin. Participants flip the coin, and if the result is heads, they win a small cash prize (like 10 Euros). Participants flip the coin in private—the experimenter cannot see or verify the result, and participants know this. While it is impossible to know if any individual participant honestly obeys the result of the coin flip, in the aggregate the proportion of prize claims provides information about the frequency of honesty in the sample. For example, if everyone claims the prize, then probably a lot of them are liars. Suppose 10 participants play a RAG and 8 of them claim the prize. Using the “garden of forking data” approach, how many ways are there to realize this sample (8 out of 10), if all participants are honest? How many ways, if 5 of the participants are honest? Can you figure out the number of honest participants that maximizes the number of ways to realize the observed sample (8 out of 10)?</p>
 </div>
 </div>
+<p>Ways to produce 8 out of 10 heads in independent coin flips?<br>
+Formula from the first lecture (random, independent toss of 4-sided globe, water (W) and land (L)):<br>
+</p>
+<p><span class="math inline">\((4p)^W * (4-4p)^L\)</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sides <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># this will replace the 4 in the formula above</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div></a>
+<p>or is 4 the number of tosses (10) here?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.8</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="g-col-1" data-index="2" data-categories="UiUyQ0JheWVzJTJDY2F1c2FsJTIwaW5mZXJlbmNlJTJDY29uZm91bmRpbmc=" data-listing-date-sort="1769900400000" data-listing-file-modified-sort="1782665766526" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1254">
-<a href="../posts/statistical-rethinking/mcelreath_A06/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Statistical Rethinking 2026, A06
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QmF5ZXM='); return false;">Bayes</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y2F1c2FsJTIwaW5mZXJlbmNl'); return false;">causal inference</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29uZm91bmRpbmc='); return false;">confounding</div>
-
+<p>what is p?? probability of heads -&gt; 0.8 for the first round? That doesn’t make sense, p was the proportion of water on 4-sided globe in each possibility in the example..</p>
+<p>These would be the calculations then:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>possib_A <span class="ot">&lt;-</span> ((sides <span class="sc">*</span> p)<span class="sc">^</span><span class="dv">8</span>) <span class="sc">*</span> ((sides <span class="sc">-</span> sides <span class="sc">*</span> p)<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="card-text listing-description delink">
-<p>My solution to exercise A06 from Richard McElreath’s Statistical Rethinking course.</p>
+<p>possib_A = 6.7108864^{7}</p>
+<p>Not sure this is right..</p>
+<p>What about not using the formula but just staying inside the table of possibilities?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>possib_8heads_honest <span class="ot">&lt;-</span> (<span class="dv">8</span><span class="sc">^</span><span class="dv">8</span>) <span class="sc">*</span> (<span class="dv">2</span><span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Feb 2026
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Possibility</th>
+<th>Observation: [XXOOOOOOOO]</th>
+<th>Formula</th>
+<th>Possibilities</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>[XXOOOOOOOO]</td>
+<td></td>
+<td><span class="math inline">\(2^2 * 8^8\)</span></td>
+<td>67,108,864</td>
+</tr>
+</tbody>
+</table>
+<p>Within the possible sample of 8 heads &amp; 2 tails, there are 67,108,864 ways to generate a sample of 8 heads &amp; 2 tails. This is the same result that I got before..</p>
+<p>It seems weird that there are <em>more</em> possibilities for the weirder outcome (8/10 heads), because don’t we assume that the coin is fair? The observation doesn’t change, so we have to vary the possibilities, right? And what about the last question?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sides <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>possib_B <span class="ot">&lt;-</span> ((sides <span class="sc">*</span> p)<span class="sc">^</span><span class="dv">3</span>) <span class="sc">*</span> ((sides <span class="sc">-</span> sides <span class="sc">*</span> p)<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="3" data-categories="UiUyQ0JheWVzJTJDY2F1c2FsJTIwaW5mZXJlbmNlJTJDcHJpb3IlMjBwcmVkaWN0aXZlJTIwc2ltdWxhdGlvbiUyQ3N5bnRoZXRpYyUyMGRhdGE=" data-listing-date-sort="1767222000000" data-listing-file-modified-sort="1783796745963" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1048">
-<a href="../posts/statistical-rethinking/mcelreath_A04/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Statistical Rethinking 2026, A04
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QmF5ZXM='); return false;">Bayes</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y2F1c2FsJTIwaW5mZXJlbmNl'); return false;">causal inference</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cHJpb3IlMjBwcmVkaWN0aXZlJTIwc2ltdWxhdGlvbg=='); return false;">prior predictive simulation</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('c3ludGhldGljJTIwZGF0YQ=='); return false;">synthetic data</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>My solution to exercise A04 from Richard McElreath’s Statistical Rethinking course.</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Jan 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div>
-</section>
-<section id="meta-analysis-visualization" class="level2">
-<h2 class="anchored" data-anchor-id="meta-analysis-visualization">Meta-analysis &amp; Visualization</h2>
-<p>In my most recent project I worked on comparing frequentist and Bayesian meta-analytic frameworks and I ran into an issue: The very pretty and convenient <code>forest()</code> function from the <code>metafor</code>package is not very open to adding things like posterior distributions…</p>
-<div id="listing-metaanalysis" class="quarto-listing quarto-listing-container-grid">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="UiUyQ21ldGEtYW5hbHlzaXMlMkNnZ3Bsb3QyJTJDdmlzdWFsaXphdGlvbg==" data-listing-date-sort="1772319600000" data-listing-file-modified-sort="1777214929950" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1454">
-<a href="../posts/meta-analysis/forestplot/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Recreating metafor forest plots in ggplot2
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('bWV0YS1hbmFseXNpcw=='); return false;">meta-analysis</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Z2dwbG90Mg=='); return false;">ggplot2</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('dmlzdWFsaXphdGlvbg=='); return false;">visualization</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>A step-by-step guide to reproducing the exact look of metafor’s forest() output using ggplot2.</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Mar 2026
+<p>How many ways, if 5 of the participants are honest? -&gt; 97.65625</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>n_honest <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>heads <span class="ot">&lt;-</span> <span class="dv">8</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>tails <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (n <span class="cf">in</span> n_honest) {</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  n_liar <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="sc">-</span> n</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  honest_heads <span class="ot">&lt;-</span> heads <span class="sc">-</span> n_liar</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  ways <span class="ot">&lt;-</span> ((n <span class="sc">*</span> p)<span class="sc">^</span>honest_heads) <span class="sc">*</span> ((n <span class="sc">-</span> n <span class="sc">*</span> p)<span class="sc">^</span>tails)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(ways, <span class="st">" way(s) for "</span>, n, <span class="st">" honest players"</span>))</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "1 way(s) for 2 honest players"
+[1] "3.375 way(s) for 3 honest players"
+[1] "16 way(s) for 4 honest players"
+[1] "97.65625 way(s) for 5 honest players"
+[1] "729 way(s) for 6 honest players"
+[1] "6433.9296875 way(s) for 7 honest players"
+[1] "65536 way(s) for 8 honest players"
+[1] "756680.642578125 way(s) for 9 honest players"
+[1] "9765625 way(s) for 10 honest players"</code></pre>
 </div>
 </div>
-</div>
-</div></a>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div>
+<p>Still not sure about this.. it seems too obvious</p>
 
 
-
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -477,7 +397,7 @@ Mar 2026
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/PaulinaSell\.github\.io\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
