@@ -5,7 +5,7 @@ website:
   navbar:
     background: primary
     search: false
-    logo: images/website_logo.ico
+    logo: images/website_logo.png
     right:
       - text: Home
         href: index.qmd
@@ -18,7 +18,7 @@ website:
     tools: 
       - icon: github
         href: https://github.com/PaulinaSell
-  favicon: images/website_logo.ico
+  favicon: images/website_logo.png
 
 format:
   html:
