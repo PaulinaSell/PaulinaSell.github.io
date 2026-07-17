@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Paulina Sell">
-<meta name="description" content="My solution to exercise A04 from Richard McElreath’s Statistical Rethinking course.">
+<meta name="description" content="A simple linear regression exercise focused on workflow.">
 
 <title>Statistical Rethinking 2026, A04</title>
 <style>
@@ -192,7 +192,8 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#prepare-data" id="toc-prepare-data" class="nav-link active" data-scroll-target="#prepare-data">Prepare data</a></li>
+  <li><a href="#exercise" id="toc-exercise" class="nav-link active" data-scroll-target="#exercise">Exercise</a></li>
+  <li><a href="#prepare-data" id="toc-prepare-data" class="nav-link" data-scroll-target="#prepare-data">Prepare data</a></li>
   <li><a href="#statistical-model" id="toc-statistical-model" class="nav-link" data-scroll-target="#statistical-model">Statistical model</a></li>
   <li><a href="#prior-predictive-simulation" id="toc-prior-predictive-simulation" class="nav-link" data-scroll-target="#prior-predictive-simulation">Prior predictive simulation</a></li>
   <li><a href="#simulation-based-validation" id="toc-simulation-based-validation" class="nav-link" data-scroll-target="#simulation-based-validation">Simulation-based validation</a>
@@ -218,15 +219,15 @@ window.Quarto = {
   <div class="quarto-categories">
     <div class="quarto-category">R</div>
     <div class="quarto-category">Bayes</div>
+    <div class="quarto-category">workflow</div>
     <div class="quarto-category">causal inference</div>
-    <div class="quarto-category">prior predictive simulation</div>
-    <div class="quarto-category">synthetic data</div>
+    <div class="quarto-category">simulation</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    My solution to exercise A04 from Richard McElreath’s Statistical Rethinking course.
+    A simple linear regression exercise focused on workflow.
   </div>
 </div>
 
@@ -255,21 +256,25 @@ window.Quarto = {
 </header>
 
 
-<p><a href="https://github.com/rmcelreath/stat_rethinking_2026/tree/main">Link to full course on GitHub</a><br>
-<a href="https://youtu.be/GIdwLrW2nNo?si=VzBAB29ttkC8Cb7Q">Link to online lecture</a></p>
 <div class="callout callout-style-default callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Exercise
+<span class="screen-reader-only">Tip</span>TL;DR
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Using the Howell1 dataset, consider only the people younger than 13 years old. In this sample, estimate the causal effect of each month of growth on weight. Be sure to perform a prior predictive simulation to check and justify your priors. Also try to perform a validation of your model on synthetic data.</p>
+<p>This fourth exercise from the beginner section is mainly about workflow and how to develop and validate Bayesian models. Using height and weight from the <code>Howell1</code> dataset, we learn how to do prior predictive simulation and simulation-based model validation to make sure that the model works before we actually analyze real data.</p>
 </div>
 </div>
+<p><a href="https://github.com/rmcelreath/stat_rethinking_2026/tree/main">Link to full course on GitHub</a><br>
+<a href="https://youtu.be/GIdwLrW2nNo?si=VzBAB29ttkC8Cb7Q">Link to online lecture</a></p>
+<section id="exercise" class="level2">
+<h2 class="anchored" data-anchor-id="exercise">Exercise</h2>
+<p><em>“Using the Howell1 dataset, consider only the people younger than 13 years old. In this sample, estimate the causal effect of each month of growth on weight. Be sure to perform a prior predictive simulation to check and justify your priors. Also try to perform a validation of your model on synthetic data.”</em></p>
+</section>
 <section id="prepare-data" class="level2">
 <h2 class="anchored" data-anchor-id="prepare-data">Prepare data</h2>
 <p>First, let’s load the package and data. Then, we’ll keep only those younger than 13 and multiply age by 12 to get age in months.</p>
@@ -368,13 +373,13 @@ window.Quarto = {
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  age_months   weight
-1   93.31731 28.39965
-2   49.39130 14.14093
-3   77.59504 23.36225
-4   74.09594 19.16934
-5   48.36422 13.70640
-6  146.98862 42.88791</code></pre>
+<pre><code>  age_months    weight
+1  127.73533 40.107988
+2  102.05646 35.698485
+3   51.51473 13.405998
+4  144.12372 45.704892
+5   13.62038  7.811658
+6   94.64760 26.192323</code></pre>
 </div>
 </div>
 <p>Let’s have a look:</p>
@@ -419,13 +424,13 @@ window.Quarto = {
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">precis</span>(model_synth)</span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>            mean          sd      5.5%      94.5%
-a     23.2742276 0.063390000 23.172918 23.3755371
-b      0.2994172 0.001394192  0.297189  0.3016453
-sigma  2.0046080 0.044832984  1.932956  2.0762597</code></pre>
+<pre><code>            mean         sd       5.5%      94.5%
+a     22.7811778 0.06284801 22.6807346 22.8816211
+b      0.2990002 0.00137898  0.2967964  0.3012041
+sigma  1.9874675 0.04444110  1.9164420  2.0584929</code></pre>
 </div>
 </div>
-<p>Okay so we’ve successfully recovered <code>b = 0.3</code> from our data simulation, but what about <code>a</code>? We’ve set <code>a = 0</code> in the simulation, but now it’s 23.27?<br>
+<p>Okay so we’ve successfully recovered <code>b = 0.3</code> from our data simulation, but what about <code>a</code>? We’ve set <code>a = 0</code> in the simulation, but now it’s 22.78?<br>
 Fortunately that’s not a bug! <code>sim_age_weight()</code> defines <code>a</code> as weight at <code>age = 0</code>, but our fitted model centers on <code>age_mean</code>, so the fitted <code>a</code> is weight at the mean age instead. <code>b</code> doesn’t care about centering, so it comes back correctly.<br>
 </p>
 </section>
@@ -494,9 +499,9 @@ Fortunately that’s not a bug! <code>sim_age_weight()</code> defines <code>a</c
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(mA4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            mean          sd       5.5%      94.5%
-a     14.6869185 0.208855603 14.3531269 15.0207101
-b      0.1118122 0.004567271  0.1045128  0.1191116
-sigma  2.5241462 0.147715345  2.2880685  2.7602238</code></pre>
+a     14.6869006 0.208897695 14.3530418 15.0207595
+b      0.1118179 0.004568192  0.1045171  0.1191188
+sigma  2.5246550 0.147789807  2.2884583  2.7608517</code></pre>
 </div>
 </div>
 </section>
