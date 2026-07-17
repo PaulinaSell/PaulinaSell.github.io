@@ -1,0 +1,230 @@
+/*-- scss:defaults --*/
+
+// Define your color palette
+$primary: #354a68;
+$secondary: #8EADC8;
+$success: #39516D;
+$info: #77835C;
+$warning: #B5765A;
+
+// Optional: customize other elements
+$body-bg: #1f1d1a;
+$body-color: #feecdc;
+$link-color: $primary;
+$code-color: #bcaea1;
+$code-block-bg: #34302b;
+
+$font-mobile : 0.9em;
+
+/*-- scss:rules --*/
+
+/* Apply the font to the body */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+body {
+  font-family: "Open Sans", sans-serif;
+  font-size: 1em;
+}
+
+code {
+  color: $code-color;
+  background-color: $code-block-bg;
+}
+
+main,
+.page-columns,
+#quarto-content {
+  max-width: 100%;
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
+}
+
+/* Mobile (768px and down) */
+@media (max-width: 768px) {
+
+  main,
+  .page-columns,
+  #quarto-content {
+    padding-left: 0rem !important;
+    padding-right: 0rem !important;
+  }
+
+  body {
+    font-size: $font-mobile !important;
+  }
+
+  .pub-card {
+    font-size: $font-mobile !important;
+  }
+
+  .timeline-item {
+    font-size: $font-mobile !important;
+  }
+
+  .skill-list {
+    font-size: $font-mobile !important;
+  }
+
+  .sidebar-link {
+    display: none !important;
+  }
+}
+
+.photo-collage {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+
+  p {
+    display: contents;
+    margin: 0;
+  }
+
+  img {
+    width: 100%;
+    aspect-ratio: 1 / 1; // forces square regardless of original dimensions
+    object-fit: cover;
+    display: block;
+  }
+}
+
+/* Navbar */
+
+footer.footer .nav-footer,
+#quarto-header>nav {
+  padding-left: max(1em, calc((100% - 1100px) / 2 + 1em));
+  padding-right: max(1em, calc((100% - 1100px) / 2 + 1em));
+}
+
+.navbar-logo {
+  background-color: #FBFAF9;
+  border-radius: 5px; // adjust to taste
+  padding: 1px; // a little breathing room around the icon
+  height: 35px !important;
+  max-height: 35px !important;
+}
+
+/* ── Cards ──────────────────────────────── */
+
+.quarto-grid-item {
+  .card-body {
+    //transition: background-color 0.2s ease-in-out;
+
+    .listing-categories .listing-category {
+      background-color: lighten($primary, 55%);
+      border: none;
+    }
+
+    &:hover {
+      background-color: lighten($primary, 55%);
+
+      .listing-categories .listing-category {
+        //transition: background-color 0.2s ease-in-out;
+        //transition: border-color 0.2s ease-in-out;
+        background-color: lighten($primary, 45%);
+        //border-color: black;
+      }
+    }
+  }
+}
+
+.quarto-grid-item .listing-categories {
+  margin-top: 0.6rem;
+}
+
+.quarto-grid-item .listing-description {
+  flex-grow: 1;
+}
+
+.quarto-grid-item .listing-date {
+  margin-top: 0rem;
+}
+
+
+/* ── Timeline ─────────────────────────────── */
+.timeline {
+  border-left: 2px solid $secondary;
+  padding-left: 1.5rem;
+  margin-left: 0.4rem;
+  margin-bottom: 1.6rem;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 1.4rem;
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: calc(-1.5rem - 1px);
+    transform: translateX(-50%);
+    top: 0.45rem;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: $secondary;
+  }
+}
+
+.timeline-year {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: $primary;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+}
+
+/* ── Skills list ──────────────────────────── */
+.skill-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem 1.5rem;
+  padding: 0;
+  margin-bottom: 1.8rem;
+  margin-left: 3.1rem;
+  font-size: 0.9rem;
+}
+
+li::marker {
+  color: $primary;
+}
+
+/* ── Publication boxes ────────────────────── */
+.pub-card {
+  border: 1px solid $secondary;
+  border-radius: 5px;
+  padding: 1rem 1rem 0rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.93rem;
+  line-height: 1.6;
+  background: $body-bg;
+  position: relative; // required for stretched-link
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: lighten($primary, 55%);
+  }
+}
+
+/* ── Sidebar ──────────────────────────────── */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: $body-color;
+  text-decoration: none;
+
+  &:hover {
+    color: $primary;
+  }
+}
+
+.sidebar-link svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}

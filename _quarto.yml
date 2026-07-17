@@ -23,10 +23,11 @@ website:
 format:
   html:
     theme: 
-    - jolla
-    - styles.scss
+      light: [jolla, styles.scss]
+      dark: [jolla, styles-dark.scss]
     page-layout: full
     include-in-header: umami.html
+highlight-style: github
 
 execute:
   freeze: auto

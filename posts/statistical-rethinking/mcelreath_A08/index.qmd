@@ -1,16 +1,23 @@
 ---
 title: "Statistical Rethinking 2026, A08"
-description: "My solution to exercise A08 from Richard McElreath's Statistical Rethinking course."
+description: "Using `ulam` and MCMC diagnostics on wine-tasting data."
 author: Paulina Sell
 date: March 2026
 date-format: MMM YYYY
-categories: [R, Bayes, causal inference, MCMC]
+categories: [R, Bayes, item response model, MCMC]
 toc: true
 toc-depth: 4
 image: false
 execute:
   freeze: auto
 ---
+
+::: {.callout-tip  icon=false}
+# TL;DR
+In this eighth exercise from the beginner section, we're using `ulam` and MCMC diagnostics for the first time.
+We modify the item response model from the lecture to find out wether French and American judges differ in how they rate wine by estimating (total) causal contrast.
+Even though I've never heard of item response models before, this was not too difficult, because we really just modify what McElreath showed in his lecture.
+:::
 
 [Link to full course on GitHub](https://github.com/rmcelreath/stat_rethinking_2026/tree/main) \
 [Link to online lecture](https://youtu.be/N_LRQUrdHag?si=dN_uS8JvjWGmWHnY)
@@ -19,15 +26,15 @@ execute:
 #| label: setup
 #| include: false
 
-knitr::opts_chunk$set(dev.args = list(bg = "transparent"))
+knitr::opts_chunk$set(dev.args = list(bg = "#FBFAF9"))
 ```
 
-::: {.callout-tip  icon=false}
 ## Exercise
-Modify the item response model from the lecture to ask if there are any average differences between French and American judges. 
+*"Modify the item response model from the lecture to ask if there are any average differences between French and American judges. 
 Use `ulam()` and be sure to check chain convergence. 
-Do the French and American judges differ in either their harshness or their discrimination?
-:::
+Do the French and American judges differ in either their harshness or their discrimination?"*"
+
+## Load data
 
 First, we load the package and data.
 
@@ -52,12 +59,15 @@ str(data)
 
 The data is from a wine-tasting event, where 20 wines (10 from France, 10 from New Jersey) have been tasted by 9 French and American judges.\
 Now, we want to find out whether there are any differences in harshness or discrimination between French and American judges.
+
+## DAG
+
 Let's use a DAG to think about this.
 
 ```{r}
 #| label: DAG1
 #| echo: false
-#| fig-height: 1.5
+#| fig-height: 1.6
 #| fig-width: 3
 #| fig-align: center
 #| message: false
@@ -83,9 +93,10 @@ coordinates(dag) <- list(
 )
 
 ggdag_classic(dag) +
-  theme_dag() + 
+  theme_dag() +
   theme(
-    plot.background = element_rect(fill = "transparent", color = NA))
+    plot.background = element_rect(fill = "transparent", color = NA)
+  )
 ```
 
 Q = Wine quality\
@@ -160,7 +171,8 @@ m.wines <- ulam(
     D[Z] ~ dexp(1),
     sigma ~ dexp(1)
   ),
-  data = data, chains = 4
+  data = data,
+  chains = 4
 )
 ```
 
@@ -309,7 +321,7 @@ Now, we just call the function twice (for French and American judges) and then c
 df_plot <- bind_rows(
   make_lines(Z_american, n_lines, Q_seq, post) |>
     mutate(judge_origin = "American"),
-  make_lines(Z_french, n_lines, Q_seq, post) |> 
+  make_lines(Z_french, n_lines, Q_seq, post) |>
     mutate(judge_origin = "French")
 ) |>
   mutate(judge_origin = factor(judge_origin, levels = c("American", "French")))

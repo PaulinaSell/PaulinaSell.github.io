@@ -1,16 +1,23 @@
 ---
 title: "Statistical Rethinking 2026, A04"
-description: "My solution to exercise A04 from Richard McElreath's Statistical Rethinking course."
+description: "A simple linear regression exercise focused on workflow."
 author: Paulina Sell
 date: January 2026
 date-format: MMM YYYY
-categories: [R, Bayes, causal inference, prior predictive simulation, synthetic data]
+categories: [R, Bayes, workflow, causal inference, simulation]
 toc: true
 toc-depth: 4
+shift-heading-level-by: 1
 image: false
 execute:
   freeze: auto
 ---
+
+::: {.callout-tip  icon=false}
+# TL;DR
+This fourth exercise from the beginner section is mainly about workflow and how to develop and validate Bayesian models.
+Using height and weight from the `Howell1` dataset, we learn how to do prior predictive simulation and simulation-based model validation to make sure that the model works before we actually analyze real data.
+:::
 
 [Link to full course on GitHub](https://github.com/rmcelreath/stat_rethinking_2026/tree/main) \
 [Link to online lecture](https://youtu.be/GIdwLrW2nNo?si=VzBAB29ttkC8Cb7Q)
@@ -19,18 +26,17 @@ execute:
 #| label: setup
 #| include: false
 
-knitr::opts_chunk$set(dev.args = list(bg = "transparent"))
+knitr::opts_chunk$set(dev.args = list(bg = "#FBFAF9"))
 ```
 
-::: {.callout-tip  icon=false}
 # Exercise
-Using the Howell1 dataset, consider only the people younger than 13 years old. 
+
+*"Using the Howell1 dataset, consider only the people younger than 13 years old. 
 In this sample, estimate the causal effect of each month of growth on weight. 
 Be sure to perform a prior predictive simulation to check and justify your priors. 
-Also try to perform a validation of your model on synthetic data.
-:::
+Also try to perform a validation of your model on synthetic data."*
 
-## Prepare data
+# Prepare data
 
 First, let's load the package and data.
 Then, we'll keep only those younger than 13 and multiply age by 12 to get age in months.
@@ -61,7 +67,7 @@ plot(
 )
 ```
 
-## Statistical model
+# Statistical model
 
 We will rely on a linear regression that predicts average weight (kg) depending on age (months). 
 
@@ -88,7 +94,7 @@ $$
 \sigma \sim \text{Uniform}(0, 5)
 $$
 
-## Prior predictive simulation
+# Prior predictive simulation
 Let's plot some lines from our model before letting it look at the data: 
 
 ```{r}
@@ -112,10 +118,10 @@ for (j in 1:100) {
 
 This is not perfect, but as McElreath said in his lecture: "There are no correct priors, only scientifically justifiable priors".
 
-## Simulation-based validation
+# Simulation-based validation
 Let's now generate synthetic data from our model and see if it makes any sense.
 
-### Simulate data
+## Simulate data
 We need a function to generate age and weight data of hypothetical people.
 
 ```{r}
@@ -147,7 +153,7 @@ Okay, a bit too linear maybe, but that's fine.
 Nothing impossible!
 
 
-### Fit model
+## Fit model
 Let's fit our model to this synthetic data:
 
 ```{r}
@@ -174,7 +180,7 @@ Fortunately that's not a bug!
 `sim_age_weight()` defines `a` as weight at `age = 0`, but our fitted model centers on `age_mean`, so the fitted `a` is weight at the mean age instead.
 `b` doesn't care about centering, so it comes back correctly. \
 
-### Visualize
+## Visualize
 Let's plot the simulated data (red) & the posterior mean regression line (black): 
 
 ```{r}
@@ -207,7 +213,7 @@ curve(a_map + b_map * (x - age_mean), add = TRUE, col = "black", lwd = 2)
 
 Great!! :)
 
-## Fit the model to the real data
+# Fit the model to the real data
 
 For the regression model, we also need the mean age:
 
@@ -215,7 +221,7 @@ For the regression model, we also need the mean age:
 age_mean <- mean(d$age_months)
 ```
 
-### Fit model
+## Fit model
 Let's try and fit that model using the `rethinking` package! 
 
 ```{r}
@@ -235,7 +241,7 @@ mA4 <- quap(
 precis(mA4)
 ```
 
-### Visualize
+## Visualize
 Okay, now let's look at the data and the line at the posterior mean plotted (black) and 20 samples from the posterior (grey):
 ```{r}
 #| code-fold: true

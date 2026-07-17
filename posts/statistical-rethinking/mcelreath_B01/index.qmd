@@ -1,6 +1,6 @@
 ---
 title: "Statistical Rethinking 2026, B01"
-description: "My solution to exercise B01 from Richard McElreath's Statistical Rethinking course."
+description: "Intro to multilevel models and shrinkage using data on article submissions to The BMJ."
 author: Paulina Sell
 date: June 2026
 date-format: MMM YYYY
@@ -12,6 +12,13 @@ execute:
   freeze: auto
 ---
 
+::: {.callout-tip  icon=false}
+## TL;DR
+In this first exercise from the experienced section, we gradually build a multilevel model.
+We begin with a non-pooling model and compare it to a partial-pooling model.
+The dataset we analyze here is pretty cool: almost 50,000 article submissions to *The BMJ* from 38 countries!
+:::
+
 [Link to full course on GitHub](https://github.com/rmcelreath/stat_rethinking_2026/tree/main) \
 [Link to online lecture](https://youtu.be/jh3RltVrQ-Q?si=uuMUOVXbSiSblFVo)
 
@@ -22,32 +29,33 @@ execute:
 knitr::opts_chunk$set(dev.args = list(bg = "transparent"))
 ```
 
-::: {.callout-tip  icon=false}
+
 ## Exercise
-These problems use data from a 2019 publication that reports date and time of submission of papers to the medical journal *The BMJ* (doi:10.1136/bmj.l6460). 
+*"These problems use data from a 2019 publication that reports date and time of submission of papers to the medical journal **The BMJ** (doi:10.1136/bmj.l6460). 
 There are 6 columns and 49,464 rows. 
 Each row is an article submission.
-The columns are:
+The columns are:*
 
-**T**: The local time of the submission\
-**Y**: The year of the submission\
-**country_name**: Country of corresponding author\
-**L**: ID value for country (an index variable from 1 to 38)\
-**W**: 0-1 indicator variable for weekend submission\
-**H**: 0-1 indicator variable for holiday submission\
+*T: The local time of the submission*\
+*Y: The year of the submission*\
+*country_name: Country of corresponding author*\
+*L: ID value for country (an index variable from 1 to 38)*\
+*W: 0-1 indicator variable for weekend submission*\
+*H: 0-1 indicator variable for holiday submission*\
 
-1. For each country in the sample, estimate the probability that a corresponding author submits on a weekend.
+*1. For each country in the sample, estimate the probability that a corresponding author submits on a weekend.
 In this problem, use a **no-pooling (no shrinkage) model**.
 This means the model does not have hierarchical priors.
 Which countries have the highest probability of submitting on the weekend?
-Can you visualize these estimates in a way that also shows their uncertainties?
+Can you visualize these estimates in a way that also shows their uncertainties?*
 
-2. Now use a **partial-pooling model**.
+*2. Now use a **partial-pooling model**.
 This means that the model has a hierarchical prior for each country’s estimate.
 Hint: Think of each country like a tadpole tank.
 How are the partial-pooling estimates different from the no-pooling estimates?
-Can you figure out why they differ?
-:::
+Can you figure out why they differ?"*
+
+# Load packages and data
 
 First, we need to load some packages and the BMJ data.
 
@@ -62,7 +70,9 @@ library(tibble)
 library(dplyr)
 library(forcats)
 
-data_orig <- read.csv("https://raw.githubusercontent.com/rmcelreath/stat_rethinking_2026/refs/heads/main/homework/BMJSubmissions.csv")
+data_orig <- read.csv(
+  "https://raw.githubusercontent.com/rmcelreath/stat_rethinking_2026/refs/heads/main/homework/BMJSubmissions.csv"
+)
 str(data_orig)
 ```
 
@@ -91,11 +101,11 @@ data <- data_orig |>
   ungroup()
 
 data <- list(
-    country_name = data$country_name,
-    propweekend = data$propweekend,
-    L = data$L, # country index ( 1 to 38)
-    N = data$N, # number of submissions per country (rows per country index)
-    W_count = data$W_count # weekend submission count per country
+  country_name = data$country_name,
+  propweekend = data$propweekend,
+  L = data$L, # country index ( 1 to 38)
+  N = data$N, # number of submissions per country (rows per country index)
+  W_count = data$W_count # weekend submission count per country
 )
 
 str(data)
@@ -213,7 +223,7 @@ axis(1, at = c(1:38), labels = data$country_name, las = 2, cex.axis = 0.7)
 
 # 95% interval per country from posterior samples
 ci_mat <- apply(post$a, 2, quantile, probs = c(0.025, 0.975))
-ci_prob <- logistic(ci_mat)  # transform to probability scale
+ci_prob <- logistic(ci_mat) # transform to probability scale
 
 segments(
   x0 = 1:38,
@@ -349,7 +359,7 @@ axis(1, at = c(1:38), labels = data$country_name, las = 2, cex.axis = 0.7)
 
 # 95% interval per country from posterior samples
 ci_mat <- apply(post_mWE_ml$a, 2, quantile, probs = c(0.025, 0.975))
-ci_prob <- logistic(ci_mat)  # transform to probability scale
+ci_prob <- logistic(ci_mat) # transform to probability scale
 
 segments(
   x0 = 1:38,
@@ -367,8 +377,12 @@ abline(
   lty = 2
 )
 
-country_max_mWE_ml <- data$L[data$propweekend_est_mWE_ml == max(data$propweekend_est_mWE_ml)]
-country_name_max_mWE_ml <- unique(data_orig$country_name[data_orig$L == country_max_mWE_ml])
+country_max_mWE_ml <- data$L[
+  data$propweekend_est_mWE_ml == max(data$propweekend_est_mWE_ml)
+]
+country_name_max_mWE_ml <- unique(data_orig$country_name[
+  data_orig$L == country_max_mWE_ml
+])
 ```
 
 Now, **`r country_name_max_mWE_ml`** has the hightest posterior mean proportion of weekend submissions with `r round(max(data$propweekend_est_mWE_ml) * 100, 1)` %.
@@ -400,7 +414,11 @@ data |>
   adjust_size(220, 90) |>
   adjust_font(9) |>
   adjust_theme_details(
-    panel.border = ggplot2::element_rect(colour = "black", fill = NA, linewidth = 0.5),
+    panel.border = ggplot2::element_rect(
+      colour = "black",
+      fill = NA,
+      linewidth = 0.5
+    ),
     panel.background = ggplot2::element_rect(fill = NA),
     plot.background = ggplot2::element_rect(fill = NA, colour = NA)
   ) |>

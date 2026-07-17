@@ -1,6 +1,6 @@
 ---
 title: "Recreating metafor forest plots in ggplot2"
-description: "A step-by-step guide to reproducing the exact look of metafor's forest() output using ggplot2."
+description: "A step-by-step guide to reproducing the exact look of metafor's `forest()` output using ggplot2."
 date: March 2026
 date-format: "MMM YYYY"
 categories: [R, meta-analysis, ggplot2, visualization]
@@ -36,8 +36,20 @@ library(glue)
 library(here)
 library(magick)
 
-m.brm <- readRDS(here("posts", "meta-analysis", "forestplot", "data", "m.brm_full.rds"))
-freq_model <- readRDS(here("posts", "meta-analysis", "forestplot", "data", "freq_full.rds"))
+m.brm <- readRDS(here(
+  "posts",
+  "meta-analysis",
+  "forestplot",
+  "data",
+  "m.brm_full.rds"
+))
+freq_model <- readRDS(here(
+  "posts",
+  "meta-analysis",
+  "forestplot",
+  "data",
+  "freq_full.rds"
+))
 ```
 
 ## Prepare data
@@ -243,7 +255,7 @@ Bayes_forest_plot <- ggplot(
     panel.background = element_blank(),
     plot.margin = margin(t = 18.5, r = 10, b = 35, l = 20),
     plot.title = element_text(hjust = 0, face = "bold", size = title_size),
-    plot.background = element_rect(fill = "transparent", colour = NA),
+    plot.background = element_rect(fill = "#FBFAF9", colour = NA),
     axis.text.y = element_text(
       hjust = 0,
       margin = margin(r = -10),
@@ -272,7 +284,7 @@ ggsave(
   width = 20,
   height = 15,
   units = "cm",
-  bg = "transparent"
+  bg = "#FBFAF9"
 )
 
 png(
@@ -281,7 +293,7 @@ png(
   height = 15,
   units = "cm",
   res = 300,
-  bg = "transparent"
+  bg = "#FBFAF9"
 )
 
 forest(

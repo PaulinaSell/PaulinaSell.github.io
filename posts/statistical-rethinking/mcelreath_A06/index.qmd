@@ -1,16 +1,23 @@
 ---
 title: "Statistical Rethinking 2026, A06"
-description: "My solution to exercise A06 from Richard McElreath's Statistical Rethinking course."
+description: "Simulating synthetic data and using a DAG to think about causal inference."
 author: Paulina Sell
 date: February 2026
 date-format: MMM YYYY
-categories: [R, Bayes, causal inference, confounding]
+categories: [R, Bayes, DAG, causal inference, confounding, simulation]
 toc: true
 toc-depth: 4
 image: false
 execute:
   freeze: auto
 ---
+
+::: {.callout-tip  icon=false}
+# TL;DR
+In this sixth exercise from the beginner section, we first simulate data based on a DAG (Directed Acyclic Graph) and then estimate the causal effect between two variables.
+The cool thing is that at the end we can actually check if we were able to "recover" the relationship between the variables we set when simulating the data.
+On the way to the right answer, we'll need to think about confounding and use some do-calculus.
+:::
 
 [Link to full course on GitHub](https://github.com/rmcelreath/stat_rethinking_2026/tree/main) \
 [Link to online lecture](https://www.youtube.com/watch?v=lGR7D45Ww38)
@@ -19,12 +26,11 @@ execute:
 #| label: setup
 #| include: false
 
-knitr::opts_chunk$set(dev.args = list(bg = "transparent"))
+knitr::opts_chunk$set(dev.args = list(bg = "#FBFAF9"))
 ```
 
-::: {.callout-tip  icon=false}
 ## Exercise
-Consider the DAG below:
+*"Consider the DAG below:*
 ```{r}
 #| label: DAG1  
 #| echo: false
@@ -33,7 +39,6 @@ Consider the DAG below:
 #| fig-align: center
 #| message: false
 #| warning: false
-
 
 library(dagitty)
 library(ggdag)
@@ -56,18 +61,18 @@ coordinates(dag) <- list(
 )
 
 ggdag_classic(dag) +
-  theme_dag() + 
+  theme_dag() +
   theme(
-    plot.background = element_rect(fill = "transparent", color = NA))
+    plot.background = element_rect(fill = "transparent", color = NA)
+  )
 ```
 
-I want you to first simulate data consistent with this DAG. 
+*I want you to first simulate data consistent with this DAG. 
 You can assume that each variable is normally distributed.
 Then focus on estimating the causal effect of X on Y. 
 Which other variables are needed to correctly estimate the effect of X on Y? 
 For any variables other than X, what is the meaning of their estimated coefficients? Are they also causal effect estimates?
-Why or why not?
-:::
+Why or why not?"*
 
 ## Simulate data from DAG
 First, let's simulate some data according to the DAG.
@@ -103,15 +108,16 @@ This is a simple plot of the four variables we just generated:
 
 library(rethinking)
 
-dens(df$A, col = "#E77D72", lwd = 2, lty = 2, xlim = c (-8, 5))
+dens(df$A, col = "#E77D72", lwd = 2, lty = 2, xlim = c(-8, 5))
 dens(df$Z, col = "#7291e7ff", lwd = 2, lty = 3, add = T)
 dens(df$X, col = "#72e7b0ff", lwd = 2, lty = 4, add = T)
 dens(df$Y, col = "black", lwd = 2, lty = 1, add = T)
-legend(x = "topright",
-       legend = c("A", "Z", "X", "Y"),
-       lty = c(2,3,4,1),
-       lwd = 2,
-       col = c("#E77D72", "#7291e7ff", "#72e7b0ff", "black")
+legend(
+  x = "topright",
+  legend = c("A", "Z", "X", "Y"),
+  lty = c(2, 3, 4, 1),
+  lwd = 2,
+  col = c("#E77D72", "#7291e7ff", "#72e7b0ff", "black")
 )
 ```
 ## Total effect of X on Y
@@ -124,7 +130,6 @@ We have two stacked *forks* here:
 #| fig-height: 1.5
 #| fig-width: 3
 #| fig-align: center
-
 
 dag <- dagitty(
   "dag {
@@ -186,13 +191,11 @@ n <- 20
 a <- rnorm(n, 0, 1)
 bX <- rnorm(n, 0, 1)
 
-plot(NULL, xlim = c(-10, 10), ylim = c(-10, 10),
-xlab = "X",
-ylab = "Y")
+plot(NULL, xlim = c(-10, 10), ylim = c(-10, 10), xlab = "X", ylab = "Y")
 Xseq <- seq(from = -10, to = 10, len = 20)
 for (i in 1:n) {
-    mu <- a[i] + bX[i] * Xseq
-    lines(Xseq, mu, lwd = 2, col = 2)
+  mu <- a[i] + bX[i] * Xseq
+  lines(Xseq, mu, lwd = 2, col = 2)
 }
 ```
 
@@ -206,15 +209,15 @@ Now let's fit the model using quadratic approximation, `quap`.
 #| cache: false
 
 m_YXZ <- quap(
-    alist(
-        Y ~ dnorm(mu, sigma),
-        mu <- a + bX * X + bZ * Z,
-        a ~ dnorm(0, 1),
-        bX ~ dnorm(0, 1),
-        bZ ~ dnorm(0, 1),
-        sigma ~ dexp(1)
-    ),
-    data = df
+  alist(
+    Y ~ dnorm(mu, sigma),
+    mu <- a + bX * X + bZ * Z,
+    a ~ dnorm(0, 1),
+    bX ~ dnorm(0, 1),
+    bZ ~ dnorm(0, 1),
+    sigma ~ dexp(1)
+  ),
+  data = df
 )
 
 precis(m_YXZ)
@@ -230,7 +233,6 @@ Let's look at the DAG again.
 #| fig-height: 1.5
 #| fig-width: 3
 #| fig-align: center
-
 
 dag <- dagitty(
   "dag {
