@@ -1,0 +1,601 @@
+---
+title: "Comparing Bayesian and frequentist meta-analysis in R"
+description: ""
+date: July 2026
+date-format: "MMM YYYY"
+categories: [R, meta-analysis, brms, metafor, simulation]
+image: false
+toc: true
+toc-depth: 4
+execute:
+  cache: true
+  freeze: auto
+---
+
+# Simulating studies
+
+First, we need to simulate some studies that we can then pool.
+
+## Study sizes
+
+All of them need a sample size, effect estimate, standard error (SE) and ideally a first author :`).
+
+We begin with the sample size.
+
+```{r}
+#| label: load_packages
+#| message: false
+#| warning: false
+
+library(brms)
+library(metafor)
+library(tidyverse)
+library(tidybayes)
+library(ggridges)
+library(glue)
+library(here)
+library(magick)
+```
+
+```{r}
+#| label: sim_sizes
+
+n <- 15
+weights <- c(0.4, 0.5, 0.1)
+
+components <- sample(1:3, size = n, prob = weights, replace = TRUE)
+
+possible_sizes <- c(50, 500, 1000)
+sample_size <- rpois(n, lambda = possible_sizes[components])
+```
+
+We first decide that this meta-analysis will consist of `r n` studies.
+We want to sample sample sizes out of a mixed distribution (that just means we mix multiple distributions), because just sampling out of something like a single normal distribution would be kind of boring.. all studies would have similar sample sizes, which is something that we rarely see in reality. 
+`components` becomes a vector with length `r n` that gets randomly filled with `1`, `2` and `3`, depending on the probability that we set in `weights` (e.g. `1` has a probability of `r weights[1] * 100`%).
+Then, we decide for approximate sample sizes and save them in a simple vector `possible_sizes`.
+I've chosen `r possible_sizes[1]`, `r possible_sizes[2]` and `r possible_sizes[3]`, so that most studies are small or medium-sized and some (`r weights[3] * 100`%) are really large.
+
+To introduce some randomness, we sample from a poisson distribution (great for counts) `r n` times and each time we get the correct approximate sample size (from `possible_sizes`) for the `components` vector by indexing.
+
+I don't know about you, but I found this to be pretty confusing and not very intuitive.
+I promise the next steps will we way more straightforward.
+
+## Effect sizes
+
+Now we sample effect sizes from a normal distribution.
+
+```{r}
+#| label: sim_effect-sizes
+
+effect_size <- rnorm(n, 1.9, 1)
+```
+
+## Standard error
+
+To simulate standard errors (SE) for our studies, we just sample standard deviations from an uniform distribution and then simply use the formula to calculate SE.
+
+```{r}
+#| label: sim_SE
+
+# SD <- rexp(n, 0.8)
+SD <- rcauchy(n, location = 3, scale = 0.2)
+
+SE <- SD / sqrt(sample_size)
+```
+
+We're almost ready! 
+Here I'm making up some author names and then stich together a nice tibble with all the data we need.
+```{r}
+#| label: build_studies_df
+#| code-fold: true
+
+library(tibble)
+
+authors <- c(
+  "Gustav et al",
+  "Amanda and Osti",
+  "Vengur et al",
+  "Bjalla et al",
+  "Flugsvinn et al",
+  "Fiedel et al",
+  "Mimi and Bobby",
+  "Kapa et al",
+  "Lilly et al",
+  "Trausti et al",
+  "Flocke and Buddy",
+  "Beethoven et al",
+  "Olli et al",
+  "Bekecs et al",
+  "Dalia et al"
+)
+
+dat <- tibble(
+  authors,
+  effect_size,
+  SE,
+  sample_size
+)
+
+dat[1:15, ]
+```
+
+
+# Statistical model
+
+## The model
+
+We model each study's observed effect $\hat{\theta}_{k}$ as a noisy reflection of the true effect in that study’s sample $\theta_{k}$, with the noise represented by the within-study sampling error $\sigma_{k}$ ​(treated as known based on reported standard errors). 
+These true effects $\theta_{k}$ are themselves modelled as draws from an overarching normal distribution which describes the true average effect across studies $\mu$ and the between-study heterogeneity $\tau$.
+
+$$
+\begin{split}
+\hat{\theta}_{k} &\sim \mathcal{N}(\theta_{k}, \sigma_{k}) \\
+\theta_{k} &\sim \mathcal{N}(\mu, \tau) \\
+\end{split}
+$$
+
+Where $\hat{\theta}_{k}$ is the observed effect size for study $k$, $\sigma_{k}$ is the within-study sampling standard deviation for study $k$ (treated as known from the reported SE of each study), $\theta_{k}$ is the true underlying effect for study $k$, $\mu$ is the overall pooled effect and $\tau$ is the between-study standard deviation (heterogeneity).
+
+# Bayesian meta-analysis
+
+## Priors
+
+```{r}
+#| label: def_priors
+#| echo: false
+
+prior_mu_mean <- 2
+prior_mu_sd <- 1
+
+prior_tau_mean <- 0
+prior_tau_sd <- 2
+```
+
+$\mu$ and $\tau$ are the parameters we'll actually get posterior distributions for.
+$\mu$ describes the pooled effect across all studies and $\tau$ describes the between-study heterogeneity.
+Now we need to set some priors for these two parameters.
+
+<!-- add info about priors for beginners? -->
+
+### Mu
+What effect size could we reasonably expect here?
+We could of course be lazy and just use parameters we set in the simulation above, but that's lame (and in reality we of course don't have that knowledge).\
+Let's say that from the literature we've read so far and plausibility, we are comfortable to say that the effect is probably positive not super big.
+We can translate this into $\mu$ ~ $\mathcal{N}(`r prior_mu_mean`, `r prior_mu_sd`)$.
+
+```{r}
+#| label: vis_prior_mu
+#| code-fold: true
+
+x <- seq((-1), (5), by = 0.1)
+y <- dnorm(x, prior_mu_mean, prior_mu_sd)
+plot(x, y, type = "l", xlab = "true effect", ylab = "", yaxt = "n")
+
+lower_bound <- 0
+upper_bound <- 4
+
+idx <- x >= lower_bound & x <= upper_bound
+x_shade <- x[idx]
+y_shade <- y[idx]
+
+polygon(
+  c(x_shade[1], x_shade, tail(x_shade, 1)),
+  c(0, y_shade, 0),
+  col = adjustcolor("cornflowerblue", alpha.f = 0.5),
+  border = NA
+)
+```
+
+With this prior, we say that we think the true effect is somewhere between `r lower_bound` and `r upper_bound` with a probability of `r round((pnorm(4, 2, 1) - pnorm(0, 2, 1)) * 100)`%.
+
+### Tau
+
+We also have to set a prior for $\tau$, tau, the between-study heterogeneity.
+Heterogeneity can never be negative and we don't want to be super restrictive with this prior.
+We could use something like a cauchy distribution here, but I'll just do a half-normal, meaning that we clip the normal distribution at zero.
+We'll set the prior for tau to $\tau \sim \mathcal{N}^+(`r prior_tau_mean`, `r prior_tau_sd`)$
+
+```{r}
+#| label: vis_prior_tau
+#| code-fold: true
+
+x <- seq((0), (6), by = 0.1)
+y <- dnorm(x, 0, 2)
+plot(
+  x,
+  y,
+  type = "l",
+  xlab = "between-study heterogeneity",
+  ylab = "",
+  yaxt = "n"
+)
+
+lower_bound <- 0
+upper_bound <- 3
+
+idx <- x >= lower_bound & x <= upper_bound
+x_shade <- x[idx]
+y_shade <- y[idx]
+
+polygon(
+  c(x_shade[1], x_shade, tail(x_shade, 1)),
+  c(0, y_shade, 0),
+  col = adjustcolor("orange", alpha.f = 0.3),
+  border = NA
+)
+```
+
+Here we say: "The probability, that the true between-study heterogeneity is smaller than `r upper_bound` is `r round((1 - (1 - pnorm(upper_bound, prior_tau_mean, prior_tau_sd)) * 2) * 100)`%".
+
+Now we save our priors:
+
+```{r}
+#| label: save_priors
+#| eval: false
+
+prior_mu_mean <- 2
+prior_mu_sd <- 1
+
+prior_tau_mean <- 0
+prior_tau_sd <- 2
+```
+
+This is the full statistical model, including both priors:
+$$
+\begin{split}
+\hat{\theta}_{k} &\sim \mathcal{N}(\theta_{k}, \sigma_{k}) \\
+\theta_{k} &\sim \mathcal{N}(\mu, \tau) \\
+\mu &\sim \mathcal{N}(`r prior_mu_mean`, `r prior_mu_sd`) \\
+\tau &\sim \mathcal{N^+}(`r prior_tau_mean`, `r prior_tau_sd`)
+\end{split}
+$$ {#eq-model}
+
+
+## Fitting the model
+
+Okay, now we use `brms`'s `prior` function to define the priors for the `brms` code.
+
+```{r}
+#| label: priors
+
+priors <- c(
+  prior(normal(prior_mu_mean, prior_mu_sd), class = Intercept),
+  prior(normal(prior_tau_mean, prior_tau_sd), class = sd, lb = 0)
+)
+```
+
+Behind the doors `brms` code gets compiled into Stan code.
+Because Stan needs a little help to understand that `prior_mu_mean` means `r prior_mu_mean`, we save the names into a `stanvar` object. 
+You don't need to worry about this if you just instert numbers directly into the code above.
+
+```{r}
+#| label: stanvars
+#| code-fold: true
+
+sv <-
+  stanvar(prior_mu_mean, name = "prior_mu_mean") +
+  stanvar(prior_mu_sd, name = "prior_mu_sd") +
+  stanvar(prior_tau_mean, name = "prior_tau_mean") +
+  stanvar(prior_tau_sd, name = "prior_tau_sd")
+```
+
+Okay, now we are ready to write down the `brms` model.
+
+```{r}
+#| label: main_model
+#| output: false
+
+# Main model
+m.brm <- brm(
+  effect_size | se(SE) ~ 1 + (1 | authors),
+  data = dat,
+  prior = priors,
+  stanvars = sv,
+  save_pars = save_pars(all = TRUE),
+  chains = 4,
+  iter = 4000
+)
+```
+
+The second line is our model formula. 
+`effect_size | se(SE)` captures $\hat{\theta}_k \sim \mathcal{N}(\theta_k, \sigma_k)$, each study's observed effect together with its known standard error;
+`~ 1` is the pooled effect $\mu$;
+and `+ (1 | authors)` gives each study its own true effect $\theta_k$, rather than forcing them all to share exactly one value.\
+With `save_pars` we make sure that all parameters get saved, which `brms` doesn't do by default.
+We run 4 MCMC chains, so that we can check convergence — if all 4 chains mix well, that's a good sign the sampler explored the posterior properly rather than getting stuck somewhere.
+
+Next, we fit the model again and only sample from the prior so that we can check if our priors are nonsense or not.
+
+```{r}
+#| label: sample_from_prior
+#| output: false
+
+# Sample from prior only
+fitPrior <- brm(
+  effect_size | se(SE) ~ 1 + (1 | authors),
+  data = dat,
+  prior = priors,
+  stanvars = sv,
+  sample_prior = "only",
+  chains = 4,
+  iter = 4000
+)
+```
+
+## Diagnostics
+
+Okay, now we do some prior and posterior predictive checks and plot the posterior distributions and MCMC chains.
+```{r}
+#| label: spread_draws
+
+draws <- spread_draws(m.brm, b_Intercept, sd_authors__Intercept)
+pp_check(fitPrior, ndraws = 20)
+pp_check(m.brm, ndraws = 20)
+plot(m.brm, variable = c("b_Intercept", "sd_authors__Intercept"))
+```
+
+Looks good! 
+
+Now let's have a look at the result summary:
+
+```{r}
+#| label: brms_results
+
+summary(m.brm)
+```
+
+# Frequentist meta-analysis
+
+We also fit a frequentist model using the `metafor` package.
+
+```{r}
+#| label: freq_model
+
+m.freq <- rma(
+  yi = effect_size,
+  sei = SE,
+  data = dat,
+  method = "REML"
+)
+
+m.freq
+```
+
+# Forest plots
+
+```{r}
+#| label: data_wrangling
+
+study.draws <- spread_draws(
+  m.brm,
+  r_authors[authors, ],
+  b_Intercept
+) %>%
+  mutate(b_Intercept = r_authors + b_Intercept)
+
+pooled.effect.draws <- spread_draws(m.brm, b_Intercept) %>%
+  mutate(authors = "Pooled Estimate")
+
+forest.data <- bind_rows(study.draws, pooled.effect.draws) %>%
+  ungroup() %>%
+  mutate(authors = str_replace_all(authors, "[.]", " ")) %>%
+  mutate(
+    authors = factor(
+      authors,
+      levels = c(rev(dat$authors), "Pooled Estimate")
+    )
+  )
+
+forest.data.summary <- group_by(forest.data, authors) %>%
+  mean_qi(b_Intercept) # calc mean & 2.5 & 97.5 Q
+```
+
+```{r}
+#| label: ordering_studies
+#| echo: false
+
+n_studies <- nlevels(forest.data$authors) # includes pooled estimate
+
+study_levels <- setdiff(levels(forest.data$authors), "Pooled Estimate")
+
+new_levels <- c(
+  "Pooled Estimate",
+  "spacer_bottom",
+  study_levels,
+  "spacer_top"
+)
+
+forest.data <- forest.data %>%
+  mutate(authors = factor(authors, levels = new_levels))
+
+forest.data.summary <- forest.data.summary %>%
+  mutate(authors = factor(as.character(authors), levels = new_levels))
+
+# Append NA rows for the two spacer positions
+spacer_rows <- tibble(
+  authors = factor(c("spacer_bottom", "spacer_top"), levels = new_levels),
+  b_Intercept = NA_real_,
+  .lower = NA_real_,
+  .upper = NA_real_
+)
+forest.data.summary <- bind_rows(forest.data.summary, spacer_rows)
+
+n_levels_total <- n_studies + 2
+```
+
+```{r}
+#| label: set_sizes
+#| echo: false
+
+linewidth <- 0.35
+base_size_theme <- 12
+base_size_geom <- base_size_theme * 0.352
+title_size <- 14
+```
+
+```{r}
+#| label: Bayes_forestplot
+#| echo: false
+
+# Bayes_forest_plot <-
+
+Bayes_forest_plot <- ggplot(
+  aes(b_Intercept, authors),
+  data = forest.data
+) +
+  annotate(
+    "segment",
+    x = 0,
+    xend = 0,
+    y = 0,
+    yend = n_levels_total,
+    linewidth = linewidth,
+    linetype = "dashed"
+  ) +
+  geom_density_ridges(
+    fill = "grey",
+    rel_min_height = 0.01,
+    col = NA,
+    scale = 1
+  ) +
+  geom_pointinterval(
+    data = forest.data.summary %>% filter(!is.na(b_Intercept)),
+    aes(xmin = .lower, xmax = .upper),
+    shape = 22,
+    point_fill = "black",
+    fatten_point = 1.5,
+    linewidth = 0.15
+  ) +
+  geom_text(
+    data = mutate_if(
+      forest.data.summary %>% filter(!is.na(b_Intercept)),
+      is.numeric,
+      round,
+      2
+    ),
+    aes(
+      label = glue(
+        "{format(b_Intercept, nsmall = 2)} [{format(.lower, nsmall = 2)}, {format(.upper, nsmall = 2)}]"
+      ),
+      x = 4.2
+    ),
+    hjust = 0,
+    size = base_size_geom
+  ) +
+  annotate(
+    # "Study" header
+    "text",
+    x = -1.4,
+    y = n_levels_total + 1,
+    label = "Study",
+    hjust = 1.05,
+    fontface = "bold",
+    size = base_size_geom
+  ) +
+  annotate(
+    # "Estimate [95% CrI]" header
+    "text",
+    x = 4.5,
+    y = n_levels_total + 1,
+    label = "Estimate [95% CrI]",
+    hjust = 0.27,
+    fontface = "bold",
+    size = base_size_geom
+  ) +
+  annotate(
+    # horizontal line top
+    "segment",
+    x = -5,
+    xend = 8,
+    y = n_levels_total,
+    yend = n_levels_total,
+    linewidth = linewidth
+  ) +
+  annotate(
+    # horizontal line bottom
+    "segment",
+    x = -5,
+    xend = 8,
+    y = 2,
+    yend = 2,
+    linewidth = linewidth
+  ) +
+  labs(
+    title = "Bayesian meta-analysis (ggplot2)",
+    x = "Effect",
+    y = NULL
+  ) +
+  scale_y_discrete(
+    expand = expansion(add = c(0.5, 2.4)),
+    labels = function(x) ifelse(x %in% c("spacer_bottom", "spacer_top"), "", x),
+    drop = FALSE
+  ) +
+  scale_x_continuous(
+    breaks = seq(-5, 4, by = 4),
+    expand = expansion(add = c(1, 1))
+  ) +
+  coord_cartesian(
+    xlim = c(0, 5),
+    clip = "off"
+  ) +
+  guides(x = guide_axis(cap = "both")) +
+  theme_minimal() +
+  theme(
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(),
+    plot.margin = margin(t = 18.5, r = 10, b = 35, l = 20),
+    plot.title = element_text(hjust = 0, face = "bold", size = title_size),
+    plot.background = element_rect(fill = "#FBFAF9", colour = NA),
+    axis.text.y = element_text(
+      hjust = 0,
+      margin = margin(r = -10),
+      size = base_size_theme,
+      colour = "black"
+    ),
+    axis.text.x = element_text(vjust = -1, size = base_size_theme),
+    axis.title.x = element_text(vjust = -2.7, size = base_size_theme),
+    axis.line.x = element_line(linewidth = linewidth),
+    axis.ticks.x = element_line(linewidth = linewidth),
+    axis.ticks.length.x = unit(0.3, "cm"),
+  )
+```
+
+```{r}
+#| label: compare
+#| code-fold: true
+
+ggsave(
+  "data/Bayes_forest_plot.png",
+  Bayes_forest_plot,
+  width = 20,
+  height = 15,
+  units = "cm",
+  bg = "#FBFAF9"
+)
+
+png(
+  "data/freq_forestplot.png",
+  width = 20,
+  height = 15,
+  units = "cm",
+  res = 300,
+  bg = "#FBFAF9"
+)
+
+forest(
+  freq_model,
+  slab = str_replace_all(freq_model$data$author_year, "[.]", " "),
+  mlab = "Pooled Estimate",
+  xlab = "Effect",
+  main = "Frequentist meta-analysis (metafor)"
+)
+
+dev.off()
+
+img1 <- image_read("data/Bayes_forest_plot.png")
+img2 <- image_read("data/freq_forestplot.png")
+combined <- image_append(c(img1, img2), stack = FALSE)
+image_write(combined, "data/forest_plots_combined.png")
+```
