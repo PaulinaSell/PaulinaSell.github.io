@@ -33,7 +33,6 @@ library(tidyverse)
 library(tidybayes)
 library(ggridges)
 library(glue)
-library(here)
 library(magick)
 ```
 
@@ -78,7 +77,7 @@ To simulate standard errors (SE) for our studies, we just sample standard deviat
 #| label: sim_SE
 
 # SD <- rexp(n, 0.8)
-SD <- rcauchy(n, location = 3, scale = 0.2)
+SD <- rgamma(n, shape = 225, rate = 75)
 
 SE <- SD / sqrt(sample_size)
 ```
@@ -148,7 +147,7 @@ prior_mu_mean <- 2
 prior_mu_sd <- 1
 
 prior_tau_mean <- 0
-prior_tau_sd <- 2
+prior_tau_sd <- 1
 ```
 
 $\mu$ and $\tau$ are the parameters we'll actually get posterior distributions for.
@@ -237,7 +236,7 @@ prior_mu_mean <- 2
 prior_mu_sd <- 1
 
 prior_tau_mean <- 0
-prior_tau_sd <- 2
+prior_tau_sd <- 1
 ```
 
 This is the full statistical model, including both priors:
@@ -437,8 +436,6 @@ title_size <- 14
 #| label: Bayes_forestplot
 #| echo: false
 
-# Bayes_forest_plot <-
-
 Bayes_forest_plot <- ggplot(
   aes(b_Intercept, authors),
   data = forest.data
@@ -453,7 +450,8 @@ Bayes_forest_plot <- ggplot(
     linetype = "dashed"
   ) +
   geom_density_ridges(
-    fill = "grey",
+    fill = "cornflowerblue",
+    alpha = 0.5,
     rel_min_height = 0.01,
     col = NA,
     scale = 1
@@ -477,7 +475,7 @@ Bayes_forest_plot <- ggplot(
       label = glue(
         "{format(b_Intercept, nsmall = 2)} [{format(.lower, nsmall = 2)}, {format(.upper, nsmall = 2)}]"
       ),
-      x = 4.2
+      x = 4
     ),
     hjust = 0,
     size = base_size_geom
@@ -488,25 +486,25 @@ Bayes_forest_plot <- ggplot(
     x = -1.4,
     y = n_levels_total + 1,
     label = "Study",
-    hjust = 1.05,
+    hjust = 2.1,
     fontface = "bold",
     size = base_size_geom
   ) +
   annotate(
     # "Estimate [95% CrI]" header
     "text",
-    x = 4.5,
+    x = 4,
     y = n_levels_total + 1,
     label = "Estimate [95% CrI]",
-    hjust = 0.27,
+    hjust = 0.1,
     fontface = "bold",
     size = base_size_geom
   ) +
   annotate(
     # horizontal line top
     "segment",
-    x = -5,
-    xend = 8,
+    x = -2.45,
+    xend = 5.5,
     y = n_levels_total,
     yend = n_levels_total,
     linewidth = linewidth
@@ -514,14 +512,14 @@ Bayes_forest_plot <- ggplot(
   annotate(
     # horizontal line bottom
     "segment",
-    x = -5,
-    xend = 8,
+    x = -2.45,
+    xend = 5.5,
     y = 2,
     yend = 2,
     linewidth = linewidth
   ) +
   labs(
-    title = "Bayesian meta-analysis (ggplot2)",
+    title = "Bayesian meta-analysis",
     x = "Effect",
     y = NULL
   ) +
@@ -531,7 +529,7 @@ Bayes_forest_plot <- ggplot(
     drop = FALSE
   ) +
   scale_x_continuous(
-    breaks = seq(-5, 4, by = 4),
+    breaks = seq(-2, 5, by = 1),
     expand = expansion(add = c(1, 1))
   ) +
   coord_cartesian(
@@ -546,7 +544,7 @@ Bayes_forest_plot <- ggplot(
     panel.grid.minor = element_blank(),
     panel.background = element_blank(),
     plot.margin = margin(t = 18.5, r = 10, b = 35, l = 20),
-    plot.title = element_text(hjust = 0, face = "bold", size = title_size),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = title_size), # title
     plot.background = element_rect(fill = "#FBFAF9", colour = NA),
     axis.text.y = element_text(
       hjust = 0,
@@ -555,7 +553,11 @@ Bayes_forest_plot <- ggplot(
       colour = "black"
     ),
     axis.text.x = element_text(vjust = -1, size = base_size_theme),
-    axis.title.x = element_text(vjust = -2.7, size = base_size_theme),
+    axis.title.x = element_text(
+      vjust = -2.7,
+      hjust = 0.25,
+      size = base_size_theme
+    ),
     axis.line.x = element_line(linewidth = linewidth),
     axis.ticks.x = element_line(linewidth = linewidth),
     axis.ticks.length.x = unit(0.3, "cm"),
@@ -585,11 +587,11 @@ png(
 )
 
 forest(
-  freq_model,
-  slab = str_replace_all(freq_model$data$author_year, "[.]", " "),
+  m.freq,
+  slab = str_replace_all(m.freq$data$authors, "[.]", " "),
   mlab = "Pooled Estimate",
   xlab = "Effect",
-  main = "Frequentist meta-analysis (metafor)"
+  main = "Frequentist meta-analysis"
 )
 
 dev.off()
@@ -599,3 +601,5 @@ img2 <- image_read("data/freq_forestplot.png")
 combined <- image_append(c(img1, img2), stack = FALSE)
 image_write(combined, "data/forest_plots_combined.png")
 ```
+
+![](data/forest_plots_combined.png){.lightbox}
