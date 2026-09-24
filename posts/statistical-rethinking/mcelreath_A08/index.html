@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -14,10 +14,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -77,10 +80,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-6f439b9b8e5c10b8e40ef9b4c37a1e42.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-fda5155babf7a2f07902aa645dea0b3e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-d995b64f83e531d9df0b50243a9b1e5a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-fda5155babf7a2f07902aa645dea0b3e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -111,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script defer="" src="https://cloud.umami.is/script.js" data-website-id="00265c7c-7dd4-4c20-b5bb-69393c654960"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -142,7 +149,169 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -179,6 +348,7 @@ window.Quarto = {
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
     <a href="https://github.com/PaulinaSell" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -212,6 +382,7 @@ window.Quarto = {
     </div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
+
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -378,10 +549,10 @@ Z = Judge origin</p>
 
 Sampling durations (seconds):
   chain_id warmup sampling total
-1        1   0.22     0.17  0.39
-2        2   0.27     0.11  0.38
-3        3   0.26     0.14  0.40
-4        4   0.25     0.09  0.34
+1        1   0.29     0.15  0.43
+2        2   0.22     0.17  0.39
+3        3   0.23     0.16  0.39
+4        4   0.23     0.16  0.39
 
 Formula:
 S ~ dnorm(mu, sigma)
@@ -394,34 +565,34 @@ sigma ~ dexp(1)</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precis</span>(m.wines, <span class="at">depth =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>              mean         sd         5.5%     94.5%      rhat  ess_bulk
-Q[1]   0.123465749 0.97575650 -1.440763325 1.6495920 1.0003460 2570.3033
-Q[2]   0.030662599 0.88132125 -1.356920072 1.4844007 1.0010745 2854.2619
-Q[3]   0.327323118 0.95541807 -1.181727540 1.8013415 1.0014439 2983.2897
-Q[4]   0.483026143 0.93642324 -1.001230703 1.9416481 1.0035814 2571.5348
-Q[5]  -0.179842103 0.93373831 -1.723549261 1.3074550 1.0015178 2402.6979
-Q[6]  -0.358023365 0.99750423 -1.982210917 1.1942719 1.0016167 2617.2790
-Q[7]   0.205577491 0.94350133 -1.258083744 1.7145641 1.0015935 2597.1744
-Q[8]   0.284033674 0.94930158 -1.278533821 1.7724713 1.0039858 3019.5553
-Q[9]   0.110260261 0.92143379 -1.363597686 1.6065035 0.9996029 3231.1725
-Q[10]  0.167190122 0.93393834 -1.310138719 1.5893373 1.0030825 3103.6843
-Q[11]  0.041208426 0.94666437 -1.403878414 1.5749833 1.0014884 2702.7889
-Q[12]  0.009942758 0.91949389 -1.445394309 1.4586559 1.0074807 3297.8660
-Q[13] -0.024210488 0.93301530 -1.505807118 1.4799362 1.0051855 2409.2746
-Q[14] -0.062376830 0.93070628 -1.480602800 1.4836175 0.9993438 2848.0866
-Q[15] -0.262846971 0.94407006 -1.746395629 1.2486929 1.0014280 2383.0151
-Q[16] -0.161475764 0.94117503 -1.634898402 1.3060047 1.0052496 2756.9533
-Q[17] -0.078791764 0.92193321 -1.533535371 1.4449256 1.0005394 2730.6148
-Q[18] -0.815084367 0.95226301 -2.298834491 0.7079721 1.0016923 2231.5821
-Q[19] -0.226559537 0.89111522 -1.626016512 1.2478942 1.0034786 2588.9268
-Q[20]  0.319105704 0.88721589 -1.109397795 1.7469635 1.0003520 2411.1255
-O[1]  -0.340617529 0.78585758 -1.591898832 0.8974470 1.0032088 2106.2612
-O[2]   0.297991781 0.80233085 -0.972382835 1.5586870 1.0035348 2073.8805
-H[1]  -0.442185490 0.81060866 -1.663883983 0.9034959 1.0011919 2125.1326
-H[2]   0.433571013 0.80061706 -0.865779704 1.6676488 0.9991557 1875.4711
-D[1]   0.114872077 0.08842752  0.009598625 0.2791226 1.0066272  910.5951
-D[2]   0.136709755 0.10046497  0.013884204 0.3235602 1.0038967  820.9098
-sigma  0.993843641 0.05314539  0.912985762 1.0802499 1.0017855 2348.1853</code></pre>
+<pre><code>              mean        sd        5.5%     94.5%     rhat  ess_bulk
+Q[1]   0.126309575 0.9813506 -1.48226008 1.6981076 1.002720 2329.6184
+Q[2]  -0.001095050 0.9385775 -1.51257624 1.4836040 1.000985 2581.4028
+Q[3]   0.324823919 0.9295976 -1.17433415 1.7428587 1.006169 2913.5069
+Q[4]   0.477692484 0.9289642 -1.04378094 1.9363799 1.000278 2897.4570
+Q[5]  -0.209456757 0.9525154 -1.75571999 1.3328744 1.006877 3565.8587
+Q[6]  -0.373732296 0.9236920 -1.85636866 1.1090363 1.003826 2836.3192
+Q[7]   0.201993557 0.9221609 -1.30439300 1.6124867 1.004106 2467.9735
+Q[8]   0.342879260 0.9437186 -1.17680077 1.8220423 1.004328 3093.0414
+Q[9]   0.137084205 0.9446527 -1.34153194 1.6540625 1.000235 3530.6184
+Q[10]  0.181911543 0.9116711 -1.28089111 1.6455186 1.003975 4138.7504
+Q[11]  0.036758881 0.9171739 -1.43957058 1.5535230 1.002499 3033.9597
+Q[12]  0.005378341 0.8694459 -1.39511658 1.4011498 1.002552 2832.7288
+Q[13] -0.032693025 0.9604719 -1.61198397 1.5118294 1.002274 3160.3759
+Q[14] -0.059601173 0.9456081 -1.57312773 1.5072017 1.000432 3128.2079
+Q[15] -0.261984245 0.9423224 -1.79330216 1.2890327 1.002022 2907.0542
+Q[16] -0.173822430 0.9697528 -1.70007329 1.3574755 1.004209 3585.5744
+Q[17] -0.075508392 0.9230980 -1.52468738 1.3564489 1.000282 2965.1625
+Q[18] -0.820807311 0.9159865 -2.30992737 0.6573951 0.998802 2707.5380
+Q[19] -0.239046355 0.9321102 -1.70309866 1.2662142 1.000224 3055.0710
+Q[20]  0.338630163 0.9320098 -1.16353990 1.8218597 1.000476 3323.7440
+O[1]  -0.349069178 0.7619026 -1.56222536 0.8415831 1.000332 2208.1820
+O[2]   0.319352696 0.8018144 -0.97331430 1.6193383 1.001018 2667.5292
+H[1]  -0.462736442 0.8049304 -1.72348470 0.8848093 1.000234 2419.2475
+H[2]   0.428964554 0.7999668 -0.85274317 1.7342868 1.003506 2353.2180
+D[1]   0.118090698 0.0894043  0.01142418 0.2817639 1.001971  912.3974
+D[2]   0.138417930 0.1077334  0.01295865 0.3354079 1.001895  841.5341
+sigma  0.992958732 0.0543589  0.90805449 1.0802554 1.003431 2689.2884</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trankplot</span>(m.wines)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -495,7 +666,7 @@ sigma  0.993843641 0.05314539  0.912985762 1.0802499 1.0017855 2348.1853</code><
 </div>
 </div>
 </div>
-<p>Here we can see that 51.6% of the times we randomly sample a new judge, the French judge is more discriminating than the American judge. And 48.4% of the time, the American judge is more discriminating than the French judge. So it seems like there is no difference between American and French wine judges in terms of wine discrimination.<br>
+<p>Here we can see that 49.9% of the times we randomly sample a new judge, the French judge is more discriminating than the American judge. And 50.1% of the time, the American judge is more discriminating than the French judge. So it seems like there is no difference between American and French wine judges in terms of wine discrimination.<br>
 Let’s now look at harshness.</p>
 </section>
 <section id="total-causal-contrast-in-mean-harshness" class="level3">
@@ -546,7 +717,7 @@ Let’s now look at harshness.</p>
 </div>
 </div>
 </div>
-<p>Here we can see that 69.4% of the times we randomly sample a new judge, the French judge is more harsh in their judgement than the American judge. And 30.6% of the time, the American judge is more harsh in their judgement than the French judge.</p>
+<p>Here we can see that 69.9% of the times we randomly sample a new judge, the French judge is more harsh in their judgement than the American judge. And 30.1% of the time, the American judge is more harsh in their judgement than the French judge.</p>
 </section>
 </section>
 <section id="lineplot" class="level2">
@@ -630,6 +801,19 @@ Let’s now look at harshness.</p>
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
