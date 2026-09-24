@@ -7,6 +7,13 @@ title: "Work"
 ::: {.column width="85%"}
 
 ## Publications
+
+<div class="pub-card">
+  <strong>Sell, P.</strong>, Sanchez, M., Palmont, P., Steiger, S & Plass, D. Quantifying uncertainty: a practical comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and children’s IQ.
+  <em>BMC Medical Research Methodology </em> 26, 209 (2026). doi: 10.1186/s12874-026-03010-z<br>
+  <a class="stretched-link" href="https://doi.org/10.1186/s12874-026-03010-z"></a>
+</div>
+
 <div class="pub-card">
   <strong>Sell, P.</strong>, Plass, D., Kienzler, S. & Zeeb, H. Environmental burden of disease
   resulting from long-term nitrogen dioxide exposure in Germany.
@@ -111,8 +118,20 @@ Thesis: Vulnerability of persons with low socioeconomic status to COVID-19 due t
 
 <div class="timeline-item">
 <div class="timeline-year">2026 | Oral</div>
+<strong>Uncertainty in evidence synthesis: A methodological comparison of Bayesian and frequentist meta-analytic frameworks applied to lead exposure and children’s IQ</strong><br>
+Annual Conference of the German Society for Epidemiology (<a href="https://2026.dgepi.de">DGEpi</a>), Ulm, 2026.
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">2026 | Oral</div>
 <strong>Quantifying uncertainty: A methodological comparison of Bayesian and frequentist meta-analytic frameworks</strong><br>
 Annual Conference of the International Society for Environmental Epidemiology (<a href="https://www.isee26.org">ISEE</a>), Munich, 2026.
+</div>
+
+<div class="timeline-item">
+<div class="timeline-year">2026 | Poster</div>
+<strong>Quantifying uncertainty: a methodological comparison of Bayesian and frequentist meta-analyses of studies on lead exposure and children’s IQ</strong><br>
+International Conference on Bayesian Inference and Probabilistic Programming (<a href="https://www.stancon2026.org">StanCon</a>), Uppsala, 2026.
 </div>
 
 <div class="timeline-item">

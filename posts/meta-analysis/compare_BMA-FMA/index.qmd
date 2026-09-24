@@ -198,8 +198,8 @@ We'll set the prior for tau to $\tau \sim \mathcal{N}^+(`r prior_tau_mean`, `r p
 #| label: vis_prior_tau
 #| code-fold: true
 
-x <- seq((0), (6), by = 0.1)
-y <- dnorm(x, 0, 2)
+x <- seq((0), (4), by = 0.1)
+y <- dnorm(x, 0, 1)
 plot(
   x,
   y,
@@ -210,7 +210,7 @@ plot(
 )
 
 lower_bound <- 0
-upper_bound <- 3
+upper_bound <- 2
 
 idx <- x >= lower_bound & x <= upper_bound
 x_shade <- x[idx]
@@ -224,7 +224,7 @@ polygon(
 )
 ```
 
-Here we say: "The probability, that the true between-study heterogeneity is smaller than `r upper_bound` is `r round((1 - (1 - pnorm(upper_bound, prior_tau_mean, prior_tau_sd)) * 2) * 100)`%".
+Here we say: "The probability, that the true between-study heterogeneity is smaller than `r upper_bound` is `r round((1 - (1 - pnorm(upper_bound, prior_tau_mean, prior_tau_sd)) * 2), 3) * 100`%".
 
 Now we save our priors:
 
@@ -263,9 +263,9 @@ priors <- c(
 )
 ```
 
-Behind the doors `brms` code gets compiled into Stan code.
+Under the hood `brms` code gets compiled into Stan code.
 Because Stan needs a little help to understand that `prior_mu_mean` means `r prior_mu_mean`, we save the names into a `stanvar` object. 
-You don't need to worry about this if you just instert numbers directly into the code above.
+You don't need to worry about this if you just instert numbers directly into the code above (so this was only a problem for me while writing this article).
 
 ```{r}
 #| label: stanvars
@@ -297,7 +297,7 @@ m.brm <- brm(
 ```
 
 The second line is our model formula. 
-`effect_size | se(SE)` captures $\hat{\theta}_k \sim \mathcal{N}(\theta_k, \sigma_k)$, each study's observed effect together with its known standard error;
+`effect_size | se(SE)` captures $\hat{\theta}_k \sim \mathcal{N}(\theta_k, \sigma_k)$ (the first line of our statistical model above), each study's observed effect together with its known standard error.
 `~ 1` is the pooled effect $\mu$;
 and `+ (1 | authors)` gives each study its own true effect $\theta_k$, rather than forcing them all to share exactly one value.\
 With `save_pars` we make sure that all parameters get saved, which `brms` doesn't do by default.
@@ -324,16 +324,33 @@ fitPrior <- brm(
 ## Diagnostics
 
 Okay, now we do some prior and posterior predictive checks and plot the posterior distributions and MCMC chains.
+
+Prior predictive checks are used to evaluate the suitability of prior distributions before the model ‘sees’ our data.
+We basically simulate data from the model using only the prior distributions and then plot a couple of the simulated datasets to see if it aligns with our expectations.
+Posterior predictive checks are similar but they include our data.
+You can read more about prior and posterior predictive checks [here](https://mc-stan.org/docs/stan-users-guide/posterior-predictive-checks.html).
+
 ```{r}
 #| label: spread_draws
 
 draws <- spread_draws(m.brm, b_Intercept, sd_authors__Intercept)
 pp_check(fitPrior, ndraws = 20)
 pp_check(m.brm, ndraws = 20)
+```
+
+We mainly pay attention to extreme deviations from the area we’d expect our curves to land.
+Both look okay here!
+
+```{r}
+#| label: summary
+
 plot(m.brm, variable = c("b_Intercept", "sd_authors__Intercept"))
 ```
 
-Looks good! 
+In this handy summary plot, we can see the posterior distributions for $mu$ (`b_Intercept`) and $tau$ (`sd_authors__Intercept`) on the left side and two traceplots on the right side.
+Traceplots are a good way to check if the Markov chain Monte Carlo (MCMC) sampling worked out or not (we of course also need to pay attention at any warnings from brms and Stan).
+It shows the four chains that were generated in order to explore the posterior distributions of both $mu$ and $tau$. 
+If they look nice and mixed and no chain stands out in any way, that's a good sign.
 
 Now let's have a look at the result summary:
 
@@ -342,6 +359,13 @@ Now let's have a look at the result summary:
 
 summary(m.brm)
 ```
+
+Here, we can see the posterior mean, SE and 95% quantiles for `Intercept` and `sd(Intercept)`.
+But before we focus on our results, we should take a moment to assess the quality of our results.
+Look at the `\hat{R}`value (`Rhat` in output), which is another indicator for whether the MCMC sampling process has converged.
+A value of less than 1.01 is generally considered good.
+[Here](https://mc-stan.org/rstan/reference/Rhat.html) you can read more about convergence and efficiency diagnostics for Markov chains.
+As we can see, our values are both 1.00 which is good!
 
 # Frequentist meta-analysis
 
